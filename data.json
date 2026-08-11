@@ -791,6 +791,15 @@
       "pcaId": "p_msofifog0o7hh",
       "exerciseType": "OT",
       "createdAt": "2026-08-11T09:52:48.687Z"
+    },
+    {
+      "id": "c_msohfixzaid7w",
+      "name": "Y佩華",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofjck8lna9e",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-11T09:53:01.607Z"
     }
   ],
   "pcas": [
@@ -1079,7 +1088,10 @@
     ],
     "Friday|15:00": [
       "c_msohf8z3pipdn"
+    ],
+    "Saturday|15:00": [
+      "c_msohfixzaid7w"
     ]
   },
-  "exportedAt": "2026-08-11T09:52:52.049Z"
+  "exportedAt": "2026-08-11T09:53:04.280Z"
 }
