@@ -170,6 +170,15 @@
       "pcaId": "p_msofhw4i2d5nk",
       "exerciseType": "PT",
       "createdAt": "2026-08-11T09:20:42.642Z"
+    },
+    {
+      "id": "c_msogaay2buhmb",
+      "name": "L愛心",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofjck8lna9e",
+      "exerciseType": "OT",
+      "createdAt": "2026-08-11T09:20:58.346Z"
     }
   ],
   "pcas": [
@@ -296,8 +305,9 @@
       "c_msog9izs0nk08"
     ],
     "Wednesday|09:30": [
-      "c_msog9ytucz5p8"
+      "c_msog9ytucz5p8",
+      "c_msogaay2buhmb"
     ]
   },
-  "exportedAt": "2026-08-11T09:20:45.310Z"
+  "exportedAt": "2026-08-11T09:21:01.012Z"
 }
