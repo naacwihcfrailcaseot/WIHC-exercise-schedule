@@ -818,6 +818,15 @@
       "pcaId": "p_msofiu96bus70",
       "exerciseType": "PT",
       "createdAt": "2026-08-11T09:53:58.701Z"
+    },
+    {
+      "id": "c_msohh41t90qc5",
+      "name": "W妙顏",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofifog0o7hh",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-11T09:54:15.617Z"
     }
   ],
   "pcas": [
@@ -1117,7 +1126,10 @@
     ],
     "Tuesday|16:15": [
       "c_msohgqzx9jsi4"
+    ],
+    "Wednesday|16:15": [
+      "c_msohh41t90qc5"
     ]
   },
-  "exportedAt": "2026-08-11T09:54:01.345Z"
+  "exportedAt": "2026-08-11T09:54:18.298Z"
 }
