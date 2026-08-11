@@ -377,6 +377,15 @@
       "pcaId": "p_msofjml86pfja",
       "exerciseType": "PT",
       "createdAt": "2026-08-11T09:31:22.717Z"
+    },
+    {
+      "id": "c_msogo285rp9ef",
+      "name": "T少杭",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofjibmahvr5",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-11T09:31:40.229Z"
     }
   ],
   "pcas": [
@@ -560,8 +569,9 @@
       "c_msognb9lo6iq3"
     ],
     "Thursday|10:30": [
-      "c_msognoppldo2c"
+      "c_msognoppldo2c",
+      "c_msogo285rp9ef"
     ]
   },
-  "exportedAt": "2026-08-11T09:31:25.398Z"
+  "exportedAt": "2026-08-11T09:31:42.963Z"
 }
