@@ -584,6 +584,15 @@
       "pcaId": "p_msofk0bokgoto",
       "exerciseType": "PT",
       "createdAt": "2026-08-11T09:45:25.987Z"
+    },
+    {
+      "id": "c_msoh66r3dakf5",
+      "name": "L利冠",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofjml86pfja",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-11T09:45:45.903Z"
     }
   ],
   "pcas": [
@@ -819,7 +828,10 @@
     "Monday|14:45": [
       "c_msoh5eajuurle",
       "c_msoh5rdvzgkfb"
+    ],
+    "Tuesday|14:15": [
+      "c_msoh66r3dakf5"
     ]
   },
-  "exportedAt": "2026-08-11T09:45:28.652Z"
+  "exportedAt": "2026-08-11T09:45:48.766Z"
 }
