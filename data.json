@@ -125,6 +125,15 @@
       "pcaId": "p_msofhw4i2d5nk",
       "exerciseType": "OT",
       "createdAt": "2026-08-11T09:17:28.122Z"
+    },
+    {
+      "id": "c_msog6fpe22jv4",
+      "name": "H綺麗",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofifog0o7hh",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-11T09:17:57.890Z"
     }
   ],
   "pcas": [
@@ -239,8 +248,9 @@
       "c_msog54mqiymlb"
     ],
     "Saturday|09:00": [
-      "c_msog5sqi4nqps"
+      "c_msog5sqi4nqps",
+      "c_msog6fpe22jv4"
     ]
   },
-  "exportedAt": "2026-08-11T09:17:30.782Z"
+  "exportedAt": "2026-08-11T09:18:00.582Z"
 }
