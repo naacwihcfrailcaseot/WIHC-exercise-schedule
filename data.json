@@ -40,6 +40,10 @@
     {
       "id": "p_msofj7o2n5j4r",
       "name": "坤儀"
+    },
+    {
+      "id": "p_msofjck8lna9e",
+      "name": "小英"
     }
   ],
   "timeSlots": [
@@ -53,5 +57,5 @@
     "16:00"
   ],
   "schedule": {},
-  "exportedAt": "2026-08-11T08:59:57.027Z"
+  "exportedAt": "2026-08-11T09:00:03.448Z"
 }
