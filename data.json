@@ -746,6 +746,15 @@
       "pcaId": "p_msofipckwo78i",
       "exerciseType": "PT",
       "createdAt": "2026-08-11T09:51:13.181Z"
+    },
+    {
+      "id": "c_msohdpvxlovzf",
+      "name": "S曼梨",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofk0bokgoto",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-11T09:51:37.293Z"
     }
   ],
   "pcas": [
@@ -1023,7 +1032,10 @@
     ],
     "Friday|14:45": [
       "c_msohcripy4oqa"
+    ],
+    "Saturday|14:15": [
+      "c_msohdpvxlovzf"
     ]
   },
-  "exportedAt": "2026-08-11T09:51:16.072Z"
+  "exportedAt": "2026-08-11T09:51:40.158Z"
 }
