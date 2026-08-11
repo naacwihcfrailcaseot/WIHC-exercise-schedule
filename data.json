@@ -755,6 +755,15 @@
       "pcaId": "p_msofk0bokgoto",
       "exerciseType": "PT",
       "createdAt": "2026-08-11T09:51:37.293Z"
+    },
+    {
+      "id": "c_msohe23xmbo0i",
+      "name": "C碧湖",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofiyuulxl9i",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-11T09:51:53.133Z"
     }
   ],
   "pcas": [
@@ -1034,8 +1043,9 @@
       "c_msohcripy4oqa"
     ],
     "Saturday|14:15": [
-      "c_msohdpvxlovzf"
+      "c_msohdpvxlovzf",
+      "c_msohe23xmbo0i"
     ]
   },
-  "exportedAt": "2026-08-11T09:51:40.158Z"
+  "exportedAt": "2026-08-11T09:51:55.836Z"
 }
