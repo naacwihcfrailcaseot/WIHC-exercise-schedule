@@ -24,6 +24,10 @@
     {
       "id": "p_msofik7igqgs9",
       "name": "震"
+    },
+    {
+      "id": "p_msofipckwo78i",
+      "name": "玉英"
     }
   ],
   "timeSlots": [
@@ -37,5 +41,5 @@
     "16:00"
   ],
   "schedule": {},
-  "exportedAt": "2026-08-11T08:59:26.654Z"
+  "exportedAt": "2026-08-11T08:59:33.299Z"
 }
