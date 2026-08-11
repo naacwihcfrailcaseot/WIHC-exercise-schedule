@@ -260,6 +260,15 @@
       "pcaId": "p_msofi9xylkju2",
       "exerciseType": "OT",
       "createdAt": "2026-08-11T09:25:20.944Z"
+    },
+    {
+      "id": "c_msoggnuwi8ad7",
+      "name": "Y艷梅",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofiyuulxl9i",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-11T09:25:55.016Z"
     }
   ],
   "pcas": [
@@ -408,7 +417,10 @@
     ],
     "Wednesday|10:00": [
       "c_msogfxkgm98bk"
+    ],
+    "Thursday|10:15": [
+      "c_msoggnuwi8ad7"
     ]
   },
-  "exportedAt": "2026-08-11T09:25:52.906Z"
+  "exportedAt": "2026-08-11T09:25:57.907Z"
 }
