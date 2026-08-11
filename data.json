@@ -503,6 +503,15 @@
       "pcaId": "p_msofk5oybpbvt",
       "exerciseType": "OT",
       "createdAt": "2026-08-11T09:41:12.019Z"
+    },
+    {
+      "id": "c_msoh0u6ntlmat",
+      "name": "Y宏輝",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofjibmahvr5",
+      "exerciseType": "OT",
+      "createdAt": "2026-08-11T09:41:36.335Z"
     }
   ],
   "pcas": [
@@ -713,8 +722,9 @@
     ],
     "Tuesday|13:45": [
       "c_msogzx9b1up6y",
-      "c_msoh0bf75cg7v"
+      "c_msoh0bf75cg7v",
+      "c_msoh0u6ntlmat"
     ]
   },
-  "exportedAt": "2026-08-11T09:41:14.932Z"
+  "exportedAt": "2026-08-11T09:41:39.039Z"
 }
