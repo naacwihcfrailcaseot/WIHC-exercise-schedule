@@ -197,6 +197,15 @@
       "pcaId": "p_msofkb9cij1eu",
       "exerciseType": "PT",
       "createdAt": "2026-08-11T09:21:33.532Z"
+    },
+    {
+      "id": "c_msogbgyc6iuov",
+      "name": "L銀女",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofipckwo78i",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-11T09:21:52.788Z"
     }
   ],
   "pcas": [
@@ -328,8 +337,9 @@
     ],
     "Thursday|09:30": [
       "c_msogaoq6x2rpz",
-      "c_msogb23g4y4og"
+      "c_msogb23g4y4og",
+      "c_msogbgyc6iuov"
     ]
   },
-  "exportedAt": "2026-08-11T09:21:36.265Z"
+  "exportedAt": "2026-08-11T09:21:55.458Z"
 }
