@@ -485,6 +485,15 @@
       "pcaId": "p_msofipckwo78i",
       "exerciseType": "PT",
       "createdAt": "2026-08-11T09:40:34.333Z"
+    },
+    {
+      "id": "c_msogzx9b1up6y",
+      "name": "N亮城",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofik7igqgs9",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-11T09:40:53.663Z"
     }
   ],
   "pcas": [
@@ -692,7 +701,10 @@
     ],
     "Monday|13:45": [
       "c_msogzicd8g6y5"
+    ],
+    "Tuesday|13:45": [
+      "c_msogzx9b1up6y"
     ]
   },
-  "exportedAt": "2026-08-11T09:40:37.247Z"
+  "exportedAt": "2026-08-11T09:40:56.525Z"
 }
