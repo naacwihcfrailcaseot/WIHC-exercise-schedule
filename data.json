@@ -1,11 +1,6 @@
 {
   "clients": [],
-  "pcas": [
-    {
-      "id": "p_msodqwugoefkr",
-      "name": "pca1"
-    }
-  ],
+  "pcas": [],
   "timeSlots": [
     "09:00",
     "10:00",
@@ -17,5 +12,5 @@
     "16:00"
   ],
   "schedule": {},
-  "exportedAt": "2026-08-11T08:58:14.574Z"
+  "exportedAt": "2026-08-11T08:58:23.948Z"
 }
