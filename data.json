@@ -395,6 +395,15 @@
       "pcaId": "p_msofi1mk6c8jc",
       "exerciseType": "PT",
       "createdAt": "2026-08-11T09:31:58.512Z"
+    },
+    {
+      "id": "c_msogp49ciwgc2",
+      "name": "H二妹",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofifog0o7hh",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-11T09:32:29.520Z"
     }
   ],
   "pcas": [
@@ -582,8 +591,9 @@
       "c_msogo285rp9ef"
     ],
     "Thursday|11:00": [
-      "c_msogogc0rd3gh"
+      "c_msogogc0rd3gh",
+      "c_msogp49ciwgc2"
     ]
   },
-  "exportedAt": "2026-08-11T09:32:01.182Z"
+  "exportedAt": "2026-08-11T09:32:32.168Z"
 }
