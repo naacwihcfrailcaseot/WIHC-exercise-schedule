@@ -107,6 +107,15 @@
       "pcaId": "p_msofjv9it0v6t",
       "exerciseType": "OT",
       "createdAt": "2026-08-11T09:16:13.864Z"
+    },
+    {
+      "id": "c_msog54mqiymlb",
+      "name": "L芳梅",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofj7o2n5j4r",
+      "exerciseType": "OT",
+      "createdAt": "2026-08-11T09:16:56.882Z"
     }
   ],
   "pcas": [
@@ -216,7 +225,10 @@
       "c_msog2vwgyz2am",
       "c_msog3qqix9ejw",
       "c_msog47fsihtl8"
+    ],
+    "Friday|09:00": [
+      "c_msog54mqiymlb"
     ]
   },
-  "exportedAt": "2026-08-11T09:16:16.543Z"
+  "exportedAt": "2026-08-11T09:16:59.624Z"
 }
