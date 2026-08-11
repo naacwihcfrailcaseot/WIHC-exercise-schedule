@@ -233,6 +233,15 @@
       "pcaId": "p_msofik7igqgs9",
       "exerciseType": "PT",
       "createdAt": "2026-08-11T09:23:11.630Z"
+    },
+    {
+      "id": "c_msogej76drd7g",
+      "name": "K美英",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofhmbyoxbre",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-11T09:24:15.666Z"
     }
   ],
   "pcas": [
@@ -372,8 +381,9 @@
       "c_msogcsqsbtp4k"
     ],
     "Saturday|09:30": [
-      "c_msogd5se13ox8"
+      "c_msogd5se13ox8",
+      "c_msogej76drd7g"
     ]
   },
-  "exportedAt": "2026-08-11T09:23:14.797Z"
+  "exportedAt": "2026-08-11T09:24:18.670Z"
 }
