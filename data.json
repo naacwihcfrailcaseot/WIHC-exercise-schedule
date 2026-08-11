@@ -728,6 +728,15 @@
       "pcaId": "p_msofiu96bus70",
       "exerciseType": "OT",
       "createdAt": "2026-08-11T09:50:38.797Z"
+    },
+    {
+      "id": "c_msohcripy4oqa",
+      "name": "C瑞珍",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofi1mk6c8jc",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-11T09:50:52.753Z"
     }
   ],
   "pcas": [
@@ -1001,7 +1010,10 @@
     ],
     "Friday|14:30": [
       "c_msohcgr1bnvcf"
+    ],
+    "Friday|14:45": [
+      "c_msohcripy4oqa"
     ]
   },
-  "exportedAt": "2026-08-11T09:50:41.692Z"
+  "exportedAt": "2026-08-11T09:50:55.402Z"
 }
