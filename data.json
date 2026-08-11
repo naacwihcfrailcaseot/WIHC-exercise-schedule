@@ -296,6 +296,15 @@
       "pcaId": "p_msofifog0o7hh",
       "exerciseType": "OT",
       "createdAt": "2026-08-11T09:27:24.188Z"
+    },
+    {
+      "id": "c_msogjcjdizr08",
+      "name": "L艷蘭",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofhmbyoxbre",
+      "exerciseType": "OT",
+      "createdAt": "2026-08-11T09:28:00.313Z"
     }
   ],
   "pcas": [
@@ -458,7 +467,10 @@
     ],
     "Friday|10:30": [
       "c_msogiknw9hyy5"
+    ],
+    "Monday|11:00": [
+      "c_msogjcjdizr08"
     ]
   },
-  "exportedAt": "2026-08-11T09:27:26.845Z"
+  "exportedAt": "2026-08-11T09:28:03.093Z"
 }
