@@ -701,6 +701,15 @@
       "pcaId": "p_msofk5oybpbvt",
       "exerciseType": "OT",
       "createdAt": "2026-08-11T09:49:43.923Z"
+    },
+    {
+      "id": "c_msohbm7rys1ax",
+      "name": "L華新",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofi9xylkju2",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-11T09:49:59.223Z"
     }
   ],
   "pcas": [
@@ -965,7 +974,10 @@
     ],
     "Thursday|14:15": [
       "c_msohbaer9msau"
+    ],
+    "Friday|14:00": [
+      "c_msohbm7rys1ax"
     ]
   },
-  "exportedAt": "2026-08-11T09:49:46.578Z"
+  "exportedAt": "2026-08-11T09:50:02.364Z"
 }
