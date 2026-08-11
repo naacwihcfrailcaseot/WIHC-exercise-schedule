@@ -98,6 +98,15 @@
       "pcaId": "p_msofk5oybpbvt",
       "exerciseType": "OT",
       "createdAt": "2026-08-11T09:15:52.218Z"
+    },
+    {
+      "id": "c_msog47fsihtl8",
+      "name": "C素興",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofjv9it0v6t",
+      "exerciseType": "OT",
+      "createdAt": "2026-08-11T09:16:13.864Z"
     }
   ],
   "pcas": [
@@ -205,8 +214,9 @@
     ],
     "Thursday|09:00": [
       "c_msog2vwgyz2am",
-      "c_msog3qqix9ejw"
+      "c_msog3qqix9ejw",
+      "c_msog47fsihtl8"
     ]
   },
-  "exportedAt": "2026-08-11T09:15:54.966Z"
+  "exportedAt": "2026-08-11T09:16:16.543Z"
 }
