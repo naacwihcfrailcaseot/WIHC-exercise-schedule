@@ -68,6 +68,10 @@
     {
       "id": "p_msofkb9cij1eu",
       "name": "曉倩"
+    },
+    {
+      "id": "p_msofkfwygb62v",
+      "name": "雁嫦"
     }
   ],
   "timeSlots": [
@@ -81,5 +85,5 @@
     "16:00"
   ],
   "schedule": {},
-  "exportedAt": "2026-08-11T09:00:48.357Z"
+  "exportedAt": "2026-08-11T09:00:54.378Z"
 }
