@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Client Exercise Schedule</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; }
+    .client-badge {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 6px 22px 6px 10px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin: 0 0 6px 0;
+      cursor: grab;
+      position: relative;
+      border: 2px solid transparent;
+      line-height: 1.35;
+      transition: opacity 0.15s, box-shadow 0.15s, filter 0.15s, transform 0.1s;
+      user-select: none;
+      word-break: break-word;
+      white-space: normal;
+    }
+    .client-badge:last-child { margin-bottom: 0; }
+    .client-badge:active { cursor: grabbing; }
+    .client-badge.dragging {
+      opacity: 0.45;
+      transform: scale(0.98);
+    }
+    .client-badge.pt {
+      background: #fef08a;
+      color: #854d0e;
+      border-color: #eab308;
+    }
+    .client-badge.ot {
+      background: #a7f3d0;
+      color: #064e3b;
+      border-color: #10b981;
+    }
+    .client-badge.ptot {
+      background: #ddd6fe;
+      color: #4c1d95;
+      border-color: #8b5cf6;
+    }
+    .client-badge .pca-part {
+      font-weight: 500;
+      opacity: 0.9;
+      font-size: 0.88rem;
+    }
+    .client-badge button {
+      background: none;
+      border: none;
+      color: #ef4444;
+      cursor: pointer;
+      font-weight: bold;
+      padding: 0 2px;
+      line-height: 1;
+      position: absolute;
+      top: 5px;
+      right: 6px;
+      font-size: 1rem;
+    }
+    .client-badge button:hover { color: #b91c1c; }
+    /* PCA highlight on schedule: dim non-matching */
+    .client-badge.dimmed {
+      opacity: 0.22;
+      filter: grayscale(0.6);
+      cursor: default;
+    }
+    .client-badge.highlighted {
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.55);
+      opacity: 1;
+      filter: none;
+      z-index: 2;
+    }
+    .slot-cell {
+      min-height: 110px;
+      vertical-align: top;
+      padding: 8px !important;
+      transition: background-color 0.12s, outline 0.12s;
+    }
+    .slot-cell:hover { background-color: #f8fafc; }
+    .slot-cell.drag-over {
+      background-color: #e0e7ff !important;
+      outline: 2px dashed #6366f1;
+      outline-offset: -2px;
+    }
+    .pending-card {
+      border-left: 4px solid #ef4444;
+      background: #fef2f2;
+    }
+    .type-dot {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      margin-right: 4px;
+    }
+    .type-dot.pt { background: #eab308; }
+    .type-dot.ot { background: #10b981; }
+    .type-dot.ptot { background: #8b5cf6; }
+    #scheduleTable th {
+      font-size: 1rem;
+      padding: 12px 10px !important;
+    }
+    #scheduleTable td:first-child {
+      font-size: 1rem;
+      min-width: 6.5rem;
+      padding: 12px 10px !important;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white; }
+      table { font-size: 11px; }
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <div class="max-w-[1800px] mx-auto p-4 md:p-6">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4 no-print">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800">Client Exercise Schedule</h1>
+        <p class="text-sm text-gray-500">1-hour sessions · PT / OT / PT+OT · PCA assignment · Live shared via GitHub</p>
+        <p id="syncStatus" class="text-xs text-gray-400 mt-0.5">Checking shared data…</p>
+      </div>
+      <div class="flex flex-wrap gap-2 items-center">
+        <button id="syncBtn" onclick="fullSync()" class="px-4 py-1.5 bg-emerald-600 text-white text-sm font-medium rounded hover:bg-emerald-700 flex items-center gap-1.5 shadow-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+          SYNC with GitHub
+        </button>
+        <button onclick="toggleTokenPanel()" class="px-3 py-1.5 bg-indigo-600 text-white text-sm rounded hover:bg-indigo-700">Token</button>
+        <button onclick="exportData()" class="px-3 py-1.5 bg-gray-700 text-white text-sm rounded hover:bg-gray-800">Export</button>
+        <label class="px-3 py-1.5 bg-gray-700 text-white text-sm rounded hover:bg-gray-800 cursor-pointer">
+          Import
+          <input type="file" accept=".json" onchange="importData(event)" class="hidden" />
+        </label>
+        <button onclick="window.print()" class="px-3 py-1.5 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">Print</button>
+      </div>
+    </div>
+
+    <!-- Token settings panel (hidden by default) -->
+    <div id="tokenPanel" class="hidden mb-4 no-print">
+      <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-4">
+        <h3 class="font-semibold text-indigo-900 mb-2">GitHub Token (shared by the team)</h3>
+        <p class="text-xs text-indigo-700 mb-3">Paste the fine-grained Personal Access Token here. It is saved only in this browser. Everyone who needs to edit must paste the same token once.</p>
+        <div class="flex flex-col sm:flex-row gap-2">
+          <input id="githubTokenInput" type="password" placeholder="github_pat_..." class="flex-1 border border-indigo-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          <button onclick="saveToken()" class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700">Save Token</button>
+          <button onclick="clearToken()" class="px-4 py-2 bg-gray-200 text-gray-700 text-sm rounded-lg hover:bg-gray-300">Clear</button>
+        </div>
+        <p id="tokenStatus" class="text-xs text-indigo-600 mt-2"></p>
+      </div>
+    </div>
+
+    <!-- Controls row (relocated from left sidebar) -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4 no-print">
+      <!-- Add Client -->
+      <div class="bg-white rounded-xl shadow-sm border p-4">
+        <h2 class="font-semibold text-gray-800 mb-3">Add Client</h2>
+        <div class="space-y-2">
+          <input id="newClientName" type="text" placeholder="Client name" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <div class="grid grid-cols-2 gap-2">
+            <select id="newClientExercise" class="w-full border rounded-lg px-3 py-2 text-sm">
+              <option value="PT">PT</option>
+              <option value="OT">OT</option>
+              <option value="PT+OT">PT+OT</option>
+            </select>
+            <select id="newClientPca" class="w-full border rounded-lg px-3 py-2 text-sm">
+              <option value="">— No PCA —</option>
+            </select>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <select id="newClientDay" class="w-full border rounded-lg px-3 py-2 text-sm">
+              <option value="">— Day (optional) —</option>
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Saturday">Saturday</option>
+            </select>
+            <select id="newClientSlot" class="w-full border rounded-lg px-3 py-2 text-sm">
+              <option value="">— Time (optional) —</option>
+            </select>
+          </div>
+          <p class="text-[11px] text-gray-500 -mt-1">Day + time → placed on schedule automatically.</p>
+          <textarea id="newClientNotes" placeholder="Notes (optional)" rows="2" class="w-full border rounded-lg px-3 py-2 text-sm"></textarea>
+          <button onclick="addClient()" class="w-full bg-blue-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-blue-700">+ Add Client</button>
+        </div>
+      </div>
+
+      <!-- Client Database -->
+      <div class="bg-white rounded-xl shadow-sm border p-4 flex flex-col">
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="font-semibold text-gray-800">Client Database</h2>
+          <span id="clientCount" class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">0</span>
+        </div>
+        <input id="clientSearch" type="text" placeholder="Search clients..." oninput="renderClients()" class="w-full border rounded-lg px-3 py-1.5 text-sm mb-2" />
+        <div id="clientList" class="space-y-2 max-h-[280px] overflow-y-auto pr-1 flex-1">
+        </div>
+      </div>
+
+      <!-- Start Times -->
+      <div class="bg-white rounded-xl shadow-sm border p-4">
+        <h2 class="font-semibold text-gray-800 mb-1">Start Times</h2>
+        <p class="text-xs text-gray-500 mb-3">Each session is fixed at <strong>1 hour</strong>.</p>
+        <div class="flex gap-2 mb-2">
+          <input id="newTimeSlot" type="text" placeholder="e.g. 09:00" class="flex-1 border rounded-lg px-3 py-1.5 text-sm" />
+          <button onclick="addTimeSlot()" class="px-3 py-1.5 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700">Add</button>
+        </div>
+        <div id="timeSlotList" class="space-y-1 text-sm max-h-[220px] overflow-y-auto">
+        </div>
+      </div>
+    </div>
+
+    <!-- Full-width main: schedule first -->
+    <div class="space-y-4">
+      <!-- Pending -->
+      <div id="pendingSection" class="bg-white rounded-xl shadow-sm border p-4 no-print hidden">
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="font-semibold text-red-700 flex items-center gap-2">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+            Pending — No time slot assigned
+          </h2>
+          <span id="pendingCount" class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-medium">0</span>
+        </div>
+        <p class="text-xs text-red-600 mb-3">These Active clients still need a schedule time.</p>
+        <div id="pendingList" class="flex flex-wrap gap-2"></div>
+      </div>
+
+      <!-- Weekly Schedule (full width) -->
+      <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
+        <div class="px-4 py-3 border-b flex flex-wrap items-center justify-between gap-2 no-print">
+          <h2 class="font-semibold text-gray-800 text-lg">Weekly Schedule <span class="text-sm font-normal text-gray-500">(Mon–Sat · 1-hr sessions · drag badges to move)</span></h2>
+          <div class="text-sm text-gray-600 flex flex-wrap items-center gap-4">
+            <span><span class="type-dot pt"></span>PT</span>
+            <span><span class="type-dot ot"></span>OT</span>
+            <span><span class="type-dot ptot"></span>PT+OT</span>
+            <span class="text-xs text-gray-500">Drag client card to another cell</span>
+            <span id="scheduleHighlightHint" class="text-xs text-indigo-600 hidden">· PCA highlighted on grid</span>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table id="scheduleTable" class="w-full text-sm border-collapse">
+            <thead>
+              <tr class="bg-gray-50 text-gray-600">
+                <th class="border px-3 py-2 text-left sticky left-0 bg-gray-50 z-10">Start</th>
+                <th class="border px-2 py-2 text-center min-w-[160px]">Mon</th>
+                <th class="border px-2 py-2 text-center min-w-[160px]">Tue</th>
+                <th class="border px-2 py-2 text-center min-w-[160px]">Wed</th>
+                <th class="border px-2 py-2 text-center min-w-[160px]">Thu</th>
+                <th class="border px-2 py-2 text-center min-w-[160px]">Fri</th>
+                <th class="border px-2 py-2 text-center min-w-[160px]">Sat</th>
+              </tr>
+            </thead>
+            <tbody id="scheduleBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="text-xs text-gray-500 no-print">
+        Only <strong>Active</strong> clients appear in the add list. Setting a client to <strong>Discharged</strong> removes them from every time slot.
+        Badge colours: <span class="text-yellow-700 font-medium">PT (yellow)</span> · <span class="text-emerald-700 font-medium">OT (green)</span> · <span class="text-violet-700 font-medium">PT+OT (purple)</span>.
+        <strong>Drag</strong> a client card on the grid to move them to another day/time. Click a PCA to highlight their cases on chart + schedule.
+      </div>
+
+      <!-- PCA Workload Chart + PCA Workers management -->
+      <div class="bg-white rounded-xl shadow-sm border p-4 no-print">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
+          <h2 class="font-semibold text-gray-800">PCA Workload — Cases by Exercise Type</h2>
+          <div class="flex items-center gap-2 text-xs">
+            <button id="chartResetBtn" onclick="resetChartHighlight()" class="px-2 py-1 rounded bg-gray-100 text-gray-600 hover:bg-gray-200 hidden">Reset highlight</button>
+            <span class="text-gray-500">Click a PCA bar or name to highlight (chart + schedule)</span>
+          </div>
+        </div>
+        <div class="relative" style="height: 280px;">
+          <canvas id="pcaChart"></canvas>
+        </div>
+        <div id="pcaStatsTable" class="mt-4 overflow-x-auto"></div>
+
+        <div class="mt-5 pt-4 border-t border-gray-200">
+          <h3 class="font-semibold text-gray-800 mb-2 text-sm">Manage PCA Workers</h3>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <div class="flex gap-2 flex-1 max-w-md">
+              <input id="newPcaName" type="text" placeholder="PCA name" class="flex-1 border rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              <button onclick="addPca()" class="px-3 py-1.5 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 shrink-0">Add PCA</button>
+            </div>
+            <div id="pcaList" class="flex flex-wrap gap-2 items-center text-sm flex-1">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="addModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50 no-print">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-semibold text-lg" id="modalTitle">Add Client</h3>
+        <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+      </div>
+      <div id="modalClientList" class="space-y-0.5 max-h-80 overflow-y-auto mb-4"></div>
+      <div class="text-right">
+        <button onclick="closeModal()" class="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const EXERCISE_TYPES = ['PT', 'OT', 'PT+OT'];
+    const TYPE_COLORS = {
+      'PT': { bg: 'rgba(234, 179, 8, 0.85)', border: '#ca8a04', badge: 'pt' },
+      'OT': { bg: 'rgba(16, 185, 129, 0.85)', border: '#059669', badge: 'ot' },
+      'PT+OT': { bg: 'rgba(139, 92, 246, 0.85)', border: '#7c3aed', badge: 'ptot' }
+    };
+    const DEFAULT_SLOTS = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'];
+
+    let clients = [];
+    let pcas = [];
+    let timeSlots = [];
+    let schedule = {};
+    let pcaChart = null;
+    let highlightedPcaId = null;
+
+    // ========== GitHub Shared Data (true two-way) ==========
+    const GITHUB = {
+      owner: 'naacwihcfrailcaseot',
+      repo: 'WIHC-exercise-schedule',
+      branch: 'main',
+      path: 'data.json'
+    };
+
+    let pushTimer = null;          // debounce timer for auto-save
+    let isPushing = false;
+    let lastKnownSha = null;       // file SHA needed for GitHub update
+
+    function getToken() {
+      return localStorage.getItem('cs_github_token') || '';
+    }
+
+    function setSyncStatus(msg, type = 'info') {
+      const el = document.getElementById('syncStatus');
+      if (!el) return;
+      el.textContent = msg;
+      el.className = 'text-xs mt-0.5 ' + (
+        type === 'success' ? 'text-emerald-600' :
+        type === 'error'   ? 'text-red-600' :
+        type === 'loading' ? 'text-blue-500' : 'text-gray-400'
+      );
+    }
+
+    function toggleTokenPanel() {
+      const panel = document.getElementById('tokenPanel');
+      panel.classList.toggle('hidden');
+      if (!panel.classList.contains('hidden')) {
+        document.getElementById('githubTokenInput').value = getToken();
+        updateTokenStatus();
+      }
+    }
+
+    function updateTokenStatus() {
+      const el = document.getElementById('tokenStatus');
+      if (!el) return;
+      const t = getToken();
+      el.textContent = t
+        ? 'Token is saved in this browser. You can push changes.'
+        : 'No token yet — paste the shared token above and click Save.';
+    }
+
+    function saveToken() {
+      const input = document.getElementById('githubTokenInput');
+      const token = (input.value || '').trim();
+      if (!token) {
+        alert('Please paste the GitHub token first.');
+        return;
+      }
+      if (!token.startsWith('github_pat_') && !token.startsWith('ghp_')) {
+        if (!confirm('This does not look like a normal GitHub token. Save anyway?')) return;
+      }
+      localStorage.setItem('cs_github_token', token);
+      updateTokenStatus();
+      setSyncStatus('Token saved. You can now push changes.', 'success');
+      // optional: close panel
+      // document.getElementById('tokenPanel').classList.add('hidden');
+    }
+
+    function clearToken() {
+      if (!confirm('Remove the token from this browser?')) return;
+      localStorage.removeItem('cs_github_token');
+      document.getElementById('githubTokenInput').value = '';
+      updateTokenStatus();
+      setSyncStatus('Token cleared.', 'info');
+    }
+
+    // ---------- Pull (read) ----------
+    async function fetchRemoteData() {
+      // Prefer API (needs token) so we also get the SHA for later push.
+      // Fallback to raw URL if no token.
+      const token = getToken();
+      if (token) {
+        const apiUrl = `https://api.github.com/repos/${GITHUB.owner}/${GITHUB.repo}/contents/${GITHUB.path}?ref=${GITHUB.branch}`;
+        const res = await fetch(apiUrl, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/vnd.github+json',
+            'X-GitHub-Api-Version': '2022-11-28'
+          },
+          cache: 'no-store'
+        });
+        if (!res.ok) {
+          if (res.status === 404) throw new Error('data.json not found. Upload an empty data.json first.');
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.message || `GitHub API ${res.status}`);
+        }
+        const file = await res.json();
+        lastKnownSha = file.sha;
+        // content is base64
+        const jsonStr = decodeURIComponent(escape(atob(file.content.replace(/\n/g, ''))));
+        return JSON.parse(jsonStr);
+      } else {
+        // public raw fallback (read-only)
+        const url = `https://raw.githubusercontent.com/${GITHUB.owner}/${GITHUB.repo}/${GITHUB.branch}/${GITHUB.path}?t=${Date.now()}`;
+        const res = await fetch(url, { cache: 'no-store' });
+        if (!res.ok) throw new Error(res.status === 404 ? 'data.json not found on GitHub' : `HTTP ${res.status}`);
+        return await res.json();
+      }
+    }
+
+    function applyRemoteData(data) {
+      if (!data) return false;
+      if (Array.isArray(data.clients)) clients = data.clients;
+      if (Array.isArray(data.pcas)) pcas = data.pcas;
+      if (Array.isArray(data.timeSlots)) timeSlots = data.timeSlots;
+      if (data.schedule && typeof data.schedule === 'object') schedule = data.schedule;
+
+      clients.forEach(c => {
+        if (c.pcaId === undefined) c.pcaId = '';
+        if (!c.exerciseType || !EXERCISE_TYPES.includes(c.exerciseType)) c.exerciseType = 'PT';
+        if (c.notes === undefined) c.notes = '';
+      });
+      Object.keys(schedule).forEach(key => {
+        if (key.startsWith('Sunday|')) delete schedule[key];
+      });
+
+      saveData();
+      return true;
+    }
+
+    // ---------- Push (write) ----------
+    async function pushToGitHub(silent = false, retryCount = 0) {
+      const token = getToken();
+      if (!token) {
+        if (!silent) setSyncStatus('No token — open Token panel and paste the shared token', 'error');
+        return false;
+      }
+      if (isPushing && retryCount === 0) return false;
+      isPushing = true;
+      if (!silent) setSyncStatus(retryCount > 0 ? 'Conflict detected, retrying…' : 'Saving to GitHub…', 'loading');
+
+      const apiUrl = `https://api.github.com/repos/${GITHUB.owner}/${GITHUB.repo}/contents/${GITHUB.path}`;
+      const headers = {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28'
+      };
+
+      try {
+        // Always re-fetch the absolute latest SHA right before writing
+        let sha = null;
+        const getRes = await fetch(apiUrl + `?ref=${GITHUB.branch}&t=${Date.now()}`, {
+          headers,
+          cache: 'no-store'
+        });
+
+        if (getRes.ok) {
+          const file = await getRes.json();
+          sha = file.sha;
+          lastKnownSha = sha;
+        } else if (getRes.status !== 404) {
+          const errBody = await getRes.json().catch(() => ({}));
+          throw new Error(errBody.message || 'Could not read current file from GitHub');
+        }
+
+        const payload = {
+          clients,
+          pcas,
+          timeSlots,
+          schedule,
+          exportedAt: new Date().toISOString()
+        };
+        const contentBase64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
+
+        const body = {
+          message: `Update schedule ${new Date().toLocaleString('en-HK')}`,
+          content: contentBase64,
+          branch: GITHUB.branch
+        };
+        if (sha) body.sha = sha;
+
+        const putRes = await fetch(apiUrl, {
+          method: 'PUT',
+          headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        });
+
+        if (putRes.ok) {
+          const result = await putRes.json();
+          if (result.content && result.content.sha) lastKnownSha = result.content.sha;
+          const time = new Date().toLocaleTimeString('en-HK', { hour: '2-digit', minute: '2-digit' });
+          setSyncStatus(`✓ Saved to GitHub at ${time}`, 'success');
+          return true;
+        }
+
+        // Handle conflict (409) — retry up to 2 times
+        const err = await putRes.json().catch(() => ({}));
+        const msg = err.message || `Push failed (${putRes.status})`;
+
+        if (putRes.status === 409 && retryCount < 2) {
+          console.warn('SHA conflict, retrying…', msg);
+          // Short pause then retry with a fresh SHA
+          await new Promise(r => setTimeout(r, 400 + retryCount * 300));
+          isPushing = false;
+          return pushToGitHub(silent, retryCount + 1);
+        }
+
+        throw new Error(msg);
+      } catch (err) {
+        console.error(err);
+        setSyncStatus('Save failed: ' + (err.message || 'unknown error'), 'error');
+        return false;
+      } finally {
+        isPushing = false;
+      }
+    }
+
+    // Debounced auto-save (waits 2 s after last change to reduce conflicts)
+    function scheduleAutoPush() {
+      if (!getToken()) return;
+      clearTimeout(pushTimer);
+      pushTimer = setTimeout(() => {
+        pushToGitHub(true);
+      }, 2000);
+    }
+
+    // Full manual sync = pull then (if token) also push current state
+    async function fullSync() {
+      const btn = document.getElementById('syncBtn');
+      if (btn) {
+        btn.disabled = true;
+        btn.classList.add('opacity-70');
+      }
+      setSyncStatus('Syncing…', 'loading');
+
+      try {
+        // 1. Pull latest
+        const data = await fetchRemoteData();
+        applyRemoteData(data);
+        renderAll();
+
+        // 2. If we have a token, also push (so local changes are not lost)
+        if (getToken()) {
+          await pushToGitHub(true);
+        }
+
+        const time = new Date().toLocaleTimeString('en-HK', { hour: '2-digit', minute: '2-digit' });
+        setSyncStatus(`✓ Fully synced at ${time}`, 'success');
+      } catch (err) {
+        console.warn(err);
+        setSyncStatus('Sync error: ' + (err.message || 'failed'), 'error');
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.classList.remove('opacity-70');
+        }
+      }
+    }
+
+    // (saveData is patched below to call scheduleAutoPush)
+
+    function loadData() {
+      try {
+        clients = JSON.parse(localStorage.getItem('cs_clients') || '[]');
+        pcas = JSON.parse(localStorage.getItem('cs_pcas') || '[]');
+        timeSlots = JSON.parse(localStorage.getItem('cs_timeSlots') || '[]');
+        schedule = JSON.parse(localStorage.getItem('cs_schedule') || '{}');
+      } catch (e) {
+        clients = []; pcas = []; timeSlots = []; schedule = {};
+      }
+
+      const needsMigration = timeSlots.length === 0 || timeSlots.some(s => s.includes('-'));
+      if (needsMigration) {
+        const newSchedule = {};
+        Object.keys(schedule).forEach(key => {
+          const parts = key.split('|');
+          if (parts.length < 2) return;
+          const day = parts[0];
+          let slot = parts.slice(1).join('|');
+          if (slot.includes('-')) slot = slot.split('-')[0].trim();
+          const m = slot.match(/^(\d{1,2}):(\d{2})$/);
+          if (m) {
+            const newSlot = String(parseInt(m[1], 10)).padStart(2, '0') + ':' + m[2];
+            const newKey = day + '|' + newSlot;
+            if (!newSchedule[newKey]) newSchedule[newKey] = [];
+            (schedule[key] || []).forEach(cid => {
+              if (!newSchedule[newKey].includes(cid)) newSchedule[newKey].push(cid);
+            });
+          }
+        });
+        schedule = newSchedule;
+        if (timeSlots.length === 0 || timeSlots.every(s => s.includes('-'))) {
+          timeSlots = [...DEFAULT_SLOTS];
+        } else {
+          timeSlots = timeSlots.map(s => {
+            if (s.includes('-')) s = s.split('-')[0].trim();
+            const m = s.match(/^(\d{1,2}):(\d{2})$/);
+            return m ? String(parseInt(m[1], 10)).padStart(2, '0') + ':' + m[2] : null;
+          }).filter(Boolean);
+          timeSlots = [...new Set(timeSlots)].sort();
+        }
+        saveData();
+      }
+
+      clients.forEach(c => {
+        if (c.pcaId === undefined) c.pcaId = '';
+        if (!c.exerciseType || !EXERCISE_TYPES.includes(c.exerciseType)) c.exerciseType = 'PT';
+        if (c.notes === undefined) c.notes = '';
+      });
+      Object.keys(schedule).forEach(key => {
+        if (key.startsWith('Sunday|')) delete schedule[key];
+      });
+    }
+
+    function saveData() {
+      localStorage.setItem('cs_clients', JSON.stringify(clients));
+      localStorage.setItem('cs_pcas', JSON.stringify(pcas));
+      localStorage.setItem('cs_timeSlots', JSON.stringify(timeSlots));
+      localStorage.setItem('cs_schedule', JSON.stringify(schedule));
+      // Auto-push to GitHub (debounced) if a token is present
+      scheduleAutoPush();
+    }
+
+    function generateId(prefix = 'c') {
+      return prefix + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function getPcaName(pcaId) {
+      if (!pcaId) return '';
+      const p = pcas.find(x => x.id === pcaId);
+      return p ? p.name : '';
+    }
+
+    function normalizeTime(input) {
+      const s = (input || '').trim();
+      const m = s.match(/^(\d{1,2})[:.](\d{2})$/);
+      if (!m) return null;
+      let h = parseInt(m[1], 10);
+      let min = parseInt(m[2], 10);
+      if (h < 0 || h > 23 || min < 0 || min > 59) return null;
+      return String(h).padStart(2, '0') + ':' + String(min).padStart(2, '0');
+    }
+
+    function badgeClass(exerciseType) {
+      return (TYPE_COLORS[exerciseType] || TYPE_COLORS['PT']).badge;
+    }
+
+    function getScheduledClientIds() {
+      const set = new Set();
+      Object.values(schedule).forEach(ids => {
+        (ids || []).forEach(id => set.add(id));
+      });
+      return set;
+    }
+
+    // ========== PCA ==========
+    function addPca() {
+      const name = document.getElementById('newPcaName').value.trim();
+      if (!name) { alert('Please enter a PCA name'); return; }
+      if (pcas.some(p => p.name.toLowerCase() === name.toLowerCase())) {
+        alert('This PCA already exists'); return;
+      }
+      pcas.push({ id: generateId('p'), name });
+      document.getElementById('newPcaName').value = '';
+      saveData();
+      renderPcas();
+      populatePcaSelects();
+      renderPcaChart();
+    }
+
+    function deletePca(id) {
+      if (!confirm('Delete this PCA? Clients assigned to them will have their PCA cleared.')) return;
+      pcas = pcas.filter(p => p.id !== id);
+      clients.forEach(c => { if (c.pcaId === id) c.pcaId = ''; });
+      if (highlightedPcaId === id) highlightedPcaId = null;
+      saveData();
+      renderPcas();
+      populatePcaSelects();
+      renderClients();
+      renderSchedule();
+      renderPending();
+      renderPcaChart();
+    }
+
+    function renderPcas() {
+      const el = document.getElementById('pcaList');
+      if (pcas.length === 0) {
+        el.innerHTML = '<span class="text-gray-400 text-sm">No PCA workers yet — add one above</span>';
+        return;
+      }
+      el.innerHTML = pcas.map(p => `
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-sm border cursor-pointer
+              ${highlightedPcaId === p.id ? 'bg-indigo-100 border-indigo-400 text-indigo-900 ring-1 ring-indigo-300' : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100'}"
+              onclick="highlightPca('${p.id}')" title="Click to highlight on chart & schedule">
+          <span class="font-medium">${escapeHtml(p.name)}</span>
+          <button onclick="event.stopPropagation(); deletePca('${p.id}')" class="text-red-500 hover:text-red-700 text-xs font-bold leading-none" title="Remove">×</button>
+        </span>
+      `).join('');
+    }
+
+    function populatePcaSelects() {
+      const options = '<option value="">— No PCA assigned —</option>' +
+        pcas.map(p => `<option value="${p.id}">${escapeHtml(p.name)}</option>`).join('');
+      const newSelect = document.getElementById('newClientPca');
+      const currentVal = newSelect.value;
+      newSelect.innerHTML = options;
+      if (currentVal && pcas.some(p => p.id === currentVal)) newSelect.value = currentVal;
+    }
+
+    // ========== CLIENTS ==========
+    function populateSlotSelect() {
+      const sel = document.getElementById('newClientSlot');
+      if (!sel) return;
+      const current = sel.value;
+      sel.innerHTML = '<option value="">— Time (optional) —</option>' +
+        timeSlots.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');
+      if (current && timeSlots.includes(current)) sel.value = current;
+    }
+
+    function addClient() {
+      const name = document.getElementById('newClientName').value.trim();
+      if (!name) { alert('Please enter a client name'); return; }
+      const notes = document.getElementById('newClientNotes').value.trim();
+      const pcaId = document.getElementById('newClientPca').value;
+      const exerciseType = document.getElementById('newClientExercise').value;
+      const day = document.getElementById('newClientDay').value;
+      const slot = document.getElementById('newClientSlot').value;
+
+      // If one of day/slot is set, both should be set
+      if ((day && !slot) || (!day && slot)) {
+        alert('Please choose both Day and Time, or leave both empty (client will go to Pending).');
+        return;
+      }
+
+      const id = generateId('c');
+      clients.push({
+        id,
+        name,
+        status: 'Active',
+        notes,
+        pcaId: pcaId || '',
+        exerciseType: exerciseType || 'PT',
+        createdAt: new Date().toISOString()
+      });
+
+      // Auto-place on schedule if day + time chosen
+      if (day && slot) {
+        if (!timeSlots.includes(slot)) {
+          // safety: ensure slot exists
+          timeSlots.push(slot);
+          timeSlots.sort();
+        }
+        const key = getSlotKey(day, slot);
+        if (!schedule[key]) schedule[key] = [];
+        if (!schedule[key].includes(id)) schedule[key].push(id);
+      }
+
+      document.getElementById('newClientName').value = '';
+      document.getElementById('newClientNotes').value = '';
+      document.getElementById('newClientPca').value = '';
+      document.getElementById('newClientExercise').value = 'PT';
+      document.getElementById('newClientDay').value = '';
+      document.getElementById('newClientSlot').value = '';
+
+      saveData();
+      renderClients();
+      renderTimeSlots();
+      renderSchedule();
+      renderPending();
+      renderPcaChart();
+    }
+
+    function updateClientStatus(id, newStatus) {
+      const client = clients.find(c => c.id === id);
+      if (!client) return;
+      const oldStatus = client.status;
+      client.status = newStatus;
+      if (newStatus === 'Discharged' && oldStatus !== 'Discharged') {
+        Object.keys(schedule).forEach(key => {
+          schedule[key] = schedule[key].filter(cid => cid !== id);
+          if (schedule[key].length === 0) delete schedule[key];
+        });
+      }
+      saveData();
+      renderClients();
+      renderSchedule();
+      renderPending();
+      renderPcaChart();
+    }
+
+    function updateClientPca(id, pcaId) {
+      const client = clients.find(c => c.id === id);
+      if (!client) return;
+      client.pcaId = pcaId || '';
+      saveData();
+      renderClients();
+      renderSchedule();
+      renderPending();
+      renderPcaChart();
+    }
+
+    function updateClientExercise(id, exerciseType) {
+      const client = clients.find(c => c.id === id);
+      if (!client) return;
+      client.exerciseType = exerciseType || 'PT';
+      saveData();
+      renderClients();
+      renderSchedule();
+      renderPending();
+      renderPcaChart();
+    }
+
+    function updateClientNotes(id, notes) {
+      const client = clients.find(c => c.id === id);
+      if (!client) return;
+      client.notes = notes.trim();
+      saveData();
+      // Don't full re-render clients list (would lose focus); only refresh schedule/pending if needed
+      renderPending();
+    }
+
+    function deleteClient(id) {
+      if (!confirm('Delete this client permanently? They will also be removed from the schedule.')) return;
+      clients = clients.filter(c => c.id !== id);
+      Object.keys(schedule).forEach(key => {
+        schedule[key] = schedule[key].filter(cid => cid !== id);
+        if (schedule[key].length === 0) delete schedule[key];
+      });
+      saveData();
+      renderClients();
+      renderSchedule();
+      renderPending();
+      renderPcaChart();
+    }
+
+    function renderClientCard(c) {
+      const statusColor = {
+        'Active': 'bg-green-100 text-green-800',
+        'On Hold': 'bg-yellow-100 text-yellow-800',
+        'Hospitalized': 'bg-orange-100 text-orange-800',
+        'Discharged': 'bg-gray-200 text-gray-600'
+      }[c.status] || 'bg-gray-100 text-gray-700';
+
+      const pcaOptions = '<option value="">— No PCA —</option>' +
+        pcas.map(p => `<option value="${p.id}" ${c.pcaId === p.id ? 'selected' : ''}>${escapeHtml(p.name)}</option>`).join('');
+
+      const typeOptions = EXERCISE_TYPES.map(t =>
+        `<option value="${t}" ${c.exerciseType === t ? 'selected' : ''}>${t}</option>`
+      ).join('');
+
+      return `
+        <div class="border rounded-lg p-3 ${c.status === 'Discharged' ? 'opacity-60' : ''}">
+          <div class="flex items-start justify-between gap-2">
+            <div class="min-w-0 flex-1">
+              <div class="font-medium text-gray-800 truncate">${escapeHtml(c.name)}</div>
+            </div>
+            <button onclick="deleteClient('${c.id}')" class="text-gray-400 hover:text-red-500 text-xs shrink-0">Delete</button>
+          </div>
+          <div class="mt-2 space-y-1.5">
+            <select onchange="updateClientStatus('${c.id}', this.value)" class="w-full text-xs border rounded px-2 py-1 ${statusColor}">
+              <option value="Active" ${c.status === 'Active' ? 'selected' : ''}>Active</option>
+              <option value="On Hold" ${c.status === 'On Hold' ? 'selected' : ''}>On Hold</option>
+              <option value="Hospitalized" ${c.status === 'Hospitalized' ? 'selected' : ''}>Hospitalized</option>
+              <option value="Discharged" ${c.status === 'Discharged' ? 'selected' : ''}>Discharged</option>
+            </select>
+            <select onchange="updateClientExercise('${c.id}', this.value)" class="w-full text-xs border rounded px-2 py-1">
+              ${typeOptions}
+            </select>
+            <select onchange="updateClientPca('${c.id}', this.value)" class="w-full text-xs border rounded px-2 py-1 bg-indigo-50 text-indigo-800">
+              ${pcaOptions}
+            </select>
+            <textarea
+              rows="2"
+              placeholder="Notes (optional) — edit anytime"
+              class="w-full text-xs border rounded px-2 py-1.5 text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-400"
+              onchange="updateClientNotes('${c.id}', this.value)"
+              onblur="updateClientNotes('${c.id}', this.value)"
+            >${escapeHtml(c.notes || '')}</textarea>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderClients() {
+      const list = document.getElementById('clientList');
+      const search = (document.getElementById('clientSearch').value || '').toLowerCase();
+      const filtered = clients.filter(c =>
+        c.name.toLowerCase().includes(search) ||
+        (getPcaName(c.pcaId) || '').toLowerCase().includes(search) ||
+        (c.exerciseType || '').toLowerCase().includes(search) ||
+        (c.notes || '').toLowerCase().includes(search)
+      );
+
+      document.getElementById('clientCount').textContent = clients.length;
+
+      if (filtered.length === 0) {
+        list.innerHTML = '<p class="text-sm text-gray-400 py-4 text-center">No clients yet</p>';
+        return;
+      }
+
+      // Group by exercise type, sort A–Z within each
+      const groups = { 'PT': [], 'OT': [], 'PT+OT': [] };
+      filtered.forEach(c => {
+        const t = EXERCISE_TYPES.includes(c.exerciseType) ? c.exerciseType : 'PT';
+        groups[t].push(c);
+      });
+      EXERCISE_TYPES.forEach(t => {
+        groups[t].sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
+      });
+
+      const sectionHeader = {
+        'PT': 'bg-yellow-100 text-yellow-900 border-yellow-300',
+        'OT': 'bg-emerald-100 text-emerald-900 border-emerald-300',
+        'PT+OT': 'bg-violet-100 text-violet-900 border-violet-300'
+      };
+
+      let html = '';
+      EXERCISE_TYPES.forEach(type => {
+        const items = groups[type];
+        if (items.length === 0) return;
+        html += `
+          <div class="sticky top-0 z-10 px-2 py-1.5 text-xs font-semibold border rounded ${sectionHeader[type]}">
+            <span class="type-dot ${badgeClass(type)}"></span>${type}
+            <span class="font-normal opacity-70">(${items.length})</span>
+          </div>
+        `;
+        html += items.map(c => renderClientCard(c)).join('');
+      });
+      list.innerHTML = html;
+    }
+
+    // ========== PENDING ==========
+    function renderPending() {
+      const scheduled = getScheduledClientIds();
+      const pending = clients.filter(c => c.status === 'Active' && !scheduled.has(c.id));
+      const section = document.getElementById('pendingSection');
+      const list = document.getElementById('pendingList');
+      const countEl = document.getElementById('pendingCount');
+
+      countEl.textContent = pending.length;
+      if (pending.length === 0) {
+        section.classList.add('hidden');
+        return;
+      }
+      section.classList.remove('hidden');
+
+      list.innerHTML = pending.map(c => {
+        const pcaName = getPcaName(c.pcaId);
+        const bc = badgeClass(c.exerciseType);
+        return `
+          <div class="pending-card rounded-lg px-3 py-2 text-sm shadow-sm">
+            <div class="font-medium text-red-900">${escapeHtml(c.name)}</div>
+            <div class="text-xs text-red-700 mt-0.5">
+              <span class="client-badge ${bc}" style="padding:1px 6px;margin:0;display:inline;border-width:1px;">${escapeHtml(c.exerciseType)}</span>
+              ${pcaName ? ' · PCA: ' + escapeHtml(pcaName) : ' · No PCA'}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ========== TIME SLOTS ==========
+    function addTimeSlot() {
+      const raw = document.getElementById('newTimeSlot').value;
+      const val = normalizeTime(raw);
+      if (!val) { alert('Please enter a valid start time (e.g. 09:00 or 14:00)'); return; }
+      if (timeSlots.includes(val)) { alert('This start time already exists'); return; }
+      timeSlots.push(val);
+      timeSlots.sort();
+      document.getElementById('newTimeSlot').value = '';
+      saveData();
+      renderTimeSlots();
+      renderSchedule();
+    }
+
+    function removeTimeSlot(slot) {
+      if (!confirm(`Remove start time "${slot}"? All assignments at this time will be deleted.`)) return;
+      timeSlots = timeSlots.filter(s => s !== slot);
+      Object.keys(schedule).forEach(key => {
+        if (key.endsWith('|' + slot)) delete schedule[key];
+      });
+      saveData();
+      renderTimeSlots();
+      renderSchedule();
+      renderPending();
+    }
+
+    function renderTimeSlots() {
+      const el = document.getElementById('timeSlotList');
+      if (timeSlots.length === 0) {
+        el.innerHTML = '<p class="text-gray-400 text-sm">No start times</p>';
+      } else {
+        el.innerHTML = timeSlots.map(s => `
+          <div class="flex items-center justify-between py-1 px-2 rounded hover:bg-gray-50">
+            <span>${escapeHtml(s)} <span class="text-gray-400 text-xs">(1 hr)</span></span>
+            <button onclick="removeTimeSlot('${escapeHtml(s)}')" class="text-red-500 text-xs hover:underline">Remove</button>
+          </div>
+        `).join('');
+      }
+      populateSlotSelect();
+    }
+
+    // ========== SCHEDULE ==========
+    function getSlotKey(day, slot) {
+      return day + '|' + slot;
+    }
+
+    function getClientsInSlot(day, slot) {
+      const key = getSlotKey(day, slot);
+      const ids = schedule[key] || [];
+      return ids.map(id => clients.find(c => c.id === id)).filter(Boolean);
+    }
+
+    function openAddModal(day, slot) {
+      const modal = document.getElementById('addModal');
+      document.getElementById('modalTitle').textContent = `Add to ${day} · ${slot} (1 hr)`;
+      const list = document.getElementById('modalClientList');
+
+      const already = new Set(schedule[getSlotKey(day, slot)] || []);
+      const available = clients.filter(c => c.status === 'Active' && !already.has(c.id));
+
+      if (available.length === 0) {
+        list.innerHTML = '<p class="text-sm text-gray-500 py-4 text-center">No available Active clients</p>';
+      } else {
+        // Group by exercise type, sort A–Z within each group
+        const groups = { 'PT': [], 'OT': [], 'PT+OT': [] };
+        available.forEach(c => {
+          const t = EXERCISE_TYPES.includes(c.exerciseType) ? c.exerciseType : 'PT';
+          groups[t].push(c);
+        });
+        EXERCISE_TYPES.forEach(t => {
+          groups[t].sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
+        });
+
+        const sectionHeader = {
+          'PT': 'bg-yellow-100 text-yellow-900 border-yellow-300',
+          'OT': 'bg-emerald-100 text-emerald-900 border-emerald-300',
+          'PT+OT': 'bg-violet-100 text-violet-900 border-violet-300'
+        };
+        const hoverClass = {
+          'PT': 'hover:bg-yellow-50 hover:border-yellow-200',
+          'OT': 'hover:bg-emerald-50 hover:border-emerald-200',
+          'PT+OT': 'hover:bg-violet-50 hover:border-violet-200'
+        };
+
+        let html = '';
+        EXERCISE_TYPES.forEach(type => {
+          const items = groups[type];
+          if (items.length === 0) return;
+          html += `
+            <div class="sticky top-0 z-10 px-2 py-1.5 text-xs font-semibold border rounded mb-1 mt-2 first:mt-0 ${sectionHeader[type]}">
+              <span class="type-dot ${badgeClass(type)}"></span>${type} <span class="font-normal opacity-70">(${items.length})</span>
+            </div>
+          `;
+          html += items.map(c => {
+            const pcaName = getPcaName(c.pcaId);
+            const bc = badgeClass(c.exerciseType);
+            return `
+              <button onclick="assignClient('${day}', '${slot}', '${c.id}')" class="w-full text-left px-3 py-2 rounded-lg border border-transparent text-sm ${hoverClass[type]}">
+                <div class="font-medium flex items-center gap-2 flex-wrap">
+                  ${escapeHtml(c.name)}
+                  <span class="client-badge ${bc}" style="padding:1px 6px;margin:0;border-width:1px;">${escapeHtml(c.exerciseType)}</span>
+                </div>
+                ${pcaName ? `<div class="text-xs text-indigo-600">PCA: ${escapeHtml(pcaName)}</div>` : '<div class="text-xs text-gray-400">No PCA</div>'}
+                ${c.notes ? `<div class="text-xs text-gray-400 mt-0.5">${escapeHtml(c.notes.slice(0, 50))}</div>` : ''}
+              </button>
+            `;
+          }).join('');
+        });
+        list.innerHTML = html;
+      }
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('addModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function assignClient(day, slot, clientId) {
+      const key = getSlotKey(day, slot);
+      if (!schedule[key]) schedule[key] = [];
+      if (!schedule[key].includes(clientId)) schedule[key].push(clientId);
+      saveData();
+      closeModal();
+      renderSchedule();
+      renderPending();
+    }
+
+    function removeFromSlot(day, slot, clientId) {
+      const key = getSlotKey(day, slot);
+      if (!schedule[key]) return;
+      schedule[key] = schedule[key].filter(id => id !== clientId);
+      if (schedule[key].length === 0) delete schedule[key];
+      saveData();
+      renderSchedule();
+      renderPending();
+    }
+
+    /** Move client from one cell to another (drag-and-drop). */
+    function moveClient(fromDay, fromSlot, toDay, toSlot, clientId) {
+      if (fromDay === toDay && fromSlot === toSlot) return;
+      const fromKey = getSlotKey(fromDay, fromSlot);
+      const toKey = getSlotKey(toDay, toSlot);
+      if (!schedule[fromKey]) return;
+      // Remove from source
+      schedule[fromKey] = schedule[fromKey].filter(id => id !== clientId);
+      if (schedule[fromKey].length === 0) delete schedule[fromKey];
+      // Add to target (avoid duplicate)
+      if (!schedule[toKey]) schedule[toKey] = [];
+      if (!schedule[toKey].includes(clientId)) schedule[toKey].push(clientId);
+      saveData();
+      renderSchedule();
+      renderPending();
+    }
+
+    // Drag state (shared)
+    let dragPayload = null; // { clientId, fromDay, fromSlot }
+
+    function onBadgeDragStart(e, clientId, fromDay, fromSlot) {
+      // Don't start drag from the × button
+      if (e.target.tagName === 'BUTTON') {
+        e.preventDefault();
+        return;
+      }
+      dragPayload = { clientId, fromDay, fromSlot };
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', clientId); // required for Firefox
+      e.currentTarget.classList.add('dragging');
+    }
+
+    function onBadgeDragEnd(e) {
+      e.currentTarget.classList.remove('dragging');
+      dragPayload = null;
+      document.querySelectorAll('.slot-cell.drag-over').forEach(el => el.classList.remove('drag-over'));
+    }
+
+    function onCellDragOver(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      e.currentTarget.classList.add('drag-over');
+    }
+
+    function onCellDragLeave(e) {
+      e.currentTarget.classList.remove('drag-over');
+    }
+
+    function onCellDrop(e, toDay, toSlot) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.currentTarget.classList.remove('drag-over');
+      if (!dragPayload) return;
+      const { clientId, fromDay, fromSlot } = dragPayload;
+      moveClient(fromDay, fromSlot, toDay, toSlot, clientId);
+      dragPayload = null;
+    }
+
+    function renderSchedule() {
+      const tbody = document.getElementById('scheduleBody');
+      const hint = document.getElementById('scheduleHighlightHint');
+      if (highlightedPcaId) hint.classList.remove('hidden');
+      else hint.classList.add('hidden');
+
+      if (timeSlots.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-10 text-gray-400">Add start times first</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = timeSlots.map(slot => {
+        const cells = DAYS.map((day) => {
+          const assigned = getClientsInSlot(day, slot);
+          const badges = assigned.map(c => {
+            const pcaName = getPcaName(c.pcaId);
+            const bc = badgeClass(c.exerciseType);
+            let hlClass = '';
+            if (highlightedPcaId) {
+              hlClass = (c.pcaId === highlightedPcaId) ? 'highlighted' : 'dimmed';
+            }
+            const draggable = highlightedPcaId && c.pcaId !== highlightedPcaId ? 'false' : 'true';
+            return `
+              <span class="client-badge ${bc} ${hlClass}"
+                    draggable="${draggable}"
+                    ondragstart="onBadgeDragStart(event, '${c.id}', '${day}', '${slot}')"
+                    ondragend="onBadgeDragEnd(event)"
+                    title="${escapeHtml(c.exerciseType)}${pcaName ? ' · ' + escapeHtml(pcaName) : ''} — drag to move">
+                ${escapeHtml(c.name)}${pcaName ? ` <span class="pca-part">- ${escapeHtml(pcaName)}</span>` : ''}
+                <button onclick="event.stopPropagation(); removeFromSlot('${day}', '${slot}', '${c.id}')" title="Remove">×</button>
+              </span>
+            `;
+          }).join('');
+
+          return `
+            <td class="border slot-cell cursor-pointer"
+                ondragover="onCellDragOver(event)"
+                ondragleave="onCellDragLeave(event)"
+                ondrop="onCellDrop(event, '${day}', '${slot}')"
+                onclick="if(event.target.tagName!=='BUTTON' && !event.target.closest('.client-badge')) openAddModal('${day}', '${slot}')">
+              <div class="flex flex-col gap-0 min-h-[44px]">${badges}</div>
+              <div class="text-[11px] text-gray-300 mt-1 no-print">+ add · drop here</div>
+            </td>
+          `;
+        }).join('');
+
+        return `
+          <tr>
+            <td class="border px-3 py-2 font-medium text-gray-700 sticky left-0 bg-white z-10 whitespace-nowrap">
+              ${escapeHtml(slot)}
+              <span class="block text-[11px] font-normal text-gray-400">1 hr</span>
+            </td>
+            ${cells}
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // ========== CHART ==========
+    function getPcaWorkloadByType() {
+      const byPca = {};
+      pcas.forEach(p => { byPca[p.id] = { PT: 0, OT: 0, 'PT+OT': 0 }; });
+      let unassigned = { PT: 0, OT: 0, 'PT+OT': 0 };
+
+      clients.forEach(c => {
+        if (c.status !== 'Active') return;
+        const t = EXERCISE_TYPES.includes(c.exerciseType) ? c.exerciseType : 'PT';
+        if (c.pcaId && byPca[c.pcaId]) byPca[c.pcaId][t]++;
+        else unassigned[t]++;
+      });
+      return { byPca, unassigned };
+    }
+
+    function highlightPca(pcaId) {
+      if (highlightedPcaId === pcaId) highlightedPcaId = null;
+      else highlightedPcaId = pcaId;
+      renderPcas();
+      renderSchedule();
+      renderPcaChart();
+      const btn = document.getElementById('chartResetBtn');
+      if (highlightedPcaId) btn.classList.remove('hidden');
+      else btn.classList.add('hidden');
+    }
+
+    function resetChartHighlight() {
+      highlightedPcaId = null;
+      renderPcas();
+      renderSchedule();
+      renderPcaChart();
+      document.getElementById('chartResetBtn').classList.add('hidden');
+    }
+
+    function renderPcaChart() {
+      const { byPca, unassigned } = getPcaWorkloadByType();
+      const labels = pcas.map(p => p.name);
+      const hasUnassigned = (unassigned.PT + unassigned.OT + unassigned['PT+OT']) > 0;
+      if (hasUnassigned) labels.push('Unassigned');
+
+      const datasets = EXERCISE_TYPES.map(type => {
+        const data = pcas.map(p => byPca[p.id][type] || 0);
+        if (hasUnassigned) data.push(unassigned[type] || 0);
+
+        const bg = data.map((_, i) => {
+          if (!highlightedPcaId) return TYPE_COLORS[type].bg;
+          if (i < pcas.length) {
+            return pcas[i].id === highlightedPcaId ? TYPE_COLORS[type].bg : TYPE_COLORS[type].bg.replace('0.85', '0.2');
+          }
+          return TYPE_COLORS[type].bg.replace('0.85', '0.25');
+        });
+
+        return {
+          label: type,
+          data,
+          backgroundColor: bg,
+          borderColor: TYPE_COLORS[type].border,
+          borderWidth: 1,
+          borderRadius: 4,
+          borderSkipped: false,
+          maxBarThickness: 44
+        };
+      });
+
+      const tableEl = document.getElementById('pcaStatsTable');
+      let grand = { total: 0, PT: 0, OT: 0, 'PT+OT': 0 };
+
+      let rows = pcas.map(p => {
+        const d = byPca[p.id];
+        const total = d.PT + d.OT + d['PT+OT'];
+        grand.total += total;
+        grand.PT += d.PT;
+        grand.OT += d.OT;
+        grand['PT+OT'] += d['PT+OT'];
+        const hl = highlightedPcaId === p.id ? 'bg-indigo-50' : '';
+        return `
+          <tr class="${hl} hover:bg-gray-50 cursor-pointer" onclick="highlightPca('${p.id}')">
+            <td class="px-3 py-1.5 font-medium text-gray-800">${escapeHtml(p.name)}</td>
+            <td class="px-3 py-1.5 text-center font-semibold">${total}</td>
+            <td class="px-3 py-1.5 text-center text-yellow-700">${d.PT}</td>
+            <td class="px-3 py-1.5 text-center text-emerald-700">${d.OT}</td>
+            <td class="px-3 py-1.5 text-center text-violet-700">${d['PT+OT']}</td>
+          </tr>
+        `;
+      }).join('');
+
+      if (hasUnassigned) {
+        const ut = unassigned.PT + unassigned.OT + unassigned['PT+OT'];
+        grand.total += ut;
+        grand.PT += unassigned.PT;
+        grand.OT += unassigned.OT;
+        grand['PT+OT'] += unassigned['PT+OT'];
+        rows += `
+          <tr class="bg-amber-50">
+            <td class="px-3 py-1.5 font-medium text-amber-800">Unassigned</td>
+            <td class="px-3 py-1.5 text-center font-semibold">${ut}</td>
+            <td class="px-3 py-1.5 text-center">${unassigned.PT}</td>
+            <td class="px-3 py-1.5 text-center">${unassigned.OT}</td>
+            <td class="px-3 py-1.5 text-center">${unassigned['PT+OT']}</td>
+          </tr>
+        `;
+      }
+
+      tableEl.innerHTML = `
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="bg-gray-50 text-gray-600 text-left">
+              <th class="px-3 py-2 border-b">PCA</th>
+              <th class="px-3 py-2 border-b text-center">Total Cases</th>
+              <th class="px-3 py-2 border-b text-center"><span class="type-dot pt"></span>PT</th>
+              <th class="px-3 py-2 border-b text-center"><span class="type-dot ot"></span>OT</th>
+              <th class="px-3 py-2 border-b text-center"><span class="type-dot ptot"></span>PT+OT</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows || '<tr><td colspan="5" class="px-3 py-4 text-center text-gray-400">No data yet</td></tr>'}
+          </tbody>
+          <tfoot>
+            <tr class="bg-gray-100 font-semibold border-t-2">
+              <td class="px-3 py-2">ALL PCA</td>
+              <td class="px-3 py-2 text-center">${grand.total}</td>
+              <td class="px-3 py-2 text-center text-yellow-700">${grand.PT}</td>
+              <td class="px-3 py-2 text-center text-emerald-700">${grand.OT}</td>
+              <td class="px-3 py-2 text-center text-violet-700">${grand['PT+OT']}</td>
+            </tr>
+          </tfoot>
+        </table>
+      `;
+
+      const ctx = document.getElementById('pcaChart').getContext('2d');
+      if (pcaChart) pcaChart.destroy();
+
+      pcaChart = new Chart(ctx, {
+        type: 'bar',
+        data: { labels, datasets },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          onClick: (evt, elements) => {
+            if (elements.length > 0) {
+              const idx = elements[0].index;
+              if (idx < pcas.length) highlightPca(pcas[idx].id);
+            }
+          },
+          plugins: {
+            legend: { position: 'top', labels: { usePointStyle: true, padding: 16 } },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => ` ${ctx.dataset.label}: ${ctx.parsed.y} case${ctx.parsed.y === 1 ? '' : 's'}`
+              }
+            }
+          },
+          scales: {
+            x: { stacked: true, ticks: { maxRotation: 45, minRotation: 0 } },
+            y: {
+              stacked: true,
+              beginAtZero: true,
+              ticks: { stepSize: 1, precision: 0 },
+              title: { display: true, text: 'Number of cases' }
+            }
+          }
+        }
+      });
+    }
+
+    // ========== EXPORT / IMPORT ==========
+    function exportData() {
+      // This file is ready to upload/overwrite data.json on GitHub
+      const data = {
+        clients,
+        pcas,
+        timeSlots,
+        schedule,
+        exportedAt: new Date().toISOString()
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'data.json';   // important: use this exact name when uploading to GitHub
+      a.click();
+      URL.revokeObjectURL(url);
+      setSyncStatus('Exported data.json — now upload it to GitHub to share with everyone', 'success');
+    }
+
+    function importData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = JSON.parse(e.target.result);
+          if (data.clients) clients = data.clients;
+          if (data.pcas) pcas = data.pcas;
+          if (data.timeSlots) timeSlots = data.timeSlots;
+          if (data.schedule) schedule = data.schedule;
+          clients.forEach(c => {
+            if (c.pcaId === undefined) c.pcaId = '';
+            if (!c.exerciseType || !EXERCISE_TYPES.includes(c.exerciseType)) c.exerciseType = 'PT';
+            if (c.notes === undefined) c.notes = '';
+          });
+          Object.keys(schedule).forEach(key => {
+            if (key.startsWith('Sunday|')) delete schedule[key];
+          });
+          if (timeSlots.some(s => s.includes('-'))) {
+            const newSchedule = {};
+            Object.keys(schedule).forEach(key => {
+              const parts = key.split('|');
+              if (parts.length < 2) return;
+              const day = parts[0];
+              let slot = parts.slice(1).join('|');
+              if (slot.includes('-')) slot = slot.split('-')[0].trim();
+              const m = slot.match(/^(\d{1,2}):(\d{2})$/);
+              if (m) {
+                const newSlot = String(parseInt(m[1], 10)).padStart(2, '0') + ':' + m[2];
+                const newKey = day + '|' + newSlot;
+                if (!newSchedule[newKey]) newSchedule[newKey] = [];
+                (schedule[key] || []).forEach(cid => {
+                  if (!newSchedule[newKey].includes(cid)) newSchedule[newKey].push(cid);
+                });
+              }
+            });
+            schedule = newSchedule;
+            timeSlots = timeSlots.map(s => {
+              if (s.includes('-')) s = s.split('-')[0].trim();
+              const m = s.match(/^(\d{1,2}):(\d{2})$/);
+              return m ? String(parseInt(m[1], 10)).padStart(2, '0') + ':' + m[2] : null;
+            }).filter(Boolean);
+            timeSlots = [...new Set(timeSlots)].sort();
+          }
+          saveData();
+          renderAll();
+          alert('Import successful');
+        } catch (err) {
+          alert('Invalid JSON file');
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = '';
+    }
+
+    function renderAll() {
+      renderPcas();
+      populatePcaSelects();
+      renderClients();
+      renderTimeSlots();
+      renderSchedule();
+      renderPending();
+      renderPcaChart();
+    }
+
+    // 1. Load local cache first (fast)
+    loadData();
+    renderAll();
+    updateTokenStatus();
+
+    // 2. Then pull the shared version from GitHub
+    (async () => {
+      try {
+        setSyncStatus('Loading shared data…', 'loading');
+        const data = await fetchRemoteData();
+        applyRemoteData(data);
+        renderAll();
+        const time = new Date().toLocaleTimeString('en-HK', { hour: '2-digit', minute: '2-digit' });
+        setSyncStatus(`✓ Loaded from GitHub at ${time}` + (getToken() ? ' · Auto-save ON' : ' · (read-only, no token)'), 'success');
+      } catch (err) {
+        console.warn(err);
+        setSyncStatus('Using local data · ' + (err.message || 'Could not load from GitHub'), 'error');
+      }
+    })();
+
+    document.getElementById('addModal').addEventListener('click', (e) => {
+      if (e.target.id === 'addModal') closeModal();
+    });
+  </script>
+</body>
+</html>
