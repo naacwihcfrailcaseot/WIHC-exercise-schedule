@@ -251,6 +251,15 @@
       "pcaId": "p_msofjibmahvr5",
       "exerciseType": "PT",
       "createdAt": "2026-08-11T09:25:01.106Z"
+    },
+    {
+      "id": "c_msogfxkgm98bk",
+      "name": "L潔萍",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofi9xylkju2",
+      "exerciseType": "OT",
+      "createdAt": "2026-08-11T09:25:20.944Z"
     }
   ],
   "pcas": [
@@ -395,7 +404,10 @@
     ],
     "Monday|10:00": [
       "c_msogfi9eau20a"
+    ],
+    "Wednesday|10:00": [
+      "c_msogfxkgm98bk"
     ]
   },
-  "exportedAt": "2026-08-11T09:25:04.063Z"
+  "exportedAt": "2026-08-11T09:25:23.826Z"
 }
