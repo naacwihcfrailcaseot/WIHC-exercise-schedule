@@ -152,6 +152,15 @@
       "pcaId": "p_msofiyuulxl9i",
       "exerciseType": "OT",
       "createdAt": "2026-08-11T09:19:08.842Z"
+    },
+    {
+      "id": "c_msog9izs0nk08",
+      "name": "N振芳",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofj7o2n5j4r",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-11T09:20:22.120Z"
     }
   ],
   "pcas": [
@@ -273,7 +282,10 @@
     "Monday|09:30": [
       "c_msog7jezu6qpc",
       "c_msog7yga1qxcp"
+    ],
+    "Tuesday|09:30": [
+      "c_msog9izs0nk08"
     ]
   },
-  "exportedAt": "2026-08-11T09:19:11.534Z"
+  "exportedAt": "2026-08-11T09:20:24.867Z"
 }
