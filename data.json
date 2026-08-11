@@ -1,15 +1,5 @@
 {
-  "clients": [
-    {
-      "id": "c_msodrtquw3j1t",
-      "name": "Alvin",
-      "status": "Active",
-      "notes": "",
-      "pcaId": "p_msodqwugoefkr",
-      "exerciseType": "PT",
-      "createdAt": "2026-08-11T08:10:37.014Z"
-    }
-  ],
+  "clients": [],
   "pcas": [
     {
       "id": "p_msodqwugoefkr",
@@ -27,5 +17,5 @@
     "16:00"
   ],
   "schedule": {},
-  "exportedAt": "2026-08-11T08:58:10.018Z"
+  "exportedAt": "2026-08-11T08:58:14.574Z"
 }
