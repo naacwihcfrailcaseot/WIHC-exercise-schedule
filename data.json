@@ -1,5 +1,15 @@
 {
-  "clients": [],
+  "clients": [
+    {
+      "id": "c_msofo77s2mos9",
+      "name": "Y潭娣",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofi1mk6c8jc",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-11T09:03:47.080Z"
+    }
+  ],
   "pcas": [
     {
       "id": "p_msofhmbyoxbre",
@@ -84,6 +94,10 @@
     "15:00",
     "16:00"
   ],
-  "schedule": {},
-  "exportedAt": "2026-08-11T09:00:54.378Z"
+  "schedule": {
+    "Monday|09:00": [
+      "c_msofo77s2mos9"
+    ]
+  },
+  "exportedAt": "2026-08-11T09:03:49.851Z"
 }
