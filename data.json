@@ -26,6 +26,15 @@
       "pcaId": "p_msofiyuulxl9i",
       "exerciseType": "PT",
       "createdAt": "2026-08-11T09:05:24.624Z"
+    },
+    {
+      "id": "c_msofr8iwwgyj5",
+      "name": "W桂卿",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofhw4i2d5nk",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-11T09:06:08.744Z"
     }
   ],
   "pcas": [
@@ -118,8 +127,9 @@
       "c_msofp9oklnpq1"
     ],
     "Tuesday|09:00": [
-      "c_msofqahca7vtp"
+      "c_msofqahca7vtp",
+      "c_msofr8iwwgyj5"
     ]
   },
-  "exportedAt": "2026-08-11T09:05:27.794Z"
+  "exportedAt": "2026-08-11T09:06:11.447Z"
 }
