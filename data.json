@@ -575,6 +575,15 @@
       "pcaId": "p_msofhw4i2d5nk",
       "exerciseType": "PT",
       "createdAt": "2026-08-11T09:45:09.019Z"
+    },
+    {
+      "id": "c_msoh5rdvzgkfb",
+      "name": "T二妹",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofk0bokgoto",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-11T09:45:25.987Z"
     }
   ],
   "pcas": [
@@ -808,8 +817,9 @@
       "c_msoh4saf3g628"
     ],
     "Monday|14:45": [
-      "c_msoh5eajuurle"
+      "c_msoh5eajuurle",
+      "c_msoh5rdvzgkfb"
     ]
   },
-  "exportedAt": "2026-08-11T09:45:11.692Z"
+  "exportedAt": "2026-08-11T09:45:28.652Z"
 }
