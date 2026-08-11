@@ -314,6 +314,15 @@
       "pcaId": "p_msofk0bokgoto",
       "exerciseType": "OT",
       "createdAt": "2026-08-11T09:28:28.652Z"
+    },
+    {
+      "id": "c_msogkc5yr6yrj",
+      "name": "C玉璍",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofi9xylkju2",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-11T09:28:46.486Z"
     }
   ],
   "pcas": [
@@ -479,8 +488,9 @@
     ],
     "Monday|11:00": [
       "c_msogjcjdizr08",
-      "c_msogjyekvn64d"
+      "c_msogjyekvn64d",
+      "c_msogkc5yr6yrj"
     ]
   },
-  "exportedAt": "2026-08-11T09:28:31.345Z"
+  "exportedAt": "2026-08-11T09:28:49.164Z"
 }
