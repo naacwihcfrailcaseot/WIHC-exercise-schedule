@@ -737,6 +737,15 @@
       "pcaId": "p_msofi1mk6c8jc",
       "exerciseType": "PT",
       "createdAt": "2026-08-11T09:50:52.753Z"
+    },
+    {
+      "id": "c_msohd7a53clhb",
+      "name": "C秀英",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofipckwo78i",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-11T09:51:13.181Z"
     }
   ],
   "pcas": [
@@ -960,7 +969,8 @@
       "c_msoh2qslud0b8"
     ],
     "Saturday|14:00": [
-      "c_msoh31a1y68zs"
+      "c_msoh31a1y68zs",
+      "c_msohd7a53clhb"
     ],
     "Monday|14:15": [
       "c_msoh3vtnx5rwg"
@@ -1015,5 +1025,5 @@
       "c_msohcripy4oqa"
     ]
   },
-  "exportedAt": "2026-08-11T09:50:55.402Z"
+  "exportedAt": "2026-08-11T09:51:16.072Z"
 }
