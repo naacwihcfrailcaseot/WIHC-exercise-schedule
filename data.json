@@ -422,6 +422,15 @@
       "pcaId": "p_msofi9xylkju2",
       "exerciseType": "PT",
       "createdAt": "2026-08-11T09:35:05.876Z"
+    },
+    {
+      "id": "c_msogt0lw86bqy",
+      "name": "M啟褔",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofik7igqgs9",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-11T09:35:31.412Z"
     }
   ],
   "pcas": [
@@ -614,8 +623,9 @@
       "c_msogr6sf01uo8"
     ],
     "Friday|11:00": [
-      "c_msogsgwkbl1q0"
+      "c_msogsgwkbl1q0",
+      "c_msogt0lw86bqy"
     ]
   },
-  "exportedAt": "2026-08-11T09:35:08.863Z"
+  "exportedAt": "2026-08-11T09:35:34.277Z"
 }
