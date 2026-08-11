@@ -48,6 +48,10 @@
     {
       "id": "p_msofjibmahvr5",
       "name": "蘭"
+    },
+    {
+      "id": "p_msofjml86pfja",
+      "name": "良"
     }
   ],
   "timeSlots": [
@@ -61,5 +65,5 @@
     "16:00"
   ],
   "schedule": {},
-  "exportedAt": "2026-08-11T09:00:10.845Z"
+  "exportedAt": "2026-08-11T09:00:16.388Z"
 }
