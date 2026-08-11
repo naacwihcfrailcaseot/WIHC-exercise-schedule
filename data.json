@@ -179,6 +179,15 @@
       "pcaId": "p_msofjck8lna9e",
       "exerciseType": "OT",
       "createdAt": "2026-08-11T09:20:58.346Z"
+    },
+    {
+      "id": "c_msogaoq6x2rpz",
+      "name": "W志光",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofik7igqgs9",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-11T09:21:16.206Z"
     }
   ],
   "pcas": [
@@ -307,7 +316,10 @@
     "Wednesday|09:30": [
       "c_msog9ytucz5p8",
       "c_msogaay2buhmb"
+    ],
+    "Thursday|09:30": [
+      "c_msogaoq6x2rpz"
     ]
   },
-  "exportedAt": "2026-08-11T09:21:01.012Z"
+  "exportedAt": "2026-08-11T09:21:18.878Z"
 }
