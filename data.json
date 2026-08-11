@@ -242,6 +242,15 @@
       "pcaId": "p_msofhmbyoxbre",
       "exerciseType": "PT",
       "createdAt": "2026-08-11T09:24:15.666Z"
+    },
+    {
+      "id": "c_msogfi9eau20a",
+      "name": "W碧娥",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofjibmahvr5",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-11T09:25:01.106Z"
     }
   ],
   "pcas": [
@@ -383,7 +392,10 @@
     "Saturday|09:30": [
       "c_msogd5se13ox8",
       "c_msogej76drd7g"
+    ],
+    "Monday|10:00": [
+      "c_msogfi9eau20a"
     ]
   },
-  "exportedAt": "2026-08-11T09:24:18.670Z"
+  "exportedAt": "2026-08-11T09:25:04.063Z"
 }
