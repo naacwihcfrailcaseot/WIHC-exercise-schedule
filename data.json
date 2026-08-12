@@ -917,6 +917,15 @@
       "pcaId": "p_msofkb9cij1eu",
       "exerciseType": "OT",
       "createdAt": "2026-08-12T07:06:46.583Z"
+    },
+    {
+      "id": "c_mspqynxwo5ka2",
+      "name": "W愛珍",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofjml86pfja",
+      "exerciseType": "PT+OT",
+      "createdAt": "2026-08-12T07:07:37.268Z"
     }
   ],
   "pcas": [
@@ -1224,5 +1233,5 @@
       "c_msohhkcnjewor"
     ]
   },
-  "exportedAt": "2026-08-12T07:06:49.587Z"
+  "exportedAt": "2026-08-12T07:07:40.041Z"
 }
