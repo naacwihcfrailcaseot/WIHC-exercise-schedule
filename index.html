@@ -93,6 +93,14 @@
     .pending-card {
       border-left: 4px solid #ef4444;
       background: #fef2f2;
+      cursor: grab;
+      user-select: none;
+      transition: opacity 0.15s, transform 0.1s, box-shadow 0.15s;
+    }
+    .pending-card:active { cursor: grabbing; }
+    .pending-card.dragging {
+      opacity: 0.45;
+      transform: scale(0.98);
     }
     .type-dot {
       display: inline-block;
@@ -151,7 +159,7 @@
           <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-amber-400 text-amber-950 font-bold text-sm">註</span>
         </div>
         <p class="text-sm md:text-base text-amber-950 leading-relaxed font-medium">
-          安排同事負責復康運動時，會根據服務需要，考慮同事的個人特質、體格體力、相關知識、特別技能、語言、態度等等，亦會參考員工考核中「基礎復康運動」成績，盡量配合案主需要。同時亦會因應中心整體服務安排。
+          為配合案主及中心的整體服務需求，在指派員工負責復康及認知運動時，會綜合評估員工的個人特質、體格體力、專業知識、技能、語言能力及工作態度，並參考員工考核中「基礎復康運動」的表現，務求作出最合適的配對。
         </p>
       </div>
     </div>
@@ -242,7 +250,7 @@
           </h2>
           <span id="pendingCount" class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-medium">0</span>
         </div>
-        <p class="text-xs text-red-600 mb-3">These Active clients still need a schedule time.</p>
+        <p class="text-xs text-red-600 mb-3">These Active clients still need a schedule time. <strong>Drag</strong> a card onto a weekly schedule cell to assign them.</p>
         <div id="pendingList" class="flex flex-wrap gap-2"></div>
       </div>
 
@@ -998,10 +1006,14 @@
         const pcaName = getPcaName(c.pcaId);
         const bc = badgeClass(c.exerciseType);
         return `
-          <div class="pending-card rounded-lg px-3 py-2 text-sm shadow-sm">
+          <div class="pending-card rounded-lg px-3 py-2 text-sm shadow-sm"
+               draggable="true"
+               ondragstart="onPendingDragStart(event, '${c.id}')"
+               ondragend="onPendingDragEnd(event)"
+               title="Drag onto a schedule cell to assign">
             <div class="font-medium text-red-900">${escapeHtml(c.name)}</div>
             <div class="text-xs text-red-700 mt-0.5">
-              <span class="client-badge ${bc}" style="padding:1px 6px;margin:0;display:inline;border-width:1px;">${escapeHtml(c.exerciseType)}</span>
+              <span class="client-badge ${bc}" style="padding:1px 6px;margin:0;display:inline;border-width:1px;cursor:inherit;">${escapeHtml(c.exerciseType)}</span>
               ${pcaName ? ' · PCA: ' + escapeHtml(pcaName) : ' · No PCA'}
             </div>
           </div>
@@ -1168,7 +1180,9 @@
     }
 
     // Drag state (shared)
-    let dragPayload = null; // { clientId, fromDay, fromSlot }
+    // fromPending: true when dragging from Pending list
+    // fromDay/fromSlot set when dragging within the schedule grid
+    let dragPayload = null; // { clientId, fromDay?, fromSlot?, fromPending? }
 
     function onBadgeDragStart(e, clientId, fromDay, fromSlot) {
       // Don't start drag from the × button
@@ -1176,13 +1190,26 @@
         e.preventDefault();
         return;
       }
-      dragPayload = { clientId, fromDay, fromSlot };
+      dragPayload = { clientId, fromDay, fromSlot, fromPending: false };
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.setData('text/plain', clientId); // required for Firefox
       e.currentTarget.classList.add('dragging');
     }
 
     function onBadgeDragEnd(e) {
+      e.currentTarget.classList.remove('dragging');
+      dragPayload = null;
+      document.querySelectorAll('.slot-cell.drag-over').forEach(el => el.classList.remove('drag-over'));
+    }
+
+    function onPendingDragStart(e, clientId) {
+      dragPayload = { clientId, fromPending: true };
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', clientId);
+      e.currentTarget.classList.add('dragging');
+    }
+
+    function onPendingDragEnd(e) {
       e.currentTarget.classList.remove('dragging');
       dragPayload = null;
       document.querySelectorAll('.slot-cell.drag-over').forEach(el => el.classList.remove('drag-over'));
@@ -1203,8 +1230,18 @@
       e.stopPropagation();
       e.currentTarget.classList.remove('drag-over');
       if (!dragPayload) return;
-      const { clientId, fromDay, fromSlot } = dragPayload;
-      moveClient(fromDay, fromSlot, toDay, toSlot, clientId);
+      const { clientId, fromDay, fromSlot, fromPending } = dragPayload;
+      if (fromPending) {
+        // Assign pending client to this cell
+        const key = getSlotKey(toDay, toSlot);
+        if (!schedule[key]) schedule[key] = [];
+        if (!schedule[key].includes(clientId)) schedule[key].push(clientId);
+        saveData();
+        renderSchedule();
+        renderPending();
+      } else {
+        moveClient(fromDay, fromSlot, toDay, toSlot, clientId);
+      }
       dragPayload = null;
     }
 
