@@ -890,6 +890,15 @@
       "pcaId": "p_msofjml86pfja",
       "exerciseType": "PT",
       "createdAt": "2026-08-12T07:02:04.208Z"
+    },
+    {
+      "id": "c_mspqsxgzix7s9",
+      "name": "L錦輝",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofjv9it0v6t",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-12T07:03:09.683Z"
     }
   ],
   "pcas": [
@@ -1197,5 +1206,5 @@
       "c_msohhkcnjewor"
     ]
   },
-  "exportedAt": "2026-08-12T07:02:06.880Z"
+  "exportedAt": "2026-08-12T07:03:12.676Z"
 }
