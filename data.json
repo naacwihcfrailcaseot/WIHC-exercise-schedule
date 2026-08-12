@@ -3,7 +3,7 @@
     {
       "id": "c_msofo77s2mos9",
       "name": "Y潭娣",
-      "status": "Active",
+      "status": "Discharged",
       "notes": "",
       "pcaId": "p_msofi1mk6c8jc",
       "exerciseType": "PT",
@@ -1062,7 +1062,6 @@
   ],
   "schedule": {
     "Monday|09:00": [
-      "c_msofo77s2mos9",
       "c_msofp9oklnpq1"
     ],
     "Tuesday|09:00": [
@@ -1271,5 +1270,5 @@
       "c_msohhkcnjewor"
     ]
   },
-  "exportedAt": "2026-08-12T07:14:49.662Z"
+  "exportedAt": "2026-08-12T07:18:14.773Z"
 }
