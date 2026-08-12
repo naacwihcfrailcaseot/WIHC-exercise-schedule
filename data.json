@@ -899,6 +899,15 @@
       "pcaId": "p_msofjv9it0v6t",
       "exerciseType": "PT",
       "createdAt": "2026-08-12T07:03:09.683Z"
+    },
+    {
+      "id": "c_mspqtm1oowmmt",
+      "name": "L玫瑰",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofipckwo78i",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-12T07:03:41.532Z"
     }
   ],
   "pcas": [
@@ -1206,5 +1215,5 @@
       "c_msohhkcnjewor"
     ]
   },
-  "exportedAt": "2026-08-12T07:03:12.676Z"
+  "exportedAt": "2026-08-12T07:03:44.488Z"
 }
