@@ -944,6 +944,15 @@
       "pcaId": "p_msofipckwo78i",
       "exerciseType": "OT",
       "createdAt": "2026-08-12T07:09:07.309Z"
+    },
+    {
+      "id": "c_mspr4hrak84ca",
+      "name": "F蘭英",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofi9xylkju2",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-12T07:12:09.190Z"
     }
   ],
   "pcas": [
@@ -1242,7 +1251,8 @@
       "c_msohg2dt9by0i"
     ],
     "Tuesday|16:15": [
-      "c_msohgqzx9jsi4"
+      "c_msohgqzx9jsi4",
+      "c_mspr4hrak84ca"
     ],
     "Wednesday|16:15": [
       "c_msohh41t90qc5"
@@ -1251,5 +1261,5 @@
       "c_msohhkcnjewor"
     ]
   },
-  "exportedAt": "2026-08-12T07:09:10.100Z"
+  "exportedAt": "2026-08-12T07:12:11.995Z"
 }
