@@ -953,6 +953,15 @@
       "pcaId": "p_msofi9xylkju2",
       "exerciseType": "PT",
       "createdAt": "2026-08-12T07:12:09.190Z"
+    },
+    {
+      "id": "c_mspr7v4wmmnhc",
+      "name": "L保全",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofiu96bus70",
+      "exerciseType": "PT",
+      "createdAt": "2026-08-12T07:14:46.496Z"
     }
   ],
   "pcas": [
@@ -1075,7 +1084,8 @@
       "c_msog47fsihtl8"
     ],
     "Friday|09:00": [
-      "c_msog54mqiymlb"
+      "c_msog54mqiymlb",
+      "c_mspr7v4wmmnhc"
     ],
     "Saturday|09:00": [
       "c_msog5sqi4nqps",
@@ -1261,5 +1271,5 @@
       "c_msohhkcnjewor"
     ]
   },
-  "exportedAt": "2026-08-12T07:12:11.995Z"
+  "exportedAt": "2026-08-12T07:14:49.662Z"
 }
