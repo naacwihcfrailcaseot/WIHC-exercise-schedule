@@ -79,9 +79,9 @@
       z-index: 2;
     }
     .slot-cell {
-      min-height: 110px;
+      min-height: 56px;
       vertical-align: top;
-      padding: 8px !important;
+      padding: 6px !important;
       transition: background-color 0.12s, outline 0.12s;
     }
     .slot-cell:hover { background-color: #f8fafc; }
@@ -257,7 +257,7 @@
       <!-- Weekly Schedule (full width) -->
       <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
         <div class="px-4 py-3 border-b flex flex-wrap items-center justify-between gap-2 no-print">
-          <h2 class="font-semibold text-gray-800 text-lg">Weekly Schedule <span class="text-sm font-normal text-gray-500">(Mon–Sat · 1-hr sessions · drag badges to move)</span></h2>
+          <h2 class="font-semibold text-gray-800 text-lg">Weekly Schedule <span class="text-sm font-normal text-gray-500">(Mon–Sat · rows grouped by hour · card shows start time)</span></h2>
           <div class="text-sm text-gray-600 flex flex-wrap items-center gap-4">
             <span><span class="type-dot pt"></span>PT</span>
             <span><span class="type-dot ot"></span>OT</span>
@@ -1245,6 +1245,52 @@
       dragPayload = null;
     }
 
+    /** "09:15" → "09:00" (hour bucket key) */
+    function slotHourKey(slot) {
+      const m = String(slot).match(/^(\d{1,2}):(\d{2})$/);
+      if (!m) return slot;
+      return String(parseInt(m[1], 10)).padStart(2, '0') + ':00';
+    }
+
+    /** Group start times by hour for compact rows */
+    function getHourGroups() {
+      const map = {};
+      timeSlots.forEach(s => {
+        const h = slotHourKey(s);
+        if (!map[h]) map[h] = [];
+        if (!map[h].includes(s)) map[h].push(s);
+      });
+      return Object.keys(map).sort().map(h => ({
+        hour: h,
+        slots: map[h].slice().sort()
+      }));
+    }
+
+    /** All clients in a day across several slots, with their actual start time */
+    function getClientsInHour(day, slots) {
+      const result = [];
+      slots.forEach(slot => {
+        getClientsInSlot(day, slot).forEach(c => {
+          result.push({ client: c, slot });
+        });
+      });
+      // sort by start time, then name
+      result.sort((a, b) => {
+        if (a.slot !== b.slot) return a.slot.localeCompare(b.slot);
+        return (a.client.name || '').localeCompare(b.client.name || '', undefined, { sensitivity: 'base' });
+      });
+      return result;
+    }
+
+    /** Default slot to use when dropping / adding into an hour row */
+    function defaultSlotForHour(slots) {
+      if (!slots || slots.length === 0) return null;
+      // Prefer exact hour start if it exists, else earliest
+      const hourKey = slotHourKey(slots[0]);
+      if (slots.includes(hourKey)) return hourKey;
+      return slots.slice().sort()[0];
+    }
+
     function renderSchedule() {
       const tbody = document.getElementById('scheduleBody');
       const hint = document.getElementById('scheduleHighlightHint');
@@ -1256,10 +1302,18 @@
         return;
       }
 
-      tbody.innerHTML = timeSlots.map(slot => {
+      const hourGroups = getHourGroups();
+
+      tbody.innerHTML = hourGroups.map(group => {
+        const { hour, slots } = group;
+        const dropSlot = defaultSlotForHour(slots);
+        const subLabel = slots.length > 1
+          ? slots.join(' · ')
+          : '1 hr';
+
         const cells = DAYS.map((day) => {
-          const assigned = getClientsInSlot(day, slot);
-          const badges = assigned.map(c => {
+          const assigned = getClientsInHour(day, slots);
+          const badges = assigned.map(({ client: c, slot }) => {
             const pcaName = getPcaName(c.pcaId);
             const bc = badgeClass(c.exerciseType);
             let hlClass = '';
@@ -1267,13 +1321,16 @@
               hlClass = (c.pcaId === highlightedPcaId) ? 'highlighted' : 'dimmed';
             }
             const draggable = highlightedPcaId && c.pcaId !== highlightedPcaId ? 'false' : 'true';
+            const label = `${slot} - ${c.name}${pcaName ? ' - ' + pcaName : ''}`;
             return `
               <span class="client-badge ${bc} ${hlClass}"
                     draggable="${draggable}"
                     ondragstart="onBadgeDragStart(event, '${c.id}', '${day}', '${slot}')"
                     ondragend="onBadgeDragEnd(event)"
-                    title="${escapeHtml(c.exerciseType)}${pcaName ? ' · ' + escapeHtml(pcaName) : ''} — drag to move">
-                ${escapeHtml(c.name)}${pcaName ? ` <span class="pca-part">- ${escapeHtml(pcaName)}</span>` : ''}
+                    title="${escapeHtml(c.exerciseType)} · ${escapeHtml(label)} — drag to move">
+                <span class="font-semibold">${escapeHtml(slot)}</span>
+                <span> - ${escapeHtml(c.name)}</span>
+                ${pcaName ? `<span class="pca-part"> - ${escapeHtml(pcaName)}</span>` : ''}
                 <button onclick="event.stopPropagation(); removeFromSlot('${day}', '${slot}', '${c.id}')" title="Remove">×</button>
               </span>
             `;
@@ -1283,9 +1340,9 @@
             <td class="border slot-cell cursor-pointer"
                 ondragover="onCellDragOver(event)"
                 ondragleave="onCellDragLeave(event)"
-                ondrop="onCellDrop(event, '${day}', '${slot}')"
-                onclick="if(event.target.tagName!=='BUTTON' && !event.target.closest('.client-badge')) openAddModal('${day}', '${slot}')">
-              <div class="flex flex-col gap-0 min-h-[44px]">${badges}</div>
+                ondrop="onCellDrop(event, '${day}', '${dropSlot}')"
+                onclick="if(event.target.tagName!=='BUTTON' && !event.target.closest('.client-badge')) openAddModal('${day}', '${dropSlot}')">
+              <div class="flex flex-col gap-0 min-h-[28px]">${badges}</div>
               <div class="text-[11px] text-gray-300 mt-1 no-print">+ add · drop here</div>
             </td>
           `;
@@ -1294,8 +1351,8 @@
         return `
           <tr>
             <td class="border px-3 py-2 font-medium text-gray-700 sticky left-0 bg-white z-10 whitespace-nowrap">
-              ${escapeHtml(slot)}
-              <span class="block text-[11px] font-normal text-gray-400">1 hr</span>
+              ${escapeHtml(hour)}
+              <span class="block text-[10px] font-normal text-gray-400 max-w-[7rem] truncate" title="${escapeHtml(subLabel)}">${escapeHtml(subLabel)}</span>
             </td>
             ${cells}
           </tr>
