@@ -1060,8 +1060,7 @@
   "schedule": {
     "Monday|09:00": [
       "c_msofp9oklnpq1",
-      "c_msofo77s2mos9",
-      "c_msohjasdqor8b"
+      "c_msofo77s2mos9"
     ],
     "Tuesday|09:00": [
       "c_msofqahca7vtp",
@@ -1114,7 +1113,8 @@
       "c_msogej76drd7g"
     ],
     "Monday|10:00": [
-      "c_msogfi9eau20a"
+      "c_msogfi9eau20a",
+      "c_msohjasdqor8b"
     ],
     "Wednesday|10:00": [
       "c_msogfxkgm98bk"
@@ -1269,5 +1269,5 @@
       "c_msohh41t90qc5"
     ]
   },
-  "exportedAt": "2026-08-14T01:45:58.466Z"
+  "exportedAt": "2026-08-14T01:46:35.191Z"
 }
