@@ -79,9 +79,9 @@
       z-index: 2;
     }
     .slot-cell {
-      min-height: 56px;
+      min-height: 110px;
       vertical-align: top;
-      padding: 6px !important;
+      padding: 8px !important;
       transition: background-color 0.12s, outline 0.12s;
     }
     .slot-cell:hover { background-color: #f8fafc; }
@@ -93,14 +93,6 @@
     .pending-card {
       border-left: 4px solid #ef4444;
       background: #fef2f2;
-      cursor: grab;
-      user-select: none;
-      transition: opacity 0.15s, transform 0.1s, box-shadow 0.15s;
-    }
-    .pending-card:active { cursor: grabbing; }
-    .pending-card.dragging {
-      opacity: 0.45;
-      transform: scale(0.98);
     }
     .type-dot {
       display: inline-block;
@@ -134,47 +126,15 @@
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4 no-print">
       <div>
         <h1 class="text-2xl font-bold text-gray-800">Client Exercise Schedule</h1>
-        <p class="text-sm text-gray-500">1-hour sessions · PT / OT / PT+OT · PCA assignment · Live shared via GitHub</p>
-        <p id="syncStatus" class="text-xs text-gray-400 mt-0.5">Checking shared data…</p>
+        <p class="text-sm text-gray-500">1-hour sessions · PT / OT / PT+OT · PCA assignment · Data saved in browser</p>
       </div>
-      <div class="flex flex-wrap gap-2 items-center">
-        <button id="syncBtn" onclick="saveToGitHub()" class="px-4 py-1.5 bg-emerald-600 text-white text-sm font-medium rounded hover:bg-emerald-700 flex items-center gap-1.5 shadow-sm">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
-          Save to GitHub
-        </button>
-        <button onclick="toggleTokenPanel()" class="px-3 py-1.5 bg-indigo-600 text-white text-sm rounded hover:bg-indigo-700">Token</button>
-        <button onclick="exportData()" class="px-3 py-1.5 bg-gray-700 text-white text-sm rounded hover:bg-gray-800">Export</button>
+      <div class="flex flex-wrap gap-2">
+        <button onclick="exportData()" class="px-3 py-1.5 bg-gray-700 text-white text-sm rounded hover:bg-gray-800">Export JSON</button>
         <label class="px-3 py-1.5 bg-gray-700 text-white text-sm rounded hover:bg-gray-800 cursor-pointer">
-          Import
+          Import JSON
           <input type="file" accept=".json" onchange="importData(event)" class="hidden" />
         </label>
         <button onclick="window.print()" class="px-3 py-1.5 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">Print</button>
-      </div>
-    </div>
-
-    <!-- Staff assignment note (eye-catching) -->
-    <div class="mb-4 rounded-xl border-2 border-amber-400 bg-amber-50 shadow-sm overflow-hidden">
-      <div class="flex gap-3 p-3 md:p-4">
-        <div class="shrink-0 flex items-start pt-0.5">
-          <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-amber-400 text-amber-950 font-bold text-sm">註</span>
-        </div>
-        <p class="text-sm md:text-base text-amber-950 leading-relaxed font-medium">
-          為配合案主及中心的整體服務需求，在指派員工負責復康及認知運動時，會綜合評估員工的個人特質、體格體力、專業知識、技能、語言能力及工作態度，並參考員工考核中「基礎復康運動」的表現，務求作出最合適的配對。
-        </p>
-      </div>
-    </div>
-
-    <!-- Token settings panel (hidden by default) -->
-    <div id="tokenPanel" class="hidden mb-4 no-print">
-      <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-4">
-        <h3 class="font-semibold text-indigo-900 mb-2">GitHub Token (shared by the team)</h3>
-        <p class="text-xs text-indigo-700 mb-3">Paste the fine-grained Personal Access Token here. It is saved only in this browser. Everyone who needs to edit must paste the same token once.</p>
-        <div class="flex flex-col sm:flex-row gap-2">
-          <input id="githubTokenInput" type="password" placeholder="github_pat_..." class="flex-1 border border-indigo-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-          <button onclick="saveToken()" class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700">Save Token</button>
-          <button onclick="clearToken()" class="px-4 py-2 bg-gray-200 text-gray-700 text-sm rounded-lg hover:bg-gray-300">Clear</button>
-        </div>
-        <p id="tokenStatus" class="text-xs text-indigo-600 mt-2"></p>
       </div>
     </div>
 
@@ -250,14 +210,14 @@
           </h2>
           <span id="pendingCount" class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-medium">0</span>
         </div>
-        <p class="text-xs text-red-600 mb-3">These Active clients still need a schedule time. <strong>Drag</strong> a card onto a weekly schedule cell to assign them.</p>
+        <p class="text-xs text-red-600 mb-3">These Active clients still need a schedule time.</p>
         <div id="pendingList" class="flex flex-wrap gap-2"></div>
       </div>
 
       <!-- Weekly Schedule (full width) -->
       <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
         <div class="px-4 py-3 border-b flex flex-wrap items-center justify-between gap-2 no-print">
-          <h2 class="font-semibold text-gray-800 text-lg">Weekly Schedule <span class="text-sm font-normal text-gray-500">(Mon–Sat · rows grouped by hour · card shows start time)</span></h2>
+          <h2 class="font-semibold text-gray-800 text-lg">Weekly Schedule <span class="text-sm font-normal text-gray-500">(Mon–Sat · 1-hr sessions · drag badges to move)</span></h2>
           <div class="text-sm text-gray-600 flex flex-wrap items-center gap-4">
             <span><span class="type-dot pt"></span>PT</span>
             <span><span class="type-dot ot"></span>OT</span>
@@ -350,268 +310,6 @@
     let pcaChart = null;
     let highlightedPcaId = null;
 
-    // ========== GitHub Shared Data (true two-way) ==========
-    const GITHUB = {
-      owner: 'naacwihcfrailcaseot',
-      repo: 'WIHC-exercise-schedule',
-      branch: 'main',
-      path: 'data.json'
-    };
-
-    let pushTimer = null;          // debounce timer for auto-save
-    let isPushing = false;
-    let lastKnownSha = null;       // file SHA needed for GitHub update
-
-    function getToken() {
-      return localStorage.getItem('cs_github_token') || '';
-    }
-
-    function setSyncStatus(msg, type = 'info') {
-      const el = document.getElementById('syncStatus');
-      if (!el) return;
-      el.textContent = msg;
-      el.className = 'text-xs mt-0.5 ' + (
-        type === 'success' ? 'text-emerald-600' :
-        type === 'error'   ? 'text-red-600' :
-        type === 'loading' ? 'text-blue-500' : 'text-gray-400'
-      );
-    }
-
-    function toggleTokenPanel() {
-      const panel = document.getElementById('tokenPanel');
-      panel.classList.toggle('hidden');
-      if (!panel.classList.contains('hidden')) {
-        document.getElementById('githubTokenInput').value = getToken();
-        updateTokenStatus();
-      }
-    }
-
-    function updateTokenStatus() {
-      const el = document.getElementById('tokenStatus');
-      if (!el) return;
-      const t = getToken();
-      el.textContent = t
-        ? 'Token is saved in this browser. You can push changes.'
-        : 'No token yet — paste the shared token above and click Save.';
-    }
-
-    function saveToken() {
-      const input = document.getElementById('githubTokenInput');
-      const token = (input.value || '').trim();
-      if (!token) {
-        alert('Please paste the GitHub token first.');
-        return;
-      }
-      if (!token.startsWith('github_pat_') && !token.startsWith('ghp_')) {
-        if (!confirm('This does not look like a normal GitHub token. Save anyway?')) return;
-      }
-      localStorage.setItem('cs_github_token', token);
-      updateTokenStatus();
-      setSyncStatus('Token saved. You can now push changes.', 'success');
-      // optional: close panel
-      // document.getElementById('tokenPanel').classList.add('hidden');
-    }
-
-    function clearToken() {
-      if (!confirm('Remove the token from this browser?')) return;
-      localStorage.removeItem('cs_github_token');
-      document.getElementById('githubTokenInput').value = '';
-      updateTokenStatus();
-      setSyncStatus('Token cleared.', 'info');
-    }
-
-    // ---------- Pull (read) ----------
-    async function fetchRemoteData() {
-      // Prefer API (needs token) so we also get the SHA for later push.
-      // Fallback to raw URL if no token.
-      const token = getToken();
-      if (token) {
-        const apiUrl = `https://api.github.com/repos/${GITHUB.owner}/${GITHUB.repo}/contents/${GITHUB.path}?ref=${GITHUB.branch}`;
-        const res = await fetch(apiUrl, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Accept': 'application/vnd.github+json',
-            'X-GitHub-Api-Version': '2022-11-28'
-          },
-          cache: 'no-store'
-        });
-        if (!res.ok) {
-          if (res.status === 404) throw new Error('data.json not found. Upload an empty data.json first.');
-          const err = await res.json().catch(() => ({}));
-          throw new Error(err.message || `GitHub API ${res.status}`);
-        }
-        const file = await res.json();
-        lastKnownSha = file.sha;
-        // content is base64
-        const jsonStr = decodeURIComponent(escape(atob(file.content.replace(/\n/g, ''))));
-        return JSON.parse(jsonStr);
-      } else {
-        // public raw fallback (read-only)
-        const url = `https://raw.githubusercontent.com/${GITHUB.owner}/${GITHUB.repo}/${GITHUB.branch}/${GITHUB.path}?t=${Date.now()}`;
-        const res = await fetch(url, { cache: 'no-store' });
-        if (!res.ok) throw new Error(res.status === 404 ? 'data.json not found on GitHub' : `HTTP ${res.status}`);
-        return await res.json();
-      }
-    }
-
-    function applyRemoteData(data) {
-      if (!data) return false;
-      if (Array.isArray(data.clients)) clients = data.clients;
-      if (Array.isArray(data.pcas)) pcas = data.pcas;
-      if (Array.isArray(data.timeSlots)) timeSlots = data.timeSlots;
-      if (data.schedule && typeof data.schedule === 'object') schedule = data.schedule;
-
-      clients.forEach(c => {
-        if (c.pcaId === undefined) c.pcaId = '';
-        if (!c.exerciseType || !EXERCISE_TYPES.includes(c.exerciseType)) c.exerciseType = 'PT';
-        if (c.notes === undefined) c.notes = '';
-      });
-      Object.keys(schedule).forEach(key => {
-        if (key.startsWith('Sunday|')) delete schedule[key];
-      });
-
-      saveData();
-      return true;
-    }
-
-    // ---------- Push (write) ----------
-    async function pushToGitHub(silent = false, retryCount = 0) {
-      const token = getToken();
-      if (!token) {
-        if (!silent) setSyncStatus('No token — open Token panel and paste the shared token', 'error');
-        return false;
-      }
-      if (isPushing && retryCount === 0) return false;
-      isPushing = true;
-      if (!silent) setSyncStatus(retryCount > 0 ? 'Conflict detected, retrying…' : 'Saving to GitHub…', 'loading');
-
-      const apiUrl = `https://api.github.com/repos/${GITHUB.owner}/${GITHUB.repo}/contents/${GITHUB.path}`;
-      const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28'
-      };
-
-      try {
-        // Always re-fetch the absolute latest SHA right before writing
-        let sha = null;
-        const getRes = await fetch(apiUrl + `?ref=${GITHUB.branch}&t=${Date.now()}`, {
-          headers,
-          cache: 'no-store'
-        });
-
-        if (getRes.ok) {
-          const file = await getRes.json();
-          sha = file.sha;
-          lastKnownSha = sha;
-        } else if (getRes.status !== 404) {
-          const errBody = await getRes.json().catch(() => ({}));
-          throw new Error(errBody.message || 'Could not read current file from GitHub');
-        }
-
-        const payload = {
-          clients,
-          pcas,
-          timeSlots,
-          schedule,
-          exportedAt: new Date().toISOString()
-        };
-        const contentBase64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
-
-        const body = {
-          message: `Update schedule ${new Date().toLocaleString('en-HK')}`,
-          content: contentBase64,
-          branch: GITHUB.branch
-        };
-        if (sha) body.sha = sha;
-
-        const putRes = await fetch(apiUrl, {
-          method: 'PUT',
-          headers: {
-            ...headers,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(body)
-        });
-
-        if (putRes.ok) {
-          const result = await putRes.json();
-          if (result.content && result.content.sha) lastKnownSha = result.content.sha;
-          const time = new Date().toLocaleTimeString('en-HK', { hour: '2-digit', minute: '2-digit' });
-          setSyncStatus(`✓ Saved to GitHub at ${time}`, 'success');
-          return true;
-        }
-
-        // Handle conflict (409) — retry up to 2 times
-        const err = await putRes.json().catch(() => ({}));
-        const msg = err.message || `Push failed (${putRes.status})`;
-
-        if (putRes.status === 409 && retryCount < 2) {
-          console.warn('SHA conflict, retrying…', msg);
-          // Short pause then retry with a fresh SHA
-          await new Promise(r => setTimeout(r, 400 + retryCount * 300));
-          isPushing = false;
-          return pushToGitHub(silent, retryCount + 1);
-        }
-
-        throw new Error(msg);
-      } catch (err) {
-        console.error(err);
-        setSyncStatus('Save failed: ' + (err.message || 'unknown error'), 'error');
-        return false;
-      } finally {
-        isPushing = false;
-      }
-    }
-
-    // Debounced auto-save (waits 2 s after last change to reduce conflicts)
-    function scheduleAutoPush() {
-      if (!getToken()) return;
-      clearTimeout(pushTimer);
-      pushTimer = setTimeout(() => {
-        pushToGitHub(true);
-      }, 2000);
-    }
-
-    // Manual save = push current local schedule to GitHub (does not overwrite local with remote)
-    async function saveToGitHub() {
-      const btn = document.getElementById('syncBtn');
-      if (btn) {
-        btn.disabled = true;
-        btn.classList.add('opacity-70');
-      }
-
-      if (!getToken()) {
-        setSyncStatus('No token — open Token panel and paste the shared token first', 'error');
-        if (btn) {
-          btn.disabled = false;
-          btn.classList.remove('opacity-70');
-        }
-        toggleTokenPanel();
-        return;
-      }
-
-      setSyncStatus('Saving to GitHub…', 'loading');
-      try {
-        // Cancel any pending auto-push so we don't double-write
-        clearTimeout(pushTimer);
-        const ok = await pushToGitHub(false);
-        if (!ok) {
-          // pushToGitHub already set an error status
-        }
-      } catch (err) {
-        console.warn(err);
-        setSyncStatus('Save failed: ' + (err.message || 'unknown error'), 'error');
-      } finally {
-        if (btn) {
-          btn.disabled = false;
-          btn.classList.remove('opacity-70');
-        }
-      }
-    }
-
-    // (saveData is patched below to call scheduleAutoPush)
-
     function loadData() {
       try {
         clients = JSON.parse(localStorage.getItem('cs_clients') || '[]');
@@ -670,8 +368,6 @@
       localStorage.setItem('cs_pcas', JSON.stringify(pcas));
       localStorage.setItem('cs_timeSlots', JSON.stringify(timeSlots));
       localStorage.setItem('cs_schedule', JSON.stringify(schedule));
-      // Auto-push to GitHub (debounced) if a token is present
-      scheduleAutoPush();
     }
 
     function generateId(prefix = 'c') {
@@ -1006,14 +702,10 @@
         const pcaName = getPcaName(c.pcaId);
         const bc = badgeClass(c.exerciseType);
         return `
-          <div class="pending-card rounded-lg px-3 py-2 text-sm shadow-sm"
-               draggable="true"
-               ondragstart="onPendingDragStart(event, '${c.id}')"
-               ondragend="onPendingDragEnd(event)"
-               title="Drag onto a schedule cell to assign">
+          <div class="pending-card rounded-lg px-3 py-2 text-sm shadow-sm">
             <div class="font-medium text-red-900">${escapeHtml(c.name)}</div>
             <div class="text-xs text-red-700 mt-0.5">
-              <span class="client-badge ${bc}" style="padding:1px 6px;margin:0;display:inline;border-width:1px;cursor:inherit;">${escapeHtml(c.exerciseType)}</span>
+              <span class="client-badge ${bc}" style="padding:1px 6px;margin:0;display:inline;border-width:1px;">${escapeHtml(c.exerciseType)}</span>
               ${pcaName ? ' · PCA: ' + escapeHtml(pcaName) : ' · No PCA'}
             </div>
           </div>
@@ -1180,9 +872,7 @@
     }
 
     // Drag state (shared)
-    // fromPending: true when dragging from Pending list
-    // fromDay/fromSlot set when dragging within the schedule grid
-    let dragPayload = null; // { clientId, fromDay?, fromSlot?, fromPending? }
+    let dragPayload = null; // { clientId, fromDay, fromSlot }
 
     function onBadgeDragStart(e, clientId, fromDay, fromSlot) {
       // Don't start drag from the × button
@@ -1190,26 +880,13 @@
         e.preventDefault();
         return;
       }
-      dragPayload = { clientId, fromDay, fromSlot, fromPending: false };
+      dragPayload = { clientId, fromDay, fromSlot };
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.setData('text/plain', clientId); // required for Firefox
       e.currentTarget.classList.add('dragging');
     }
 
     function onBadgeDragEnd(e) {
-      e.currentTarget.classList.remove('dragging');
-      dragPayload = null;
-      document.querySelectorAll('.slot-cell.drag-over').forEach(el => el.classList.remove('drag-over'));
-    }
-
-    function onPendingDragStart(e, clientId) {
-      dragPayload = { clientId, fromPending: true };
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/plain', clientId);
-      e.currentTarget.classList.add('dragging');
-    }
-
-    function onPendingDragEnd(e) {
       e.currentTarget.classList.remove('dragging');
       dragPayload = null;
       document.querySelectorAll('.slot-cell.drag-over').forEach(el => el.classList.remove('drag-over'));
@@ -1230,65 +907,9 @@
       e.stopPropagation();
       e.currentTarget.classList.remove('drag-over');
       if (!dragPayload) return;
-      const { clientId, fromDay, fromSlot, fromPending } = dragPayload;
-      if (fromPending) {
-        // Assign pending client to this cell
-        const key = getSlotKey(toDay, toSlot);
-        if (!schedule[key]) schedule[key] = [];
-        if (!schedule[key].includes(clientId)) schedule[key].push(clientId);
-        saveData();
-        renderSchedule();
-        renderPending();
-      } else {
-        moveClient(fromDay, fromSlot, toDay, toSlot, clientId);
-      }
+      const { clientId, fromDay, fromSlot } = dragPayload;
+      moveClient(fromDay, fromSlot, toDay, toSlot, clientId);
       dragPayload = null;
-    }
-
-    /** "09:15" → "09:00" (hour bucket key) */
-    function slotHourKey(slot) {
-      const m = String(slot).match(/^(\d{1,2}):(\d{2})$/);
-      if (!m) return slot;
-      return String(parseInt(m[1], 10)).padStart(2, '0') + ':00';
-    }
-
-    /** Group start times by hour for compact rows */
-    function getHourGroups() {
-      const map = {};
-      timeSlots.forEach(s => {
-        const h = slotHourKey(s);
-        if (!map[h]) map[h] = [];
-        if (!map[h].includes(s)) map[h].push(s);
-      });
-      return Object.keys(map).sort().map(h => ({
-        hour: h,
-        slots: map[h].slice().sort()
-      }));
-    }
-
-    /** All clients in a day across several slots, with their actual start time */
-    function getClientsInHour(day, slots) {
-      const result = [];
-      slots.forEach(slot => {
-        getClientsInSlot(day, slot).forEach(c => {
-          result.push({ client: c, slot });
-        });
-      });
-      // sort by start time, then name
-      result.sort((a, b) => {
-        if (a.slot !== b.slot) return a.slot.localeCompare(b.slot);
-        return (a.client.name || '').localeCompare(b.client.name || '', undefined, { sensitivity: 'base' });
-      });
-      return result;
-    }
-
-    /** Default slot to use when dropping / adding into an hour row */
-    function defaultSlotForHour(slots) {
-      if (!slots || slots.length === 0) return null;
-      // Prefer exact hour start if it exists, else earliest
-      const hourKey = slotHourKey(slots[0]);
-      if (slots.includes(hourKey)) return hourKey;
-      return slots.slice().sort()[0];
     }
 
     function renderSchedule() {
@@ -1302,18 +923,10 @@
         return;
       }
 
-      const hourGroups = getHourGroups();
-
-      tbody.innerHTML = hourGroups.map(group => {
-        const { hour, slots } = group;
-        const dropSlot = defaultSlotForHour(slots);
-        const subLabel = slots.length > 1
-          ? slots.join(' · ')
-          : '1 hr';
-
+      tbody.innerHTML = timeSlots.map(slot => {
         const cells = DAYS.map((day) => {
-          const assigned = getClientsInHour(day, slots);
-          const badges = assigned.map(({ client: c, slot }) => {
+          const assigned = getClientsInSlot(day, slot);
+          const badges = assigned.map(c => {
             const pcaName = getPcaName(c.pcaId);
             const bc = badgeClass(c.exerciseType);
             let hlClass = '';
@@ -1321,16 +934,13 @@
               hlClass = (c.pcaId === highlightedPcaId) ? 'highlighted' : 'dimmed';
             }
             const draggable = highlightedPcaId && c.pcaId !== highlightedPcaId ? 'false' : 'true';
-            const label = `${slot} - ${c.name}${pcaName ? ' - ' + pcaName : ''}`;
             return `
               <span class="client-badge ${bc} ${hlClass}"
                     draggable="${draggable}"
                     ondragstart="onBadgeDragStart(event, '${c.id}', '${day}', '${slot}')"
                     ondragend="onBadgeDragEnd(event)"
-                    title="${escapeHtml(c.exerciseType)} · ${escapeHtml(label)} — drag to move">
-                <span class="font-semibold">${escapeHtml(slot)}</span>
-                <span> - ${escapeHtml(c.name)}</span>
-                ${pcaName ? `<span class="pca-part"> - ${escapeHtml(pcaName)}</span>` : ''}
+                    title="${escapeHtml(c.exerciseType)}${pcaName ? ' · ' + escapeHtml(pcaName) : ''} — drag to move">
+                ${escapeHtml(c.name)}${pcaName ? ` <span class="pca-part">- ${escapeHtml(pcaName)}</span>` : ''}
                 <button onclick="event.stopPropagation(); removeFromSlot('${day}', '${slot}', '${c.id}')" title="Remove">×</button>
               </span>
             `;
@@ -1340,9 +950,9 @@
             <td class="border slot-cell cursor-pointer"
                 ondragover="onCellDragOver(event)"
                 ondragleave="onCellDragLeave(event)"
-                ondrop="onCellDrop(event, '${day}', '${dropSlot}')"
-                onclick="if(event.target.tagName!=='BUTTON' && !event.target.closest('.client-badge')) openAddModal('${day}', '${dropSlot}')">
-              <div class="flex flex-col gap-0 min-h-[28px]">${badges}</div>
+                ondrop="onCellDrop(event, '${day}', '${slot}')"
+                onclick="if(event.target.tagName!=='BUTTON' && !event.target.closest('.client-badge')) openAddModal('${day}', '${slot}')">
+              <div class="flex flex-col gap-0 min-h-[44px]">${badges}</div>
               <div class="text-[11px] text-gray-300 mt-1 no-print">+ add · drop here</div>
             </td>
           `;
@@ -1351,8 +961,8 @@
         return `
           <tr>
             <td class="border px-3 py-2 font-medium text-gray-700 sticky left-0 bg-white z-10 whitespace-nowrap">
-              ${escapeHtml(hour)}
-              <span class="block text-[10px] font-normal text-gray-400 max-w-[7rem] truncate" title="${escapeHtml(subLabel)}">${escapeHtml(subLabel)}</span>
+              ${escapeHtml(slot)}
+              <span class="block text-[11px] font-normal text-gray-400">1 hr</span>
             </td>
             ${cells}
           </tr>
@@ -1527,22 +1137,14 @@
 
     // ========== EXPORT / IMPORT ==========
     function exportData() {
-      // This file is ready to upload/overwrite data.json on GitHub
-      const data = {
-        clients,
-        pcas,
-        timeSlots,
-        schedule,
-        exportedAt: new Date().toISOString()
-      };
+      const data = { clients, pcas, timeSlots, schedule, exportedAt: new Date().toISOString() };
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'data.json';   // important: use this exact name when uploading to GitHub
+      a.download = `client-schedule-${new Date().toISOString().slice(0,10)}.json`;
       a.click();
       URL.revokeObjectURL(url);
-      setSyncStatus('Exported data.json — now upload it to GitHub to share with everyone', 'success');
     }
 
     function importData(event) {
@@ -1611,25 +1213,8 @@
       renderPcaChart();
     }
 
-    // 1. Load local cache first (fast)
     loadData();
     renderAll();
-    updateTokenStatus();
-
-    // 2. Then pull the shared version from GitHub
-    (async () => {
-      try {
-        setSyncStatus('Loading shared data…', 'loading');
-        const data = await fetchRemoteData();
-        applyRemoteData(data);
-        renderAll();
-        const time = new Date().toLocaleTimeString('en-HK', { hour: '2-digit', minute: '2-digit' });
-        setSyncStatus(`✓ Loaded from GitHub at ${time}` + (getToken() ? ' · Auto-save ON' : ' · (read-only, no token)'), 'success');
-      } catch (err) {
-        console.warn(err);
-        setSyncStatus('Using local data · ' + (err.message || 'Could not load from GitHub'), 'error');
-      }
-    })();
 
     document.getElementById('addModal').addEventListener('click', (e) => {
       if (e.target.id === 'addModal') closeModal();
