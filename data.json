@@ -1075,7 +1075,8 @@
       "c_msofqahca7vtp",
       "c_msofr8iwwgyj5",
       "c_msofvgdch3qb3",
-      "c_msofwhy09349m"
+      "c_msofwhy09349m",
+      "c_msog9izs0nk08"
     ],
     "Wednesday|09:00": [
       "c_msofx56ogcxoi",
@@ -1100,9 +1101,6 @@
     "Monday|09:30": [
       "c_msog7jezu6qpc",
       "c_msog7yga1qxcp"
-    ],
-    "Tuesday|09:30": [
-      "c_msog9izs0nk08"
     ],
     "Wednesday|09:30": [
       "c_msog9ytucz5p8",
@@ -1279,5 +1277,5 @@
       "c_msohh41t90qc5"
     ]
   },
-  "exportedAt": "2026-08-19T09:41:25.452Z"
+  "exportedAt": "2026-08-19T09:42:54.418Z"
 }
