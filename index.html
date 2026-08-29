@@ -12,19 +12,21 @@
       display: block;
       width: 100%;
       box-sizing: border-box;
-      padding: 6px 44px 6px 10px;
+      padding: 8px 48px 8px 10px;
       border-radius: 6px;
-      font-size: 0.95rem;
-      font-weight: 600;
+      font-size: 1.15rem;
+      font-weight: 700;
       margin: 0 0 6px 0;
       cursor: pointer;
       position: relative;
       border: 2px solid transparent;
-      line-height: 1.35;
+      line-height: 1.4;
       transition: opacity 0.15s, box-shadow 0.15s, filter 0.15s, transform 0.1s;
       user-select: none;
       word-break: break-word;
+      overflow-wrap: anywhere;
       white-space: normal;
+      letter-spacing: 0.01em;
     }
     .client-badge:last-child { margin-bottom: 0; }
     .client-badge.dragging {
@@ -48,13 +50,13 @@
       border-color: #8b5cf6;
     }
     .client-badge .pca-part {
-      font-weight: 500;
-      opacity: 0.9;
-      font-size: 0.88rem;
+      font-weight: 600;
+      opacity: 0.95;
+      font-size: 1.05rem;
     }
     .client-badge .badge-actions {
       position: absolute;
-      top: 3px;
+      top: 4px;
       right: 4px;
       display: flex;
       gap: 2px;
@@ -68,7 +70,7 @@
       font-weight: bold;
       padding: 2px 5px;
       line-height: 1;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
     }
     .client-badge .btn-edit {
       color: #1d4ed8;
@@ -312,12 +314,12 @@
             <thead>
               <tr class="bg-gray-50 text-gray-600">
                 <th class="border px-3 py-2 text-left sticky left-0 bg-gray-50 z-10">Start</th>
-                <th class="border px-2 py-2 text-center min-w-[160px]">Mon</th>
-                <th class="border px-2 py-2 text-center min-w-[160px]">Tue</th>
-                <th class="border px-2 py-2 text-center min-w-[160px]">Wed</th>
-                <th class="border px-2 py-2 text-center min-w-[160px]">Thu</th>
-                <th class="border px-2 py-2 text-center min-w-[160px]">Fri</th>
-                <th class="border px-2 py-2 text-center min-w-[160px]">Sat</th>
+                <th class="border px-2 py-2 text-center min-w-[180px]">Mon</th>
+                <th class="border px-2 py-2 text-center min-w-[180px]">Tue</th>
+                <th class="border px-2 py-2 text-center min-w-[180px]">Wed</th>
+                <th class="border px-2 py-2 text-center min-w-[180px]">Thu</th>
+                <th class="border px-2 py-2 text-center min-w-[180px]">Fri</th>
+                <th class="border px-2 py-2 text-center min-w-[180px]">Sat</th>
               </tr>
             </thead>
             <tbody id="scheduleBody"></tbody>
