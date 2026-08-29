@@ -7,19 +7,86 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
-    body { font-family: system-ui, -apple-system, sans-serif; }
+    :root {
+      --bg: #f1f5f9;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #64748b;
+      --primary: #0f766e;
+      --primary-hover: #0d9488;
+      --accent: #1e3a5f;
+      --accent-soft: #e8eef5;
+    }
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, "PingFang HK", "Noto Sans TC", sans-serif;
+      background: linear-gradient(160deg, #eef2f7 0%, #f8fafc 45%, #eef6f4 100%);
+      color: var(--text);
+    }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.03);
+    }
+    .panel-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #475569;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border-radius: 8px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      padding: 0.45rem 0.85rem;
+      transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-accent { background: var(--accent); color: #fff; }
+    .btn-accent:hover { background: #152a45; }
+    .btn-muted { background: #334155; color: #fff; }
+    .btn-muted:hover { background: #1e293b; }
+    .btn-outline {
+      background: #fff;
+      color: #334155;
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { background: #f8fafc; }
+    .field {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+      background: #fff;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .field:focus {
+      outline: none;
+      border-color: #14b8a6;
+      box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
+    }
     .client-badge {
       display: block;
       width: 100%;
       box-sizing: border-box;
       padding: 8px 48px 8px 10px;
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 1.15rem;
       font-weight: 700;
       margin: 0 0 6px 0;
       cursor: pointer;
       position: relative;
-      border: 2px solid transparent;
+      border: 1px solid transparent;
       line-height: 1.4;
       transition: opacity 0.15s, box-shadow 0.15s, filter 0.15s, transform 0.1s;
       user-select: none;
@@ -27,6 +94,7 @@
       overflow-wrap: anywhere;
       white-space: normal;
       letter-spacing: 0.01em;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
     }
     .client-badge:last-child { margin-bottom: 0; }
     .client-badge.dragging {
@@ -35,17 +103,17 @@
       cursor: grabbing;
     }
     .client-badge.pt {
-      background: #fef08a;
-      color: #854d0e;
+      background: linear-gradient(135deg, #fef9c3 0%, #fde68a 100%);
+      color: #713f12;
       border-color: #eab308;
     }
     .client-badge.ot {
-      background: #a7f3d0;
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
       color: #064e3b;
       border-color: #10b981;
     }
     .client-badge.ptot {
-      background: #ddd6fe;
+      background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
       color: #4c1d95;
       border-color: #8b5cf6;
     }
@@ -63,31 +131,26 @@
       align-items: center;
     }
     .client-badge .badge-actions button {
-      background: rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.75);
       border: none;
-      border-radius: 4px;
+      border-radius: 5px;
       cursor: pointer;
       font-weight: bold;
       padding: 2px 5px;
       line-height: 1;
       font-size: 0.9rem;
     }
-    .client-badge .btn-edit {
-      color: #1d4ed8;
-    }
-    .client-badge .btn-edit:hover { background: #dbeafe; color: #1e3a8a; }
-    .client-badge .btn-remove {
-      color: #ef4444;
-    }
+    .client-badge .btn-edit { color: #0f766e; }
+    .client-badge .btn-edit:hover { background: #ccfbf1; color: #115e59; }
+    .client-badge .btn-remove { color: #dc2626; }
     .client-badge .btn-remove:hover { background: #fee2e2; color: #b91c1c; }
-    /* PCA highlight on schedule: dim non-matching */
     .client-badge.dimmed {
       opacity: 0.22;
       filter: grayscale(0.6);
       cursor: default;
     }
     .client-badge.highlighted {
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.55);
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.45);
       opacity: 1;
       filter: none;
       z-index: 2;
@@ -97,21 +160,26 @@
       vertical-align: top;
       padding: 6px !important;
       transition: background-color 0.12s, outline 0.12s;
+      background: #fff;
     }
     .slot-cell:hover { background-color: #f8fafc; }
     .slot-cell.drag-over {
-      background-color: #e0e7ff !important;
-      outline: 2px dashed #6366f1;
+      background-color: #ccfbf1 !important;
+      outline: 2px dashed #0f766e;
       outline-offset: -2px;
     }
     .pending-card {
-      border-left: 4px solid #ef4444;
-      background: #fef2f2;
+      border-left: 4px solid #e11d48;
+      background: linear-gradient(90deg, #fff1f2 0%, #fff 100%);
+      border: 1px solid #fecdd3;
+      border-left-width: 4px;
+      border-radius: 8px;
       cursor: pointer;
       user-select: none;
       transition: opacity 0.15s, transform 0.1s, box-shadow 0.15s;
       position: relative;
-      padding-right: 40px;
+      padding: 0.6rem 2.5rem 0.6rem 0.75rem;
+      box-shadow: 0 1px 2px rgba(225, 29, 72, 0.06);
     }
     .pending-card.dragging {
       opacity: 0.45;
@@ -126,17 +194,17 @@
       gap: 2px;
     }
     .pending-card .badge-actions button {
-      background: rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.85);
       border: none;
-      border-radius: 4px;
+      border-radius: 5px;
       cursor: pointer;
       font-weight: bold;
       padding: 2px 5px;
       line-height: 1;
       font-size: 0.85rem;
-      color: #1d4ed8;
+      color: #0f766e;
     }
-    .pending-card .badge-actions button:hover { background: #dbeafe; }
+    .pending-card .badge-actions button:hover { background: #ccfbf1; }
     .type-dot {
       display: inline-block;
       width: 9px;
@@ -147,98 +215,128 @@
     .type-dot.pt { background: #eab308; }
     .type-dot.ot { background: #10b981; }
     .type-dot.ptot { background: #8b5cf6; }
+    #scheduleTable {
+      border-color: var(--border);
+    }
     #scheduleTable th {
-      font-size: 1rem;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: #475569;
       padding: 12px 10px !important;
+      background: #f1f5f9 !important;
+      border-color: #e2e8f0 !important;
+    }
+    #scheduleTable td {
+      border-color: #e2e8f0 !important;
     }
     #scheduleTable td:first-child {
-      font-size: 1rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1e293b;
       min-width: 6.5rem;
       padding: 12px 10px !important;
+      background: #f8fafc;
+    }
+    .app-header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 55%, #0f766e 120%);
+      border-radius: 14px;
+      color: #fff;
+      padding: 1.1rem 1.35rem;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
+    }
+    .note-banner {
+      background: linear-gradient(90deg, #fffbeb 0%, #fef3c7 100%);
+      border: 1px solid #f59e0b;
+      border-left: 5px solid #d97706;
+      border-radius: 12px;
     }
     @media print {
       .no-print { display: none !important; }
       body { background: white; }
       table { font-size: 11px; }
-      .client-badge button { display: none !important; }
+      .client-badge button, .badge-actions { display: none !important; }
       .client-badge { break-inside: avoid; box-shadow: none; }
       .slot-cell { min-height: 40px; }
       #printScheduleTitle, #printChartTitle { display: block !important; }
       #pcaWorkloadSection { break-before: page; }
       #pcaWorkloadSection .relative { height: 320px !important; }
+      .app-header, .note-banner { display: none !important; }
     }
     #printScheduleTitle, #printChartTitle { display: none; }
   </style>
 </head>
-<body class="bg-gray-100 min-h-screen">
+<body class="min-h-screen">
   <div class="max-w-[1800px] mx-auto p-4 md:p-6">
     <!-- Header -->
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4 no-print">
+    <div class="app-header flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5 no-print">
       <div>
-        <h1 class="text-2xl font-bold text-gray-800">Client Exercise Schedule</h1>
-        <p class="text-sm text-gray-500">1-hour sessions · PT / OT / PT+OT · PCA assignment · Live shared via GitHub</p>
-        <p id="syncStatus" class="text-xs text-gray-400 mt-0.5">Checking shared data…</p>
+        <p class="text-[11px] uppercase tracking-widest text-teal-200/90 font-semibold mb-1">Rehabilitation · Care Coordination</p>
+        <h1 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Client Exercise Schedule</h1>
+        <p class="text-sm text-slate-300 mt-1">1-hour sessions · PT / OT / PT+OT · PCA assignment</p>
+        <p id="syncStatus" class="text-xs text-teal-200/80 mt-1">Checking shared data…</p>
       </div>
       <div class="flex flex-wrap gap-2 items-center">
-        <button id="syncBtn" onclick="saveToGitHub()" class="px-4 py-1.5 bg-emerald-600 text-white text-sm font-medium rounded hover:bg-emerald-700 flex items-center gap-1.5 shadow-sm">
+        <button id="syncBtn" onclick="saveToGitHub()" class="btn btn-primary shadow-sm">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
           Save to GitHub
         </button>
-        <button onclick="toggleTokenPanel()" class="px-3 py-1.5 bg-indigo-600 text-white text-sm rounded hover:bg-indigo-700">Token</button>
-        <button onclick="exportData()" class="px-3 py-1.5 bg-gray-700 text-white text-sm rounded hover:bg-gray-800">Export</button>
-        <label class="px-3 py-1.5 bg-gray-700 text-white text-sm rounded hover:bg-gray-800 cursor-pointer">
+        <button onclick="toggleTokenPanel()" class="btn btn-outline">Token</button>
+        <button onclick="exportData()" class="btn btn-outline">Export</button>
+        <label class="btn btn-outline cursor-pointer">
           Import
           <input type="file" accept=".json" onchange="importData(event)" class="hidden" />
         </label>
-        <button onclick="printScheduleAndChart()" class="px-3 py-1.5 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">Print</button>
+        <button onclick="printScheduleAndChart()" class="btn btn-accent">Print</button>
       </div>
     </div>
 
-    <!-- Staff assignment note (eye-catching) -->
-    <div class="mb-4 rounded-xl border-2 border-amber-400 bg-amber-50 shadow-sm overflow-hidden">
-      <div class="flex gap-3 p-3 md:p-4">
+    <!-- Staff assignment note -->
+    <div class="note-banner mb-5 overflow-hidden">
+      <div class="flex gap-3 p-3.5 md:p-4">
         <div class="shrink-0 flex items-start pt-0.5">
-          <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-amber-400 text-amber-950 font-bold text-sm">註</span>
+          <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-amber-500 text-white font-bold text-sm shadow-sm">註</span>
         </div>
-        <p class="text-sm md:text-base text-amber-950 leading-relaxed font-medium">
+        <p class="text-sm md:text-[0.95rem] text-amber-950 leading-relaxed">
           為配合案主及中心的整體服務需求，在指派員工負責復康及認知運動時，會綜合評估員工的個人特質、體格體力、專業知識、技能、語言能力及工作態度，並參考員工考核中「基礎復康運動」的表現，務求作出最合適的配對。
         </p>
       </div>
     </div>
 
     <!-- Token settings panel (hidden by default) -->
-    <div id="tokenPanel" class="hidden mb-4 no-print">
-      <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-4">
-        <h3 class="font-semibold text-indigo-900 mb-2">GitHub Token (shared by the team)</h3>
-        <p class="text-xs text-indigo-700 mb-3">Paste the fine-grained Personal Access Token here. It is saved only in this browser. Everyone who needs to edit must paste the same token once.</p>
+    <div id="tokenPanel" class="hidden mb-5 no-print">
+      <div class="panel p-4 border-teal-200 bg-teal-50/60">
+        <h3 class="font-semibold text-slate-800 mb-1">GitHub Token <span class="text-xs font-normal text-slate-500">(shared by the team)</span></h3>
+        <p class="text-xs text-slate-600 mb-3">Paste the fine-grained Personal Access Token here. It is saved only in this browser.</p>
         <div class="flex flex-col sm:flex-row gap-2">
-          <input id="githubTokenInput" type="password" placeholder="github_pat_..." class="flex-1 border border-indigo-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-          <button onclick="saveToken()" class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700">Save Token</button>
-          <button onclick="clearToken()" class="px-4 py-2 bg-gray-200 text-gray-700 text-sm rounded-lg hover:bg-gray-300">Clear</button>
+          <input id="githubTokenInput" type="password" placeholder="github_pat_..." class="field flex-1" />
+          <button onclick="saveToken()" class="btn btn-primary">Save Token</button>
+          <button onclick="clearToken()" class="btn btn-outline">Clear</button>
         </div>
-        <p id="tokenStatus" class="text-xs text-indigo-600 mt-2"></p>
+        <p id="tokenStatus" class="text-xs text-slate-500 mt-2"></p>
       </div>
     </div>
 
-    <!-- Controls row (relocated from left sidebar) -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4 no-print">
+    <!-- Controls row -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-5 no-print">
       <!-- Add Client -->
-      <div class="bg-white rounded-xl shadow-sm border p-4">
-        <h2 class="font-semibold text-gray-800 mb-3">Add Client</h2>
+      <div class="panel p-4">
+        <h2 class="panel-title mb-3">Add Client</h2>
         <div class="space-y-2">
-          <input id="newClientName" type="text" placeholder="Client name" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <input id="newClientName" type="text" placeholder="Client name" class="field" />
           <div class="grid grid-cols-2 gap-2">
-            <select id="newClientExercise" class="w-full border rounded-lg px-3 py-2 text-sm">
+            <select id="newClientExercise" class="field">
               <option value="PT">PT</option>
               <option value="OT">OT</option>
               <option value="PT+OT">PT+OT</option>
             </select>
-            <select id="newClientPca" class="w-full border rounded-lg px-3 py-2 text-sm">
+            <select id="newClientPca" class="field">
               <option value="">— No PCA —</option>
             </select>
           </div>
           <div class="grid grid-cols-2 gap-2">
-            <select id="newClientDay" class="w-full border rounded-lg px-3 py-2 text-sm">
+            <select id="newClientDay" class="field">
               <option value="">— Day (optional) —</option>
               <option value="Monday">Monday</option>
               <option value="Tuesday">Tuesday</option>
@@ -247,34 +345,34 @@
               <option value="Friday">Friday</option>
               <option value="Saturday">Saturday</option>
             </select>
-            <select id="newClientSlot" class="w-full border rounded-lg px-3 py-2 text-sm">
+            <select id="newClientSlot" class="field">
               <option value="">— Time (optional) —</option>
             </select>
           </div>
-          <p class="text-[11px] text-gray-500 -mt-1">Day + time → placed on schedule automatically.</p>
-          <textarea id="newClientNotes" placeholder="Notes (optional)" rows="2" class="w-full border rounded-lg px-3 py-2 text-sm"></textarea>
-          <button onclick="addClient()" class="w-full bg-blue-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-blue-700">+ Add Client</button>
+          <p class="text-[11px] text-slate-500 -mt-0.5">Day + time → placed on schedule automatically.</p>
+          <textarea id="newClientNotes" placeholder="Notes (optional)" rows="2" class="field"></textarea>
+          <button onclick="addClient()" class="btn btn-primary w-full justify-center py-2.5">+ Add Client</button>
         </div>
       </div>
 
       <!-- Client Database -->
-      <div class="bg-white rounded-xl shadow-sm border p-4 flex flex-col">
+      <div class="panel p-4 flex flex-col">
         <div class="flex items-center justify-between mb-2">
-          <h2 class="font-semibold text-gray-800">Client Database</h2>
-          <span id="clientCount" class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">0</span>
+          <h2 class="panel-title">Client Database</h2>
+          <span id="clientCount" class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-semibold">0</span>
         </div>
-        <input id="clientSearch" type="text" placeholder="Search clients..." oninput="renderClients()" class="w-full border rounded-lg px-3 py-1.5 text-sm mb-2" />
+        <input id="clientSearch" type="text" placeholder="Search clients..." oninput="renderClients()" class="field mb-2" />
         <div id="clientList" class="space-y-2 max-h-[280px] overflow-y-auto pr-1 flex-1">
         </div>
       </div>
 
       <!-- Start Times -->
-      <div class="bg-white rounded-xl shadow-sm border p-4">
-        <h2 class="font-semibold text-gray-800 mb-1">Start Times</h2>
-        <p class="text-xs text-gray-500 mb-3">Each session is fixed at <strong>1 hour</strong>.</p>
+      <div class="panel p-4">
+        <h2 class="panel-title mb-1">Start Times</h2>
+        <p class="text-xs text-slate-500 mb-3">Each session is fixed at <strong>1 hour</strong>.</p>
         <div class="flex gap-2 mb-2">
-          <input id="newTimeSlot" type="text" placeholder="e.g. 09:00" class="flex-1 border rounded-lg px-3 py-1.5 text-sm" />
-          <button onclick="addTimeSlot()" class="px-3 py-1.5 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700">Add</button>
+          <input id="newTimeSlot" type="text" placeholder="e.g. 09:00" class="field flex-1" />
+          <button onclick="addTimeSlot()" class="btn btn-primary shrink-0">Add</button>
         </div>
         <div id="timeSlotList" class="space-y-1 text-sm max-h-[220px] overflow-y-auto">
         </div>
@@ -282,38 +380,37 @@
     </div>
 
     <!-- Full-width main: schedule first -->
-    <div class="space-y-4">
+    <div class="space-y-5">
       <!-- Pending -->
-      <div id="pendingSection" class="bg-white rounded-xl shadow-sm border p-4 no-print hidden">
+      <div id="pendingSection" class="panel p-4 no-print hidden border-rose-200">
         <div class="flex items-center justify-between mb-2">
-          <h2 class="font-semibold text-red-700 flex items-center gap-2">
-            <span class="inline-block w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+          <h2 class="font-semibold text-rose-700 flex items-center gap-2 text-sm">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse"></span>
             Pending — No time slot assigned
           </h2>
-          <span id="pendingCount" class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-medium">0</span>
+          <span id="pendingCount" class="text-xs bg-rose-100 text-rose-700 px-2 py-0.5 rounded-full font-semibold">0</span>
         </div>
-        <p class="text-xs text-red-600 mb-3">These Active clients still need a schedule time. <strong>Click</strong> a card to edit · <strong>Drag</strong> onto a schedule cell to assign.</p>
+        <p class="text-xs text-rose-600 mb-3">Active clients still need a schedule time. <strong>Click</strong> or <strong>✎</strong> to edit · <strong>Drag</strong> onto a cell to assign.</p>
         <div id="pendingList" class="flex flex-wrap gap-2"></div>
       </div>
 
       <!-- Weekly Schedule (full width) -->
-      <div class="bg-white rounded-xl shadow-sm border overflow-hidden" id="weeklyScheduleSection">
-        <h2 id="printScheduleTitle" class="text-xl font-bold text-gray-800 px-4 pt-4">Client Exercise Schedule — Weekly Timetable</h2>
-        <div class="px-4 py-3 border-b flex flex-wrap items-center justify-between gap-2 no-print">
-          <h2 class="font-semibold text-gray-800 text-lg">Weekly Schedule <span class="text-sm font-normal text-gray-500">(Mon–Sat · click card to edit · drag to move)</span></h2>
-          <div class="text-sm text-gray-600 flex flex-wrap items-center gap-4">
+      <div class="panel overflow-hidden" id="weeklyScheduleSection">
+        <h2 id="printScheduleTitle" class="text-xl font-bold text-slate-800 px-4 pt-4">Client Exercise Schedule — Weekly Timetable</h2>
+        <div class="px-4 py-3 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2 no-print bg-slate-50/80">
+          <h2 class="font-semibold text-slate-800 text-base">Weekly Schedule <span class="text-sm font-normal text-slate-500">(Mon–Sat · ✎ edit · drag to move)</span></h2>
+          <div class="text-sm text-slate-600 flex flex-wrap items-center gap-4">
             <span><span class="type-dot pt"></span>PT</span>
             <span><span class="type-dot ot"></span>OT</span>
             <span><span class="type-dot ptot"></span>PT+OT</span>
-            <span class="text-xs text-gray-500">Click card to edit · Drag to move</span>
-            <span id="scheduleHighlightHint" class="text-xs text-indigo-600 hidden">· PCA highlighted on grid</span>
+            <span id="scheduleHighlightHint" class="text-xs text-teal-700 hidden">· PCA highlighted on grid</span>
           </div>
         </div>
         <div class="overflow-x-auto">
           <table id="scheduleTable" class="w-full text-sm border-collapse">
             <thead>
-              <tr class="bg-gray-50 text-gray-600">
-                <th class="border px-3 py-2 text-left sticky left-0 bg-gray-50 z-10">Start</th>
+              <tr>
+                <th class="border px-3 py-2 text-left sticky left-0 z-10">Start</th>
                 <th class="border px-2 py-2 text-center min-w-[180px]">Mon</th>
                 <th class="border px-2 py-2 text-center min-w-[180px]">Tue</th>
                 <th class="border px-2 py-2 text-center min-w-[180px]">Wed</th>
@@ -327,20 +424,20 @@
         </div>
       </div>
 
-      <div class="text-xs text-gray-500 no-print">
-        Only <strong>Active</strong> clients appear in the add list. Setting a client to <strong>Discharged</strong> removes them from every time slot.
-        Badge colours: <span class="text-yellow-700 font-medium">PT (yellow)</span> · <span class="text-emerald-700 font-medium">OT (green)</span> · <span class="text-violet-700 font-medium">PT+OT (purple)</span>.
-        <strong>Drag</strong> a client card on the grid to move them to another day/time. Click a PCA to highlight their cases on chart + schedule.
+      <div class="text-xs text-slate-500 no-print px-1">
+        Only <strong>Active</strong> clients appear in the add list. <strong>Discharged</strong> removes them from every slot.
+        Colours: <span class="text-amber-700 font-medium">PT</span> · <span class="text-emerald-700 font-medium">OT</span> · <span class="text-violet-700 font-medium">PT+OT</span>.
+        Click <strong>✎</strong> to edit · drag to move · click a PCA to highlight.
       </div>
 
       <!-- PCA Workload Chart + PCA Workers management -->
-      <div id="pcaWorkloadSection" class="bg-white rounded-xl shadow-sm border p-4">
-        <h2 id="printChartTitle" class="text-xl font-bold text-gray-800 mb-3">PCA Workload — Cases by Exercise Type</h2>
+      <div id="pcaWorkloadSection" class="panel p-4">
+        <h2 id="printChartTitle" class="text-xl font-bold text-slate-800 mb-3">PCA Workload — Cases by Exercise Type</h2>
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3 no-print">
-          <h2 class="font-semibold text-gray-800">PCA Workload — Cases by Exercise Type</h2>
+          <h2 class="panel-title text-slate-700">PCA Workload — Cases by Exercise Type</h2>
           <div class="flex items-center gap-2 text-xs">
-            <button id="chartResetBtn" onclick="resetChartHighlight()" class="px-2 py-1 rounded bg-gray-100 text-gray-600 hover:bg-gray-200 hidden">Reset highlight</button>
-            <span class="text-gray-500">Click a PCA bar or name to highlight (chart + schedule)</span>
+            <button id="chartResetBtn" onclick="resetChartHighlight()" class="btn btn-outline hidden text-xs py-1">Reset highlight</button>
+            <span class="text-slate-500">Click a PCA bar or name to highlight</span>
           </div>
         </div>
         <div class="relative" style="height: 280px;">
@@ -348,12 +445,12 @@
         </div>
         <div id="pcaStatsTable" class="mt-4 overflow-x-auto"></div>
 
-        <div class="mt-5 pt-4 border-t border-gray-200 no-print">
-          <h3 class="font-semibold text-gray-800 mb-2 text-sm">Manage PCA Workers</h3>
+        <div class="mt-5 pt-4 border-t border-slate-200 no-print">
+          <h3 class="panel-title mb-2">Manage PCA Workers</h3>
           <div class="flex flex-col sm:flex-row gap-3">
             <div class="flex gap-2 flex-1 max-w-md">
-              <input id="newPcaName" type="text" placeholder="PCA name" class="flex-1 border rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-              <button onclick="addPca()" class="px-3 py-1.5 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 shrink-0">Add PCA</button>
+              <input id="newPcaName" type="text" placeholder="PCA name" class="field flex-1" />
+              <button onclick="addPca()" class="btn btn-primary shrink-0">Add PCA</button>
             </div>
             <div id="pcaList" class="flex flex-wrap gap-2 items-center text-sm flex-1">
             </div>
@@ -364,49 +461,49 @@
   </div>
 
   <!-- Modal: Add client to slot -->
-  <div id="addModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50 no-print">
-    <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 p-5">
+  <div id="addModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-[2px] hidden items-center justify-center z-50 no-print">
+    <div class="panel w-full max-w-md mx-4 p-5 shadow-xl">
       <div class="flex items-center justify-between mb-4">
-        <h3 class="font-semibold text-lg" id="modalTitle">Add Client</h3>
-        <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+        <h3 class="font-semibold text-lg text-slate-800" id="modalTitle">Add Client</h3>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 text-xl leading-none">&times;</button>
       </div>
       <div id="modalClientList" class="space-y-0.5 max-h-80 overflow-y-auto mb-4"></div>
       <div class="text-right">
-        <button onclick="closeModal()" class="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">Close</button>
+        <button onclick="closeModal()" class="btn btn-outline">Close</button>
       </div>
     </div>
   </div>
 
   <!-- Modal: Edit client card (time / type / PCA) -->
-  <div id="editModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50 no-print">
-    <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 p-5" onclick="event.stopPropagation()">
+  <div id="editModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-[2px] hidden items-center justify-center z-50 no-print">
+    <div class="panel w-full max-w-md mx-4 p-5 shadow-xl" onclick="event.stopPropagation()">
       <div class="flex items-center justify-between mb-4">
-        <h3 class="font-semibold text-lg">Edit assignment</h3>
-        <button onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+        <h3 class="font-semibold text-lg text-slate-800">Edit assignment</h3>
+        <button onclick="closeEditModal()" class="text-slate-400 hover:text-slate-600 text-xl leading-none">&times;</button>
       </div>
-      <p id="editClientName" class="text-sm text-gray-600 mb-3 font-medium"></p>
+      <p id="editClientName" class="text-sm text-slate-600 mb-3 font-semibold"></p>
       <input type="hidden" id="editClientId" />
       <input type="hidden" id="editFromDay" />
       <input type="hidden" id="editFromSlot" />
       <div class="space-y-3">
         <div>
-          <label class="block text-xs font-medium text-gray-600 mb-1">Exercise type</label>
-          <select id="editExercise" class="w-full border rounded-lg px-3 py-2 text-sm">
+          <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">Exercise type</label>
+          <select id="editExercise" class="field">
             <option value="PT">PT</option>
             <option value="OT">OT</option>
             <option value="PT+OT">PT+OT</option>
           </select>
         </div>
         <div>
-          <label class="block text-xs font-medium text-gray-600 mb-1">Responsible PCA</label>
-          <select id="editPca" class="w-full border rounded-lg px-3 py-2 text-sm">
+          <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">Responsible PCA</label>
+          <select id="editPca" class="field">
             <option value="">— No PCA —</option>
           </select>
         </div>
         <div class="grid grid-cols-2 gap-2">
           <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1">Day</label>
-            <select id="editDay" class="w-full border rounded-lg px-3 py-2 text-sm">
+            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">Day</label>
+            <select id="editDay" class="field">
               <option value="">— Pending (no day) —</option>
               <option value="Monday">Monday</option>
               <option value="Tuesday">Tuesday</option>
@@ -417,17 +514,17 @@
             </select>
           </div>
           <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1">Start time</label>
-            <select id="editSlot" class="w-full border rounded-lg px-3 py-2 text-sm">
+            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">Start time</label>
+            <select id="editSlot" class="field">
               <option value="">— No time —</option>
             </select>
           </div>
         </div>
-        <p class="text-[11px] text-gray-500">Leave Day &amp; Time empty to keep / move to Pending.</p>
+        <p class="text-[11px] text-slate-500">Leave Day &amp; Time empty to keep / move to Pending.</p>
       </div>
       <div class="flex justify-end gap-2 mt-5">
-        <button onclick="closeEditModal()" class="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">Cancel</button>
-        <button onclick="saveEditClient()" class="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700">Save</button>
+        <button onclick="closeEditModal()" class="btn btn-outline">Cancel</button>
+        <button onclick="saveEditClient()" class="btn btn-primary">Save</button>
       </div>
     </div>
   </div>
@@ -469,10 +566,10 @@
       const el = document.getElementById('syncStatus');
       if (!el) return;
       el.textContent = msg;
-      el.className = 'text-xs mt-0.5 ' + (
-        type === 'success' ? 'text-emerald-600' :
-        type === 'error'   ? 'text-red-600' :
-        type === 'loading' ? 'text-blue-500' : 'text-gray-400'
+      el.className = 'text-xs mt-1 font-medium ' + (
+        type === 'success' ? 'text-emerald-300' :
+        type === 'error'   ? 'text-rose-300' :
+        type === 'loading' ? 'text-sky-200' : 'text-teal-200/80'
       );
     }
 
