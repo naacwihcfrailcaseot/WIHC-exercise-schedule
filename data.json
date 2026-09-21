@@ -766,24 +766,6 @@
       "createdAt": "2026-08-11T09:52:23.993Z"
     },
     {
-      "id": "c_msohf8z3pipdn",
-      "name": "Y佩華",
-      "status": "Active",
-      "notes": "",
-      "pcaId": "p_msofifog0o7hh",
-      "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:52:48.687Z"
-    },
-    {
-      "id": "c_msohfixzaid7w",
-      "name": "Y佩華",
-      "status": "Active",
-      "notes": "",
-      "pcaId": "p_msofjck8lna9e",
-      "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:53:01.607Z"
-    },
-    {
       "id": "c_msohg2dt9by0i",
       "name": "L美賢",
       "status": "Active",
@@ -1241,12 +1223,6 @@
     "Saturday|14:30": [
       "c_msohepx5lqcex"
     ],
-    "Friday|15:00": [
-      "c_msohf8z3pipdn"
-    ],
-    "Saturday|15:00": [
-      "c_msohfixzaid7w"
-    ],
     "Friday|15:30": [
       "c_msohg2dt9by0i"
     ],
@@ -1265,5 +1241,5 @@
       "c_mspr0lf1wug7p"
     ]
   },
-  "exportedAt": "2026-09-21T03:37:06.560Z"
+  "exportedAt": "2026-09-21T03:37:25.115Z"
 }
