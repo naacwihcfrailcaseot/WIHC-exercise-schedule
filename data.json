@@ -1040,7 +1040,6 @@
     "Tuesday|09:00": [
       "c_msofqahca7vtp",
       "c_msofr8iwwgyj5",
-      "c_msofvgdch3qb3",
       "c_msofwhy09349m",
       "c_msog9izs0nk08"
     ],
@@ -1240,7 +1239,10 @@
     ],
     "Monday|10:30": [
       "c_mspqxktzgrqsq"
+    ],
+    "Tuesday|09:15": [
+      "c_msofvgdch3qb3"
     ]
   },
-  "exportedAt": "2026-09-28T06:39:29.851Z"
+  "exportedAt": "2026-09-28T06:39:43.569Z"
 }
