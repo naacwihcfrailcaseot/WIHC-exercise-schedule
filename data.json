@@ -1199,14 +1199,12 @@
       "c_msohacgzbsrvw",
       "c_msohat8tium94"
     ],
-    "Thursday|14:15": [
-      "c_msohbaer9msau"
-    ],
     "Friday|14:00": [
       "c_msohbm7rys1ax"
     ],
     "Friday|14:15": [
-      "c_msohc0ivaxk8k"
+      "c_msohc0ivaxk8k",
+      "c_msohbaer9msau"
     ],
     "Friday|14:30": [
       "c_msohcgr1bnvcf",
@@ -1244,5 +1242,5 @@
       "c_mspqxktzgrqsq"
     ]
   },
-  "exportedAt": "2026-09-28T03:25:08.971Z"
+  "exportedAt": "2026-09-28T03:29:26.261Z"
 }
