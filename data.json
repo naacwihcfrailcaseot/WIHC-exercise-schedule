@@ -1034,7 +1034,8 @@
   "schedule": {
     "Monday|09:00": [
       "c_msofp9oklnpq1",
-      "c_msofo77s2mos9"
+      "c_msofo77s2mos9",
+      "c_mspqriy8z8256"
     ],
     "Tuesday|09:00": [
       "c_msofqahca7vtp",
@@ -1240,5 +1241,5 @@
       "c_mspqxktzgrqsq"
     ]
   },
-  "exportedAt": "2026-09-28T03:31:36.176Z"
+  "exportedAt": "2026-09-28T03:32:53.987Z"
 }
