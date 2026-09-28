@@ -1064,13 +1064,46 @@
       renderPcaChart();
     }
 
-    function updateClientNotes(id, notes) {
-      const client = clients.find(c => c.id === id);
-      if (!client) return;
-      client.notes = notes.trim();
+    function getClientSchedulePlacement(clientId) {
+      for (const key of Object.keys(schedule)) {
+        if ((schedule[key] || []).includes(clientId)) {
+          const parts = key.split('|');
+          return { day: parts[0] || '', slot: parts.slice(1).join('|') || '' };
+        }
+      }
+      return { day: '', slot: '' };
+    }
+
+    function updateClientSchedule(clientId, newDay, newSlot) {
+      // Both empty → Pending; both set → place; one only → ignore change
+      if ((newDay && !newSlot) || (!newDay && newSlot)) {
+        alert('Please set both Day and Time, or leave both empty for Pending.');
+        renderClients();
+        return;
+      }
+
+      // Remove from all current slots
+      Object.keys(schedule).forEach(key => {
+        schedule[key] = (schedule[key] || []).filter(id => id !== clientId);
+        if (schedule[key].length === 0) delete schedule[key];
+      });
+
+      if (newDay && newSlot) {
+        if (!timeSlots.includes(newSlot)) {
+          timeSlots.push(newSlot);
+          timeSlots.sort();
+        }
+        const key = getSlotKey(newDay, newSlot);
+        if (!schedule[key]) schedule[key] = [];
+        if (!schedule[key].includes(clientId)) schedule[key].push(clientId);
+      }
+
       saveData();
-      // Don't full re-render clients list (would lose focus); only refresh schedule/pending if needed
+      renderClients();
+      renderTimeSlots();
+      renderSchedule();
       renderPending();
+      renderPcaChart();
     }
 
     function deleteClient(id) {
@@ -1102,6 +1135,12 @@
         `<option value="${t}" ${c.exerciseType === t ? 'selected' : ''}>${t}</option>`
       ).join('');
 
+      const placement = getClientSchedulePlacement(c.id);
+      const dayOptions = '<option value="">— Pending —</option>' +
+        DAYS.map(d => `<option value="${d}" ${placement.day === d ? 'selected' : ''}>${d}</option>`).join('');
+      const slotOptions = '<option value="">— No time —</option>' +
+        timeSlots.map(s => `<option value="${escapeHtml(s)}" ${placement.slot === s ? 'selected' : ''}>${escapeHtml(s)}</option>`).join('');
+
       return `
         <div class="border rounded-lg p-3 ${c.status === 'Discharged' ? 'opacity-60' : ''}">
           <div class="flex items-start justify-between gap-2">
@@ -1123,13 +1162,14 @@
             <select onchange="updateClientPca('${c.id}', this.value)" class="w-full text-xs border rounded px-2 py-1 bg-indigo-50 text-indigo-800">
               ${pcaOptions}
             </select>
-            <textarea
-              rows="2"
-              placeholder="Notes (optional) — edit anytime"
-              class="w-full text-xs border rounded px-2 py-1.5 text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-400"
-              onchange="updateClientNotes('${c.id}', this.value)"
-              onblur="updateClientNotes('${c.id}', this.value)"
-            >${escapeHtml(c.notes || '')}</textarea>
+            <div class="grid grid-cols-2 gap-1.5">
+              <select onchange="updateClientSchedule('${c.id}', this.value, this.parentElement.querySelector('[data-slot]').value)" class="w-full text-xs border rounded px-2 py-1 bg-slate-50" data-day>
+                ${dayOptions}
+              </select>
+              <select data-slot onchange="updateClientSchedule('${c.id}', this.parentElement.querySelector('[data-day]').value, this.value)" class="w-full text-xs border rounded px-2 py-1 bg-slate-50">
+                ${slotOptions}
+              </select>
+            </div>
           </div>
         </div>
       `;
@@ -1141,8 +1181,7 @@
       const filtered = clients.filter(c =>
         c.name.toLowerCase().includes(search) ||
         (getPcaName(c.pcaId) || '').toLowerCase().includes(search) ||
-        (c.exerciseType || '').toLowerCase().includes(search) ||
-        (c.notes || '').toLowerCase().includes(search)
+        (c.exerciseType || '').toLowerCase().includes(search)
       );
 
       document.getElementById('clientCount').textContent = clients.length;
@@ -1735,18 +1774,27 @@
 
     function renderPcaChart() {
       const { byPca, unassigned } = getPcaWorkloadByType();
-      const labels = pcas.map(p => p.name);
+
+      // Highest total workload → lowest
+      const sortedPcas = [...pcas].sort((a, b) => {
+        const ta = (byPca[a.id]?.PT || 0) + (byPca[a.id]?.OT || 0) + (byPca[a.id]?.['PT+OT'] || 0);
+        const tb = (byPca[b.id]?.PT || 0) + (byPca[b.id]?.OT || 0) + (byPca[b.id]?.['PT+OT'] || 0);
+        if (tb !== ta) return tb - ta;
+        return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
+      });
+
+      const labels = sortedPcas.map(p => p.name);
       const hasUnassigned = (unassigned.PT + unassigned.OT + unassigned['PT+OT']) > 0;
       if (hasUnassigned) labels.push('Unassigned');
 
       const datasets = EXERCISE_TYPES.map(type => {
-        const data = pcas.map(p => byPca[p.id][type] || 0);
+        const data = sortedPcas.map(p => byPca[p.id][type] || 0);
         if (hasUnassigned) data.push(unassigned[type] || 0);
 
         const bg = data.map((_, i) => {
           if (!highlightedPcaId) return TYPE_COLORS[type].bg;
-          if (i < pcas.length) {
-            return pcas[i].id === highlightedPcaId ? TYPE_COLORS[type].bg : TYPE_COLORS[type].bg.replace('0.85', '0.2');
+          if (i < sortedPcas.length) {
+            return sortedPcas[i].id === highlightedPcaId ? TYPE_COLORS[type].bg : TYPE_COLORS[type].bg.replace('0.85', '0.2');
           }
           return TYPE_COLORS[type].bg.replace('0.85', '0.25');
         });
@@ -1766,7 +1814,7 @@
       const tableEl = document.getElementById('pcaStatsTable');
       let grand = { total: 0, PT: 0, OT: 0, 'PT+OT': 0 };
 
-      let rows = pcas.map(p => {
+      let rows = sortedPcas.map(p => {
         const d = byPca[p.id];
         const total = d.PT + d.OT + d['PT+OT'];
         grand.total += total;
@@ -1840,7 +1888,7 @@
           onClick: (evt, elements) => {
             if (elements.length > 0) {
               const idx = elements[0].index;
-              if (idx < pcas.length) highlightPca(pcas[idx].id);
+              if (idx < sortedPcas.length) highlightPca(sortedPcas[idx].id);
             }
           },
           plugins: {
