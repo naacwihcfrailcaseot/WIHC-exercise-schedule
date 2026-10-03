@@ -261,10 +261,24 @@
       .slot-cell { min-height: 40px; }
       #printScheduleTitle, #printChartTitle { display: block !important; }
       #pcaWorkloadSection { break-before: page; }
-      #pcaWorkloadSection .relative { height: 320px !important; }
+      #pcaWorkloadSection .relative { height: auto !important; min-height: 0 !important; }
+      /* Chart.js canvas often scales wrong on print — use snapshot image instead */
+      #pcaChart { display: none !important; }
+      #pcaChartPrintImg {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        max-height: 420px;
+        object-fit: contain;
+        margin: 0 auto 12px;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
       .app-header, .note-banner { display: none !important; }
     }
     #printScheduleTitle, #printChartTitle { display: none; }
+    #pcaChartPrintImg { display: none; }
   </style>
 </head>
 <body class="min-h-screen">
@@ -442,6 +456,7 @@
         </div>
         <div class="relative" style="height: 280px;">
           <canvas id="pcaChart"></canvas>
+          <img id="pcaChartPrintImg" alt="PCA Workload Chart (print)" />
         </div>
         <div id="pcaStatsTable" class="mt-4 overflow-x-auto"></div>
 
@@ -1583,9 +1598,47 @@
     }
 
     function printScheduleAndChart() {
-      // Ensure chart is up to date before printing
-      try { renderPcaChart(); } catch (e) {}
-      setTimeout(() => window.print(), 150);
+      // Clear highlight so all bars show at full opacity with correct totals
+      const prevHighlight = highlightedPcaId;
+      highlightedPcaId = null;
+      try {
+        renderPcaChart();
+      } catch (e) {
+        console.warn(e);
+      }
+
+      const finishPrint = () => {
+        // Snapshot chart to an image — avoids browser print scaling bugs on <canvas>
+        // that often make bar heights look like half the real values.
+        try {
+          if (pcaChart) {
+            pcaChart.options.animation = false;
+            pcaChart.resize();
+            pcaChart.update('none');
+            const img = document.getElementById('pcaChartPrintImg');
+            if (img) {
+              // 2x resolution for sharper print
+              img.src = pcaChart.toBase64Image('image/png', 1.0);
+            }
+          }
+        } catch (e) {
+          console.warn(e);
+        }
+
+        const restore = () => {
+          highlightedPcaId = prevHighlight;
+          try { renderPcaChart(); } catch (e) {}
+          window.removeEventListener('afterprint', restore);
+        };
+        window.addEventListener('afterprint', restore);
+
+        setTimeout(() => window.print(), 80);
+      };
+
+      // Allow chart layout/paint to complete before snapshot
+      requestAnimationFrame(() => {
+        setTimeout(finishPrint, 200);
+      });
     }
 
     function onCellDragOver(e) {
