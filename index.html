@@ -1598,46 +1598,25 @@
     }
 
     function printScheduleAndChart() {
-      // Clear highlight so all bars show at full opacity with correct totals
+      // Clear highlight so screen chart + print data use full totals
       const prevHighlight = highlightedPcaId;
       highlightedPcaId = null;
       try {
         renderPcaChart();
+        buildPcaChartPrintImage(); // fixed 1100×420 chart — same integers as stats table
       } catch (e) {
         console.warn(e);
       }
 
-      const finishPrint = () => {
-        // Snapshot chart to an image — avoids browser print scaling bugs on <canvas>
-        // that often make bar heights look like half the real values.
-        try {
-          if (pcaChart) {
-            pcaChart.options.animation = false;
-            pcaChart.resize();
-            pcaChart.update('none');
-            const img = document.getElementById('pcaChartPrintImg');
-            if (img) {
-              // 2x resolution for sharper print
-              img.src = pcaChart.toBase64Image('image/png', 1.0);
-            }
-          }
-        } catch (e) {
-          console.warn(e);
-        }
-
-        const restore = () => {
-          highlightedPcaId = prevHighlight;
-          try { renderPcaChart(); } catch (e) {}
-          window.removeEventListener('afterprint', restore);
-        };
-        window.addEventListener('afterprint', restore);
-
-        setTimeout(() => window.print(), 80);
+      const restore = () => {
+        highlightedPcaId = prevHighlight;
+        try { renderPcaChart(); } catch (e) {}
+        window.removeEventListener('afterprint', restore);
       };
+      window.addEventListener('afterprint', restore);
 
-      // Allow chart layout/paint to complete before snapshot
       requestAnimationFrame(() => {
-        setTimeout(finishPrint, 200);
+        setTimeout(() => window.print(), 120);
       });
     }
 
@@ -1841,8 +1820,9 @@
       if (hasUnassigned) labels.push('Unassigned');
 
       const datasets = EXERCISE_TYPES.map(type => {
-        const data = sortedPcas.map(p => byPca[p.id][type] || 0);
-        if (hasUnassigned) data.push(unassigned[type] || 0);
+        // Force integers — same counts as the stats table cells
+        const data = sortedPcas.map(p => Math.round(Number(byPca[p.id][type]) || 0));
+        if (hasUnassigned) data.push(Math.round(Number(unassigned[type]) || 0));
 
         const bg = data.map((_, i) => {
           if (!highlightedPcaId) return TYPE_COLORS[type].bg;
@@ -1929,40 +1909,186 @@
         </table>
       `;
 
+      // Explicit integer totals per bar (same numbers as the stats table)
+      const totals = labels.map((_, i) => {
+        return datasets.reduce((sum, ds) => sum + (Number(ds.data[i]) || 0), 0);
+      });
+      const maxTotal = Math.max(1, ...totals);
+
+      const totalLabelPlugin = {
+        id: 'pcaTotalLabels',
+        afterDatasetsDraw(chart) {
+          const { ctx: c, chartArea } = chart;
+          if (!chartArea) return;
+          c.save();
+          c.font = 'bold 12px system-ui, sans-serif';
+          c.fillStyle = '#0f172a';
+          c.textAlign = 'center';
+          c.textBaseline = 'bottom';
+          const meta0 = chart.getDatasetMeta(0);
+          if (!meta0 || !meta0.data) { c.restore(); return; }
+          meta0.data.forEach((bar, i) => {
+            const total = totals[i] || 0;
+            if (!total) return;
+            // Top of the full stack
+            let topY = bar.y;
+            chart.data.datasets.forEach((ds, di) => {
+              const meta = chart.getDatasetMeta(di);
+              if (meta.hidden || !meta.data[i]) return;
+              topY = Math.min(topY, meta.data[i].y);
+            });
+            c.fillText(String(total), bar.x, topY - 4);
+          });
+          c.restore();
+        }
+      };
+
+      const chartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: false,
+        onClick: (evt, elements) => {
+          if (elements.length > 0) {
+            const idx = elements[0].index;
+            if (idx < sortedPcas.length) highlightPca(sortedPcas[idx].id);
+          }
+        },
+        plugins: {
+          legend: { position: 'top', labels: { usePointStyle: true, padding: 16 } },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => {
+                const v = ctx.parsed.y;
+                return ` ${ctx.dataset.label}: ${v} case${v === 1 ? '' : 's'}`;
+              },
+              footer: (items) => {
+                if (!items.length) return '';
+                const i = items[0].dataIndex;
+                return `Total: ${totals[i]} cases`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            stacked: true,
+            ticks: { maxRotation: 45, minRotation: 0 }
+          },
+          y: {
+            stacked: true,
+            beginAtZero: true,
+            min: 0,
+            max: maxTotal,
+            grace: 0,
+            ticks: {
+              stepSize: 1,
+              precision: 0,
+              callback: function (value) {
+                // Only whole numbers on the axis (avoids 0.5 / 4.5 labels)
+                return Number.isInteger(value) ? value : '';
+              }
+            },
+            title: { display: true, text: 'Number of cases (total)' }
+          }
+        }
+      };
+
       const ctx = document.getElementById('pcaChart').getContext('2d');
       if (pcaChart) pcaChart.destroy();
 
       pcaChart = new Chart(ctx, {
         type: 'bar',
         data: { labels, datasets },
+        options: chartOptions,
+        plugins: [totalLabelPlugin]
+      });
+
+      // Keep last chart payload for accurate print snapshot
+      window._pcaChartPrintData = { labels, datasets, totals, maxTotal };
+    }
+
+    /** Build a fixed-size off-screen chart image so print matches table totals exactly */
+    function buildPcaChartPrintImage() {
+      const payload = window._pcaChartPrintData;
+      const img = document.getElementById('pcaChartPrintImg');
+      if (!img || !payload) return;
+
+      const off = document.createElement('canvas');
+      off.width = 1100;
+      off.height = 420;
+      const offCtx = off.getContext('2d');
+
+      // Opaque white background for print
+      offCtx.fillStyle = '#ffffff';
+      offCtx.fillRect(0, 0, off.width, off.height);
+
+      const printDatasets = payload.datasets.map(ds => ({
+        ...ds,
+        // Full opacity colours for print (no dimming)
+        backgroundColor: Array.isArray(ds.backgroundColor)
+          ? ds.backgroundColor.map((_, i) => {
+              const type = ds.label;
+              return (TYPE_COLORS[type] || TYPE_COLORS['PT']).bg;
+            })
+          : ds.backgroundColor
+      }));
+
+      const tempChart = new Chart(offCtx, {
+        type: 'bar',
+        data: { labels: payload.labels, datasets: printDatasets },
         options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          onClick: (evt, elements) => {
-            if (elements.length > 0) {
-              const idx = elements[0].index;
-              if (idx < sortedPcas.length) highlightPca(sortedPcas[idx].id);
-            }
-          },
+          responsive: false,
+          animation: false,
           plugins: {
-            legend: { position: 'top', labels: { usePointStyle: true, padding: 16 } },
-            tooltip: {
-              callbacks: {
-                label: (ctx) => ` ${ctx.dataset.label}: ${ctx.parsed.y} case${ctx.parsed.y === 1 ? '' : 's'}`
-              }
-            }
+            legend: { position: 'top', labels: { usePointStyle: true, padding: 14, font: { size: 13 } } },
+            title: { display: true, text: 'PCA Workload — Cases by Exercise Type', font: { size: 15, weight: 'bold' } }
           },
           scales: {
-            x: { stacked: true, ticks: { maxRotation: 45, minRotation: 0 } },
+            x: { stacked: true, ticks: { maxRotation: 40, font: { size: 12 } } },
             y: {
               stacked: true,
               beginAtZero: true,
-              ticks: { stepSize: 1, precision: 0 },
-              title: { display: true, text: 'Number of cases' }
+              min: 0,
+              max: payload.maxTotal,
+              ticks: {
+                stepSize: 1,
+                precision: 0,
+                font: { size: 12 },
+                callback: (value) => (Number.isInteger(value) ? value : '')
+              },
+              title: { display: true, text: 'Number of cases (total)', font: { size: 12 } }
             }
           }
-        }
+        },
+        plugins: [{
+          id: 'printTotals',
+          afterDatasetsDraw(chart) {
+            const { ctx: c } = chart;
+            c.save();
+            c.font = 'bold 13px system-ui, sans-serif';
+            c.fillStyle = '#0f172a';
+            c.textAlign = 'center';
+            c.textBaseline = 'bottom';
+            const meta0 = chart.getDatasetMeta(0);
+            if (!meta0 || !meta0.data) { c.restore(); return; }
+            meta0.data.forEach((bar, i) => {
+              const total = payload.totals[i] || 0;
+              if (!total) return;
+              let topY = bar.y;
+              chart.data.datasets.forEach((_, di) => {
+                const meta = chart.getDatasetMeta(di);
+                if (meta.hidden || !meta.data[i]) return;
+                topY = Math.min(topY, meta.data[i].y);
+              });
+              c.fillText(String(total), bar.x, topY - 4);
+            });
+            c.restore();
+          }
+        }]
       });
+
+      img.src = off.toDataURL('image/png');
+      tempChart.destroy();
     }
 
     // ========== EXPORT / IMPORT ==========
