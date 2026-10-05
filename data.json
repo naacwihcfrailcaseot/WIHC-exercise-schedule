@@ -978,7 +978,7 @@
       "pcaId": "p_msofjv9it0v6t",
       "exerciseType": "OT",
       "createdAt": "2026-08-12T07:06:46.583Z",
-      "vulnerabilityTier": 1
+      "vulnerabilityTier": 3
     },
     {
       "id": "c_mspqynxwo5ka2",
@@ -1346,5 +1346,5 @@
       "c_mspqxktzgrqsq"
     ]
   },
-  "exportedAt": "2026-10-05T08:55:12.669Z"
+  "exportedAt": "2026-10-05T08:55:23.474Z"
 }
