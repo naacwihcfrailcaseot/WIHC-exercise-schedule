@@ -332,63 +332,83 @@
       </div>
     </div>
 
-    <!-- Controls row -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-5 no-print">
-      <!-- Add Client -->
-      <div class="panel p-4">
-        <h2 class="panel-title mb-3">Add Client</h2>
-        <div class="space-y-2">
-          <input id="newClientName" type="text" placeholder="Client name" class="field" />
-          <div class="grid grid-cols-2 gap-2">
-            <select id="newClientExercise" class="field">
-              <option value="PT">PT</option>
-              <option value="OT">OT</option>
-              <option value="PT+OT">PT+OT</option>
-            </select>
-            <select id="newClientPca" class="field">
-              <option value="">— No PCA —</option>
-            </select>
+    <!-- Controls: collapsible Add Client / Start Times + wide Client Database -->
+    <div class="space-y-4 mb-5 no-print">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <!-- Add Client (collapsed by default) -->
+        <div class="panel overflow-hidden">
+          <button type="button" onclick="togglePanel('addClientPanel')" class="w-full flex items-center justify-between gap-2 px-4 py-3 text-left hover:bg-slate-50 transition-colors">
+            <span class="panel-title mb-0">Add Client</span>
+            <span id="addClientPanelChevron" class="text-slate-400 text-xs font-semibold tracking-wide">▶ Expand</span>
+          </button>
+          <div id="addClientPanel" class="hidden px-4 pb-4 border-t border-slate-100">
+            <div class="space-y-2 pt-3">
+              <input id="newClientName" type="text" placeholder="Client name" class="field" />
+              <div class="grid grid-cols-2 gap-2">
+                <select id="newClientExercise" class="field">
+                  <option value="PT">PT</option>
+                  <option value="OT">OT</option>
+                  <option value="PT+OT">PT+OT</option>
+                </select>
+                <select id="newClientPca" class="field">
+                  <option value="">— No PCA —</option>
+                </select>
+              </div>
+              <select id="newClientTier" class="field">
+                <option value="1">Tier 1: Mild (1.0 pt)</option>
+                <option value="2">Tier 2: Moderate (1.3 pts)</option>
+                <option value="3">Tier 3: Complex (1.6 pts)</option>
+              </select>
+              <div class="grid grid-cols-2 gap-2">
+                <select id="newClientDay" class="field">
+                  <option value="">— Day (optional) —</option>
+                  <option value="Monday">Monday</option>
+                  <option value="Tuesday">Tuesday</option>
+                  <option value="Wednesday">Wednesday</option>
+                  <option value="Thursday">Thursday</option>
+                  <option value="Friday">Friday</option>
+                  <option value="Saturday">Saturday</option>
+                </select>
+                <select id="newClientSlot" class="field">
+                  <option value="">— Time (optional) —</option>
+                </select>
+              </div>
+              <p class="text-[11px] text-slate-500 -mt-0.5">Day + time → placed on schedule automatically.</p>
+              <textarea id="newClientNotes" placeholder="Notes (optional)" rows="2" class="field"></textarea>
+              <button onclick="addClient()" class="btn btn-primary w-full justify-center py-2.5">+ Add Client</button>
+            </div>
           </div>
-          <div class="grid grid-cols-2 gap-2">
-            <select id="newClientDay" class="field">
-              <option value="">— Day (optional) —</option>
-              <option value="Monday">Monday</option>
-              <option value="Tuesday">Tuesday</option>
-              <option value="Wednesday">Wednesday</option>
-              <option value="Thursday">Thursday</option>
-              <option value="Friday">Friday</option>
-              <option value="Saturday">Saturday</option>
-            </select>
-            <select id="newClientSlot" class="field">
-              <option value="">— Time (optional) —</option>
-            </select>
+        </div>
+
+        <!-- Start Times (collapsed by default) -->
+        <div class="panel overflow-hidden">
+          <button type="button" onclick="togglePanel('startTimesPanel')" class="w-full flex items-center justify-between gap-2 px-4 py-3 text-left hover:bg-slate-50 transition-colors">
+            <span class="panel-title mb-0">Start Times</span>
+            <span id="startTimesPanelChevron" class="text-slate-400 text-xs font-semibold tracking-wide">▶ Expand</span>
+          </button>
+          <div id="startTimesPanel" class="hidden px-4 pb-4 border-t border-slate-100">
+            <p class="text-xs text-slate-500 mb-3 pt-3">Each session is fixed at <strong>1 hour</strong>.</p>
+            <div class="flex gap-2 mb-2">
+              <input id="newTimeSlot" type="text" placeholder="e.g. 09:00" class="field flex-1" />
+              <button onclick="addTimeSlot()" class="btn btn-primary shrink-0">Add</button>
+            </div>
+            <div id="timeSlotList" class="space-y-1 text-sm max-h-[220px] overflow-y-auto">
+            </div>
           </div>
-          <p class="text-[11px] text-slate-500 -mt-0.5">Day + time → placed on schedule automatically.</p>
-          <textarea id="newClientNotes" placeholder="Notes (optional)" rows="2" class="field"></textarea>
-          <button onclick="addClient()" class="btn btn-primary w-full justify-center py-2.5">+ Add Client</button>
         </div>
       </div>
 
-      <!-- Client Database -->
+      <!-- Client Database (full width, more space) -->
       <div class="panel p-4 flex flex-col">
-        <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center justify-between mb-2 gap-2 flex-wrap">
           <h2 class="panel-title">Client Database</h2>
-          <span id="clientCount" class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-semibold">0</span>
+          <div class="flex items-center gap-2 text-[11px] text-slate-500">
+            <span class="hidden sm:inline">Vulnerability: T1 1.0 · T2 1.3 · T3 1.6 pts</span>
+            <span id="clientCount" class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-semibold">0</span>
+          </div>
         </div>
         <input id="clientSearch" type="text" placeholder="Search clients..." oninput="renderClients()" class="field mb-2" />
-        <div id="clientList" class="space-y-2 max-h-[280px] overflow-y-auto pr-1 flex-1">
-        </div>
-      </div>
-
-      <!-- Start Times -->
-      <div class="panel p-4">
-        <h2 class="panel-title mb-1">Start Times</h2>
-        <p class="text-xs text-slate-500 mb-3">Each session is fixed at <strong>1 hour</strong>.</p>
-        <div class="flex gap-2 mb-2">
-          <input id="newTimeSlot" type="text" placeholder="e.g. 09:00" class="field flex-1" />
-          <button onclick="addTimeSlot()" class="btn btn-primary shrink-0">Add</button>
-        </div>
-        <div id="timeSlotList" class="space-y-1 text-sm max-h-[220px] overflow-y-auto">
+        <div id="clientList" class="space-y-2 max-h-[520px] overflow-y-auto pr-1 flex-1">
         </div>
       </div>
     </div>
@@ -448,7 +468,7 @@
       <div id="pcaWorkloadSection" class="panel p-4">
         <h2 id="printChartTitle" class="text-xl font-bold text-slate-800 mb-3">PCA Workload — Cases by Exercise Type</h2>
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3 no-print">
-          <h2 class="panel-title text-slate-700">PCA Workload — Cases by Exercise Type</h2>
+          <h2 class="panel-title text-slate-700">PCA Workload — Cases &amp; Vulnerability Points</h2>
           <div class="flex items-center gap-2 text-xs">
             <button id="chartResetBtn" onclick="resetChartHighlight()" class="btn btn-outline hidden text-xs py-1">Reset highlight</button>
             <span class="text-slate-500">Click a PCA bar or name to highlight</span>
@@ -553,6 +573,35 @@
       'PT+OT': { bg: 'rgba(139, 92, 246, 0.85)', border: '#7c3aed', badge: 'ptot' }
     };
     const DEFAULT_SLOTS = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'];
+    // Standardizing Client Vulnerability Weighting
+    const VULN_TIERS = {
+      1: { label: 'Tier 1: Mild', short: 'T1 Mild', weight: 1.0 },
+      2: { label: 'Tier 2: Moderate', short: 'T2 Moderate', weight: 1.3 },
+      3: { label: 'Tier 3: Complex', short: 'T3 Complex', weight: 1.6 }
+    };
+
+    function normalizeTier(v) {
+      const n = parseInt(v, 10);
+      return (n === 2 || n === 3) ? n : 1;
+    }
+
+    function tierWeight(v) {
+      return VULN_TIERS[normalizeTier(v)].weight;
+    }
+
+    function togglePanel(panelId) {
+      const body = document.getElementById(panelId);
+      const chevron = document.getElementById(panelId + 'Chevron');
+      if (!body) return;
+      const open = !body.classList.contains('hidden');
+      if (open) {
+        body.classList.add('hidden');
+        if (chevron) chevron.textContent = '▶ Expand';
+      } else {
+        body.classList.remove('hidden');
+        if (chevron) chevron.textContent = '▼ Collapse';
+      }
+    }
 
     let clients = [];
     let pcas = [];
@@ -676,6 +725,7 @@
         if (c.pcaId === undefined) c.pcaId = '';
         if (!c.exerciseType || !EXERCISE_TYPES.includes(c.exerciseType)) c.exerciseType = 'PT';
         if (c.notes === undefined) c.notes = '';
+        c.vulnerabilityTier = normalizeTier(c.vulnerabilityTier);
       });
       Object.keys(schedule).forEach(key => {
         if (key.startsWith('Sunday|')) delete schedule[key];
@@ -870,6 +920,7 @@
         if (c.pcaId === undefined) c.pcaId = '';
         if (!c.exerciseType || !EXERCISE_TYPES.includes(c.exerciseType)) c.exerciseType = 'PT';
         if (c.notes === undefined) c.notes = '';
+        c.vulnerabilityTier = normalizeTier(c.vulnerabilityTier);
       });
       Object.keys(schedule).forEach(key => {
         if (key.startsWith('Sunday|')) delete schedule[key];
@@ -994,6 +1045,7 @@
       const exerciseType = document.getElementById('newClientExercise').value;
       const day = document.getElementById('newClientDay').value;
       const slot = document.getElementById('newClientSlot').value;
+      const vulnerabilityTier = normalizeTier(document.getElementById('newClientTier').value);
 
       // If one of day/slot is set, both should be set
       if ((day && !slot) || (!day && slot)) {
@@ -1009,6 +1061,7 @@
         notes,
         pcaId: pcaId || '',
         exerciseType: exerciseType || 'PT',
+        vulnerabilityTier,
         createdAt: new Date().toISOString()
       });
 
@@ -1028,6 +1081,7 @@
       document.getElementById('newClientNotes').value = '';
       document.getElementById('newClientPca').value = '';
       document.getElementById('newClientExercise').value = 'PT';
+      document.getElementById('newClientTier').value = '1';
       document.getElementById('newClientDay').value = '';
       document.getElementById('newClientSlot').value = '';
 
@@ -1076,6 +1130,15 @@
       renderClients();
       renderSchedule();
       renderPending();
+      renderPcaChart();
+    }
+
+    function updateClientTier(id, tier) {
+      const client = clients.find(c => c.id === id);
+      if (!client) return;
+      client.vulnerabilityTier = normalizeTier(tier);
+      saveData();
+      renderClients();
       renderPcaChart();
     }
 
@@ -1176,6 +1239,11 @@
             </select>
             <select onchange="updateClientPca('${c.id}', this.value)" class="w-full text-xs border rounded px-2 py-1 bg-indigo-50 text-indigo-800">
               ${pcaOptions}
+            </select>
+            <select onchange="updateClientTier('${c.id}', this.value)" class="w-full text-xs border rounded px-2 py-1 bg-amber-50 text-amber-900">
+              <option value="1" ${normalizeTier(c.vulnerabilityTier) === 1 ? 'selected' : ''}>Tier 1: Mild (1.0 pt)</option>
+              <option value="2" ${normalizeTier(c.vulnerabilityTier) === 2 ? 'selected' : ''}>Tier 2: Moderate (1.3 pts)</option>
+              <option value="3" ${normalizeTier(c.vulnerabilityTier) === 3 ? 'selected' : ''}>Tier 3: Complex (1.6 pts)</option>
             </select>
             <div class="grid grid-cols-2 gap-1.5">
               <select onchange="updateClientSchedule('${c.id}', this.value, this.parentElement.querySelector('[data-slot]').value)" class="w-full text-xs border rounded px-2 py-1 bg-slate-50" data-day>
@@ -1773,15 +1841,27 @@
     // ========== CHART ==========
     function getPcaWorkloadByType() {
       const byPca = {};
-      pcas.forEach(p => { byPca[p.id] = { PT: 0, OT: 0, 'PT+OT': 0 }; });
-      let unassigned = { PT: 0, OT: 0, 'PT+OT': 0 };
+      pcas.forEach(p => { byPca[p.id] = { PT: 0, OT: 0, 'PT+OT': 0, points: 0, t1: 0, t2: 0, t3: 0 }; });
+      let unassigned = { PT: 0, OT: 0, 'PT+OT': 0, points: 0, t1: 0, t2: 0, t3: 0 };
 
       clients.forEach(c => {
         if (c.status !== 'Active') return;
         const t = EXERCISE_TYPES.includes(c.exerciseType) ? c.exerciseType : 'PT';
-        if (c.pcaId && byPca[c.pcaId]) byPca[c.pcaId][t]++;
-        else unassigned[t]++;
+        const tier = normalizeTier(c.vulnerabilityTier);
+        const pts = tierWeight(tier);
+        const bucket = (c.pcaId && byPca[c.pcaId]) ? byPca[c.pcaId] : unassigned;
+        bucket[t]++;
+        bucket.points += pts;
+        if (tier === 1) bucket.t1++;
+        else if (tier === 2) bucket.t2++;
+        else bucket.t3++;
       });
+
+      // Round points to 1 decimal for display stability
+      Object.keys(byPca).forEach(id => {
+        byPca[id].points = Math.round(byPca[id].points * 10) / 10;
+      });
+      unassigned.points = Math.round(unassigned.points * 10) / 10;
       return { byPca, unassigned };
     }
 
@@ -1807,8 +1887,11 @@
     function renderPcaChart() {
       const { byPca, unassigned } = getPcaWorkloadByType();
 
-      // Highest total workload → lowest
+      // Sort by workload points (fair burden), then by case count
       const sortedPcas = [...pcas].sort((a, b) => {
+        const pa = byPca[a.id]?.points || 0;
+        const pb = byPca[b.id]?.points || 0;
+        if (pb !== pa) return pb - pa;
         const ta = (byPca[a.id]?.PT || 0) + (byPca[a.id]?.OT || 0) + (byPca[a.id]?.['PT+OT'] || 0);
         const tb = (byPca[b.id]?.PT || 0) + (byPca[b.id]?.OT || 0) + (byPca[b.id]?.['PT+OT'] || 0);
         if (tb !== ta) return tb - ta;
@@ -1840,12 +1923,31 @@
           borderWidth: 1,
           borderRadius: 4,
           borderSkipped: false,
-          maxBarThickness: 44
+          maxBarThickness: 44,
+          yAxisID: 'y',
+          order: 2
         };
       });
 
+      // Workload points line (weighted by vulnerability tier)
+      const pointsData = sortedPcas.map(p => byPca[p.id].points || 0);
+      if (hasUnassigned) pointsData.push(unassigned.points || 0);
+      datasets.push({
+        type: 'line',
+        label: 'Workload pts',
+        data: pointsData,
+        borderColor: '#0f766e',
+        backgroundColor: 'rgba(15, 118, 110, 0.15)',
+        borderWidth: 2.5,
+        pointRadius: 5,
+        pointBackgroundColor: '#0f766e',
+        tension: 0.15,
+        yAxisID: 'y1',
+        order: 1
+      });
+
       const tableEl = document.getElementById('pcaStatsTable');
-      let grand = { total: 0, PT: 0, OT: 0, 'PT+OT': 0 };
+      let grand = { total: 0, PT: 0, OT: 0, 'PT+OT': 0, points: 0 };
 
       let rows = sortedPcas.map(p => {
         const d = byPca[p.id];
@@ -1854,14 +1956,17 @@
         grand.PT += d.PT;
         grand.OT += d.OT;
         grand['PT+OT'] += d['PT+OT'];
+        grand.points += d.points;
         const hl = highlightedPcaId === p.id ? 'bg-indigo-50' : '';
         return `
           <tr class="${hl} hover:bg-gray-50 cursor-pointer" onclick="highlightPca('${p.id}')">
             <td class="px-3 py-1.5 font-medium text-gray-800">${escapeHtml(p.name)}</td>
+            <td class="px-3 py-1.5 text-center font-semibold text-teal-800">${d.points.toFixed(1)}</td>
             <td class="px-3 py-1.5 text-center font-semibold">${total}</td>
             <td class="px-3 py-1.5 text-center text-yellow-700">${d.PT}</td>
             <td class="px-3 py-1.5 text-center text-emerald-700">${d.OT}</td>
             <td class="px-3 py-1.5 text-center text-violet-700">${d['PT+OT']}</td>
+            <td class="px-3 py-1.5 text-center text-xs text-slate-500">${d.t1}/${d.t2}/${d.t3}</td>
           </tr>
         `;
       }).join('');
@@ -1872,48 +1977,60 @@
         grand.PT += unassigned.PT;
         grand.OT += unassigned.OT;
         grand['PT+OT'] += unassigned['PT+OT'];
+        grand.points += unassigned.points;
         rows += `
           <tr class="bg-amber-50">
             <td class="px-3 py-1.5 font-medium text-amber-800">Unassigned</td>
+            <td class="px-3 py-1.5 text-center font-semibold text-teal-800">${unassigned.points.toFixed(1)}</td>
             <td class="px-3 py-1.5 text-center font-semibold">${ut}</td>
             <td class="px-3 py-1.5 text-center">${unassigned.PT}</td>
             <td class="px-3 py-1.5 text-center">${unassigned.OT}</td>
             <td class="px-3 py-1.5 text-center">${unassigned['PT+OT']}</td>
+            <td class="px-3 py-1.5 text-center text-xs text-slate-500">${unassigned.t1}/${unassigned.t2}/${unassigned.t3}</td>
           </tr>
         `;
       }
 
+      grand.points = Math.round(grand.points * 10) / 10;
+
       tableEl.innerHTML = `
+        <p class="text-xs text-slate-500 mb-2">Workload points = sum of client vulnerability weights (T1=1.0 · T2=1.3 · T3=1.6). Use points to balance PCA burden fairly.</p>
         <table class="w-full text-sm border-collapse">
           <thead>
             <tr class="bg-gray-50 text-gray-600 text-left">
               <th class="px-3 py-2 border-b">PCA</th>
+              <th class="px-3 py-2 border-b text-center text-teal-800">Workload pts</th>
               <th class="px-3 py-2 border-b text-center">Total Cases</th>
               <th class="px-3 py-2 border-b text-center"><span class="type-dot pt"></span>PT</th>
               <th class="px-3 py-2 border-b text-center"><span class="type-dot ot"></span>OT</th>
               <th class="px-3 py-2 border-b text-center"><span class="type-dot ptot"></span>PT+OT</th>
+              <th class="px-3 py-2 border-b text-center text-xs">T1/T2/T3</th>
             </tr>
           </thead>
           <tbody>
-            ${rows || '<tr><td colspan="5" class="px-3 py-4 text-center text-gray-400">No data yet</td></tr>'}
+            ${rows || '<tr><td colspan="7" class="px-3 py-4 text-center text-gray-400">No data yet</td></tr>'}
           </tbody>
           <tfoot>
             <tr class="bg-gray-100 font-semibold border-t-2">
               <td class="px-3 py-2">ALL PCA</td>
+              <td class="px-3 py-2 text-center text-teal-800">${grand.points.toFixed(1)}</td>
               <td class="px-3 py-2 text-center">${grand.total}</td>
               <td class="px-3 py-2 text-center text-yellow-700">${grand.PT}</td>
               <td class="px-3 py-2 text-center text-emerald-700">${grand.OT}</td>
               <td class="px-3 py-2 text-center text-violet-700">${grand['PT+OT']}</td>
+              <td class="px-3 py-2 text-center">—</td>
             </tr>
           </tfoot>
         </table>
       `;
 
-      // Explicit integer totals per bar (same numbers as the stats table)
-      const totals = labels.map((_, i) => {
-        return datasets.reduce((sum, ds) => sum + (Number(ds.data[i]) || 0), 0);
-      });
+      // Case totals from bar datasets only (exclude workload pts line)
+      const barDatasets = datasets.filter(ds => ds.yAxisID === 'y');
+      const totals = labels.map((_, i) =>
+        barDatasets.reduce((sum, ds) => sum + (Number(ds.data[i]) || 0), 0)
+      );
       const maxTotal = Math.max(1, ...totals);
+      const maxPoints = Math.max(1, ...pointsData);
 
       const totalLabelPlugin = {
         id: 'pcaTotalLabels',
@@ -1921,23 +2038,26 @@
           const { ctx: c, chartArea } = chart;
           if (!chartArea) return;
           c.save();
-          c.font = 'bold 12px system-ui, sans-serif';
-          c.fillStyle = '#0f172a';
+          c.font = 'bold 11px system-ui, sans-serif';
           c.textAlign = 'center';
           c.textBaseline = 'bottom';
           const meta0 = chart.getDatasetMeta(0);
           if (!meta0 || !meta0.data) { c.restore(); return; }
           meta0.data.forEach((bar, i) => {
             const total = totals[i] || 0;
-            if (!total) return;
-            // Top of the full stack
+            const pts = pointsData[i] || 0;
+            if (!total && !pts) return;
             let topY = bar.y;
             chart.data.datasets.forEach((ds, di) => {
+              if (ds.yAxisID === 'y1') return;
               const meta = chart.getDatasetMeta(di);
               if (meta.hidden || !meta.data[i]) return;
               topY = Math.min(topY, meta.data[i].y);
             });
-            c.fillText(String(total), bar.x, topY - 4);
+            c.fillStyle = '#0f172a';
+            c.fillText(String(total), bar.x, topY - 14);
+            c.fillStyle = '#0f766e';
+            c.fillText(pts.toFixed(1) + ' pts', bar.x, topY - 2);
           });
           c.restore();
         }
@@ -1959,12 +2079,15 @@
             callbacks: {
               label: (ctx) => {
                 const v = ctx.parsed.y;
+                if (ctx.dataset.label === 'Workload pts') {
+                  return ` Workload: ${Number(v).toFixed(1)} pts`;
+                }
                 return ` ${ctx.dataset.label}: ${v} case${v === 1 ? '' : 's'}`;
               },
               footer: (items) => {
                 if (!items.length) return '';
                 const i = items[0].dataIndex;
-                return `Total: ${totals[i]} cases`;
+                return `Cases: ${totals[i]} · Points: ${Number(pointsData[i] || 0).toFixed(1)}`;
               }
             }
           }
@@ -1976,6 +2099,7 @@
           },
           y: {
             stacked: true,
+            position: 'left',
             beginAtZero: true,
             min: 0,
             max: maxTotal,
@@ -1984,11 +2108,19 @@
               stepSize: 1,
               precision: 0,
               callback: function (value) {
-                // Only whole numbers on the axis (avoids 0.5 / 4.5 labels)
                 return Number.isInteger(value) ? value : '';
               }
             },
-            title: { display: true, text: 'Number of cases (total)' }
+            title: { display: true, text: 'Number of cases' }
+          },
+          y1: {
+            position: 'right',
+            beginAtZero: true,
+            min: 0,
+            max: Math.ceil(maxPoints * 10) / 10 || 1,
+            grid: { drawOnChartArea: false },
+            title: { display: true, text: 'Workload points', color: '#0f766e' },
+            ticks: { color: '#0f766e' }
           }
         }
       };
@@ -2004,7 +2136,7 @@
       });
 
       // Keep last chart payload for accurate print snapshot
-      window._pcaChartPrintData = { labels, datasets, totals, maxTotal };
+      window._pcaChartPrintData = { labels, datasets, totals, maxTotal, pointsData, maxPoints };
     }
 
     /** Build a fixed-size off-screen chart image so print matches table totals exactly */
@@ -2022,16 +2154,17 @@
       offCtx.fillStyle = '#ffffff';
       offCtx.fillRect(0, 0, off.width, off.height);
 
-      const printDatasets = payload.datasets.map(ds => ({
-        ...ds,
-        // Full opacity colours for print (no dimming)
-        backgroundColor: Array.isArray(ds.backgroundColor)
-          ? ds.backgroundColor.map((_, i) => {
-              const type = ds.label;
-              return (TYPE_COLORS[type] || TYPE_COLORS['PT']).bg;
-            })
-          : ds.backgroundColor
-      }));
+      const printDatasets = payload.datasets.map(ds => {
+        if (ds.label === 'Workload pts') {
+          return { ...ds, borderColor: '#0f766e', pointBackgroundColor: '#0f766e' };
+        }
+        return {
+          ...ds,
+          backgroundColor: Array.isArray(ds.backgroundColor)
+            ? ds.backgroundColor.map(() => (TYPE_COLORS[ds.label] || TYPE_COLORS['PT']).bg)
+            : ds.backgroundColor
+        };
+      });
 
       const tempChart = new Chart(offCtx, {
         type: 'bar',
@@ -2041,12 +2174,13 @@
           animation: false,
           plugins: {
             legend: { position: 'top', labels: { usePointStyle: true, padding: 14, font: { size: 13 } } },
-            title: { display: true, text: 'PCA Workload — Cases by Exercise Type', font: { size: 15, weight: 'bold' } }
+            title: { display: true, text: 'PCA Workload — Cases & Vulnerability Points', font: { size: 15, weight: 'bold' } }
           },
           scales: {
             x: { stacked: true, ticks: { maxRotation: 40, font: { size: 12 } } },
             y: {
               stacked: true,
+              position: 'left',
               beginAtZero: true,
               min: 0,
               max: payload.maxTotal,
@@ -2056,7 +2190,16 @@
                 font: { size: 12 },
                 callback: (value) => (Number.isInteger(value) ? value : '')
               },
-              title: { display: true, text: 'Number of cases (total)', font: { size: 12 } }
+              title: { display: true, text: 'Number of cases', font: { size: 12 } }
+            },
+            y1: {
+              position: 'right',
+              beginAtZero: true,
+              min: 0,
+              max: Math.ceil((payload.maxPoints || 1) * 10) / 10,
+              grid: { drawOnChartArea: false },
+              title: { display: true, text: 'Workload points', color: '#0f766e', font: { size: 12 } },
+              ticks: { color: '#0f766e', font: { size: 12 } }
             }
           }
         },
@@ -2065,22 +2208,26 @@
           afterDatasetsDraw(chart) {
             const { ctx: c } = chart;
             c.save();
-            c.font = 'bold 13px system-ui, sans-serif';
-            c.fillStyle = '#0f172a';
+            c.font = 'bold 12px system-ui, sans-serif';
             c.textAlign = 'center';
             c.textBaseline = 'bottom';
             const meta0 = chart.getDatasetMeta(0);
             if (!meta0 || !meta0.data) { c.restore(); return; }
             meta0.data.forEach((bar, i) => {
               const total = payload.totals[i] || 0;
-              if (!total) return;
+              const pts = payload.pointsData[i] || 0;
+              if (!total && !pts) return;
               let topY = bar.y;
-              chart.data.datasets.forEach((_, di) => {
+              chart.data.datasets.forEach((ds, di) => {
+                if (ds.yAxisID === 'y1') return;
                 const meta = chart.getDatasetMeta(di);
                 if (meta.hidden || !meta.data[i]) return;
                 topY = Math.min(topY, meta.data[i].y);
               });
-              c.fillText(String(total), bar.x, topY - 4);
+              c.fillStyle = '#0f172a';
+              c.fillText(String(total), bar.x, topY - 14);
+              c.fillStyle = '#0f766e';
+              c.fillText(Number(pts).toFixed(1) + ' pts', bar.x, topY - 2);
             });
             c.restore();
           }
@@ -2126,6 +2273,7 @@
             if (c.pcaId === undefined) c.pcaId = '';
             if (!c.exerciseType || !EXERCISE_TYPES.includes(c.exerciseType)) c.exerciseType = 'PT';
             if (c.notes === undefined) c.notes = '';
+            c.vulnerabilityTier = normalizeTier(c.vulnerabilityTier);
           });
           Object.keys(schedule).forEach(key => {
             if (key.startsWith('Sunday|')) delete schedule[key];
