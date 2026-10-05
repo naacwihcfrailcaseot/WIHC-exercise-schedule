@@ -412,8 +412,24 @@
         <div id="clientDbPanel" class="hidden border-t border-slate-100">
           <div class="p-4 flex flex-col lg:flex-row gap-4">
             <div class="flex-1 min-w-0 flex flex-col">
-              <input id="clientSearch" type="text" placeholder="Search clients..." oninput="renderClients()" class="field mb-2" />
-              <div id="clientList" class="space-y-2 max-h-[520px] overflow-y-auto pr-1 flex-1">
+              <input id="clientSearch" type="text" placeholder="Search clients..." oninput="renderClients()" class="field mb-3" />
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 flex-1 min-h-0">
+                <!-- PT list -->
+                <div class="flex flex-col min-h-0 border border-yellow-200 rounded-lg overflow-hidden bg-yellow-50/30">
+                  <div class="px-3 py-2 bg-yellow-100 text-yellow-900 text-xs font-semibold border-b border-yellow-200 flex items-center justify-between">
+                    <span><span class="type-dot pt"></span>PT</span>
+                    <span id="clientCountPt" class="font-normal opacity-80">0</span>
+                  </div>
+                  <div id="clientListPt" class="space-y-2 p-2 max-h-[480px] overflow-y-auto flex-1"></div>
+                </div>
+                <!-- OT + PT+OT list -->
+                <div class="flex flex-col min-h-0 border border-emerald-200 rounded-lg overflow-hidden bg-emerald-50/20">
+                  <div class="px-3 py-2 bg-gradient-to-r from-emerald-100 to-violet-100 text-slate-800 text-xs font-semibold border-b border-emerald-200 flex items-center justify-between">
+                    <span><span class="type-dot ot"></span>OT <span class="opacity-50 mx-0.5">·</span> <span class="type-dot ptot"></span>PT+OT</span>
+                    <span id="clientCountOt" class="font-normal opacity-80">0</span>
+                  </div>
+                  <div id="clientListOt" class="space-y-2 p-2 max-h-[480px] overflow-y-auto flex-1"></div>
+                </div>
               </div>
             </div>
             <!-- Clinical indicators for vulnerability tiers -->
@@ -1283,7 +1299,10 @@
     }
 
     function renderClients() {
-      const list = document.getElementById('clientList');
+      const listPt = document.getElementById('clientListPt');
+      const listOt = document.getElementById('clientListOt');
+      if (!listPt || !listOt) return;
+
       const search = (document.getElementById('clientSearch').value || '').toLowerCase();
       const filtered = clients.filter(c =>
         c.name.toLowerCase().includes(search) ||
@@ -1293,40 +1312,50 @@
 
       document.getElementById('clientCount').textContent = clients.length;
 
-      if (filtered.length === 0) {
-        list.innerHTML = '<p class="text-sm text-gray-400 py-4 text-center">No clients yet</p>';
-        return;
-      }
+      const sortAz = (arr) => arr.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
 
-      // Group by exercise type, sort A–Z within each
-      const groups = { 'PT': [], 'OT': [], 'PT+OT': [] };
-      filtered.forEach(c => {
+      const ptClients = sortAz(filtered.filter(c => {
         const t = EXERCISE_TYPES.includes(c.exerciseType) ? c.exerciseType : 'PT';
-        groups[t].push(c);
-      });
-      EXERCISE_TYPES.forEach(t => {
-        groups[t].sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
-      });
+        return t === 'PT';
+      }));
+      const otClients = sortAz(filtered.filter(c => {
+        const t = EXERCISE_TYPES.includes(c.exerciseType) ? c.exerciseType : 'PT';
+        return t === 'OT' || t === 'PT+OT';
+      }));
 
-      const sectionHeader = {
-        'PT': 'bg-yellow-100 text-yellow-900 border-yellow-300',
-        'OT': 'bg-emerald-100 text-emerald-900 border-emerald-300',
-        'PT+OT': 'bg-violet-100 text-violet-900 border-violet-300'
-      };
+      // Sub-group OT list: OT first, then PT+OT
+      const otOnly = otClients.filter(c => c.exerciseType === 'OT');
+      const ptotOnly = otClients.filter(c => c.exerciseType === 'PT+OT');
 
-      let html = '';
-      EXERCISE_TYPES.forEach(type => {
-        const items = groups[type];
-        if (items.length === 0) return;
-        html += `
-          <div class="sticky top-0 z-10 px-2 py-1.5 text-xs font-semibold border rounded ${sectionHeader[type]}">
-            <span class="type-dot ${badgeClass(type)}"></span>${type}
-            <span class="font-normal opacity-70">(${items.length})</span>
+      document.getElementById('clientCountPt').textContent = ptClients.length;
+      document.getElementById('clientCountOt').textContent = otClients.length;
+
+      const emptyMsg = '<p class="text-sm text-gray-400 py-6 text-center">No clients</p>';
+
+      listPt.innerHTML = ptClients.length
+        ? ptClients.map(c => renderClientCard(c)).join('')
+        : emptyMsg;
+
+      let otHtml = '';
+      if (otOnly.length) {
+        otHtml += `
+          <div class="sticky top-0 z-10 px-2 py-1 text-[11px] font-semibold border rounded bg-emerald-100 text-emerald-900 border-emerald-300">
+            <span class="type-dot ot"></span>OT
+            <span class="font-normal opacity-70">(${otOnly.length})</span>
           </div>
         `;
-        html += items.map(c => renderClientCard(c)).join('');
-      });
-      list.innerHTML = html;
+        otHtml += otOnly.map(c => renderClientCard(c)).join('');
+      }
+      if (ptotOnly.length) {
+        otHtml += `
+          <div class="sticky top-0 z-10 px-2 py-1 text-[11px] font-semibold border rounded bg-violet-100 text-violet-900 border-violet-300">
+            <span class="type-dot ptot"></span>PT+OT
+            <span class="font-normal opacity-70">(${ptotOnly.length})</span>
+          </div>
+        `;
+        otHtml += ptotOnly.map(c => renderClientCard(c)).join('');
+      }
+      listOt.innerHTML = otHtml || emptyMsg;
     }
 
     // ========== PENDING ==========
