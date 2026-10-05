@@ -7,7 +7,8 @@
       "notes": "",
       "pcaId": "p_msofi1mk6c8jc",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:03:47.080Z"
+      "createdAt": "2026-08-11T09:03:47.080Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msofp9oklnpq1",
@@ -16,7 +17,8 @@
       "notes": "",
       "pcaId": "p_msofifog0o7hh",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:04:36.932Z"
+      "createdAt": "2026-08-11T09:04:36.932Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msofqahca7vtp",
@@ -25,7 +27,8 @@
       "notes": "",
       "pcaId": "p_msofiyuulxl9i",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:05:24.624Z"
+      "createdAt": "2026-08-11T09:05:24.624Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msofr8iwwgyj5",
@@ -34,7 +37,8 @@
       "notes": "",
       "pcaId": "p_msofhw4i2d5nk",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:06:08.744Z"
+      "createdAt": "2026-08-11T09:06:08.744Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msofvgdch3qb3",
@@ -43,7 +47,8 @@
       "notes": "",
       "pcaId": "p_msofi1mk6c8jc",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:09:25.536Z"
+      "createdAt": "2026-08-11T09:09:25.536Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msofwhy09349m",
@@ -52,7 +57,8 @@
       "notes": "",
       "pcaId": "p_msofk0bokgoto",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:10:14.232Z"
+      "createdAt": "2026-08-11T09:10:14.232Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msofx56ogcxoi",
@@ -61,7 +67,8 @@
       "notes": "",
       "pcaId": "p_msofjml86pfja",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:10:44.352Z"
+      "createdAt": "2026-08-11T09:10:44.352Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msog0n6c8abcw",
@@ -70,7 +77,8 @@
       "notes": "",
       "pcaId": "p_msofkb9cij1eu",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:13:27.636Z"
+      "createdAt": "2026-08-11T09:13:27.636Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msog2vwgyz2am",
@@ -79,7 +87,8 @@
       "notes": "",
       "pcaId": "p_msofjck8lna9e",
       "exerciseType": "PT+OT",
-      "createdAt": "2026-08-11T09:15:12.256Z"
+      "createdAt": "2026-08-11T09:15:12.256Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msog3qqix9ejw",
@@ -88,7 +97,8 @@
       "notes": "",
       "pcaId": "p_msofk5oybpbvt",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:15:52.218Z"
+      "createdAt": "2026-08-11T09:15:52.218Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msog47fsihtl8",
@@ -97,7 +107,8 @@
       "notes": "",
       "pcaId": "p_msofjv9it0v6t",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:16:13.864Z"
+      "createdAt": "2026-08-11T09:16:13.864Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msog54mqiymlb",
@@ -106,7 +117,8 @@
       "notes": "",
       "pcaId": "p_msofj7o2n5j4r",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:16:56.882Z"
+      "createdAt": "2026-08-11T09:16:56.882Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msog5sqi4nqps",
@@ -115,7 +127,8 @@
       "notes": "",
       "pcaId": "p_msofhw4i2d5nk",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:17:28.122Z"
+      "createdAt": "2026-08-11T09:17:28.122Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msog6fpe22jv4",
@@ -124,7 +137,8 @@
       "notes": "",
       "pcaId": "p_msofifog0o7hh",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:17:57.890Z"
+      "createdAt": "2026-08-11T09:17:57.890Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msog7jezu6qpc",
@@ -133,7 +147,8 @@
       "notes": "",
       "pcaId": "p_msofhw4i2d5nk",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:18:49.355Z"
+      "createdAt": "2026-08-11T09:18:49.355Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msog7yga1qxcp",
@@ -142,7 +157,8 @@
       "notes": "",
       "pcaId": "p_msofiyuulxl9i",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:19:08.842Z"
+      "createdAt": "2026-08-11T09:19:08.842Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msog9izs0nk08",
@@ -151,7 +167,8 @@
       "notes": "",
       "pcaId": "p_msofj7o2n5j4r",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:20:22.120Z"
+      "createdAt": "2026-08-11T09:20:22.120Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msog9ytucz5p8",
@@ -160,7 +177,8 @@
       "notes": "",
       "pcaId": "p_msofhw4i2d5nk",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:20:42.642Z"
+      "createdAt": "2026-08-11T09:20:42.642Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogaay2buhmb",
@@ -169,7 +187,8 @@
       "notes": "",
       "pcaId": "p_msofjck8lna9e",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:20:58.346Z"
+      "createdAt": "2026-08-11T09:20:58.346Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogaoq6x2rpz",
@@ -178,7 +197,8 @@
       "notes": "",
       "pcaId": "p_msofik7igqgs9",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:21:16.206Z"
+      "createdAt": "2026-08-11T09:21:16.206Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogb23g4y4og",
@@ -187,7 +207,8 @@
       "notes": "",
       "pcaId": "p_msofkb9cij1eu",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:21:33.532Z"
+      "createdAt": "2026-08-11T09:21:33.532Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogbgyc6iuov",
@@ -196,7 +217,8 @@
       "notes": "",
       "pcaId": "p_msofipckwo78i",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:21:52.788Z"
+      "createdAt": "2026-08-11T09:21:52.788Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogc5lki0r9g",
@@ -205,7 +227,8 @@
       "notes": "",
       "pcaId": "p_msofhw4i2d5nk",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:22:24.728Z"
+      "createdAt": "2026-08-11T09:22:24.728Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogcsqsbtp4k",
@@ -214,7 +237,8 @@
       "notes": "",
       "pcaId": "p_msofiyuulxl9i",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:22:54.724Z"
+      "createdAt": "2026-08-11T09:22:54.724Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogd5se13ox8",
@@ -223,7 +247,8 @@
       "notes": "",
       "pcaId": "p_msofik7igqgs9",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:23:11.630Z"
+      "createdAt": "2026-08-11T09:23:11.630Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogej76drd7g",
@@ -232,7 +257,8 @@
       "notes": "",
       "pcaId": "p_msofhmbyoxbre",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:24:15.666Z"
+      "createdAt": "2026-08-11T09:24:15.666Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogfi9eau20a",
@@ -241,7 +267,8 @@
       "notes": "",
       "pcaId": "p_msofjibmahvr5",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:25:01.106Z"
+      "createdAt": "2026-08-11T09:25:01.106Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogfxkgm98bk",
@@ -250,7 +277,8 @@
       "notes": "",
       "pcaId": "p_msofi9xylkju2",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:25:20.944Z"
+      "createdAt": "2026-08-11T09:25:20.944Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msoggnuwi8ad7",
@@ -259,7 +287,8 @@
       "notes": "",
       "pcaId": "p_msofiyuulxl9i",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:25:55.016Z"
+      "createdAt": "2026-08-11T09:25:55.016Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msoghbabyo7dh",
@@ -268,7 +297,8 @@
       "notes": "",
       "pcaId": "p_msofk0bokgoto",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:26:25.379Z"
+      "createdAt": "2026-08-11T09:26:25.379Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msoghstizi7ku",
@@ -277,7 +307,8 @@
       "notes": "",
       "pcaId": "p_msofjibmahvr5",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:26:48.102Z"
+      "createdAt": "2026-08-11T09:26:48.102Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogiknw9hyy5",
@@ -286,7 +317,8 @@
       "notes": "",
       "pcaId": "p_msofifog0o7hh",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:27:24.188Z"
+      "createdAt": "2026-08-11T09:27:24.188Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogjcjdizr08",
@@ -295,7 +327,8 @@
       "notes": "",
       "pcaId": "p_msofhmbyoxbre",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:28:00.313Z"
+      "createdAt": "2026-08-11T09:28:00.313Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogjyekvn64d",
@@ -304,7 +337,8 @@
       "notes": "",
       "pcaId": "p_msofk0bokgoto",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:28:28.652Z"
+      "createdAt": "2026-08-11T09:28:28.652Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogkc5yr6yrj",
@@ -313,7 +347,8 @@
       "notes": "",
       "pcaId": "p_msofi9xylkju2",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:28:46.486Z"
+      "createdAt": "2026-08-11T09:28:46.486Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogksy1u6dgd",
@@ -322,7 +357,8 @@
       "notes": "",
       "pcaId": "p_msofifog0o7hh",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:29:08.233Z"
+      "createdAt": "2026-08-11T09:29:08.233Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogldtmmnsy8",
@@ -331,7 +367,8 @@
       "notes": "",
       "pcaId": "p_msofk0bokgoto",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:29:35.290Z"
+      "createdAt": "2026-08-11T09:29:35.290Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msoglu8onsj8p",
@@ -340,7 +377,8 @@
       "notes": "",
       "pcaId": "p_msofiu96bus70",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:29:56.568Z"
+      "createdAt": "2026-08-11T09:29:56.568Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogmdzytm1vq",
@@ -349,7 +387,8 @@
       "notes": "",
       "pcaId": "p_msofjml86pfja",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:30:22.174Z"
+      "createdAt": "2026-08-11T09:30:22.174Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msognb9lo6iq3",
@@ -358,7 +397,8 @@
       "notes": "",
       "pcaId": "p_msofjck8lna9e",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:31:05.289Z"
+      "createdAt": "2026-08-11T09:31:05.289Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msognoppldo2c",
@@ -367,7 +407,8 @@
       "notes": "",
       "pcaId": "p_msofjml86pfja",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:31:22.717Z"
+      "createdAt": "2026-08-11T09:31:22.717Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogo285rp9ef",
@@ -376,7 +417,8 @@
       "notes": "",
       "pcaId": "p_msofjibmahvr5",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:31:40.229Z"
+      "createdAt": "2026-08-11T09:31:40.229Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogogc0rd3gh",
@@ -385,7 +427,8 @@
       "notes": "",
       "pcaId": "p_msofi1mk6c8jc",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:31:58.512Z"
+      "createdAt": "2026-08-11T09:31:58.512Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogp49ciwgc2",
@@ -394,7 +437,8 @@
       "notes": "",
       "pcaId": "p_msofifog0o7hh",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:32:29.520Z"
+      "createdAt": "2026-08-11T09:32:29.520Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogr6sf01uo8",
@@ -403,7 +447,8 @@
       "notes": "",
       "pcaId": "p_msofiu96bus70",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:34:06.111Z"
+      "createdAt": "2026-08-11T09:34:06.111Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogsgwkbl1q0",
@@ -412,7 +457,8 @@
       "notes": "",
       "pcaId": "p_msofi9xylkju2",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:35:05.876Z"
+      "createdAt": "2026-08-11T09:35:05.876Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogt0lw86bqy",
@@ -421,7 +467,8 @@
       "notes": "",
       "pcaId": "p_msofik7igqgs9",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:35:31.412Z"
+      "createdAt": "2026-08-11T09:35:31.412Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogtkbhu4z0s",
@@ -430,7 +477,8 @@
       "notes": "",
       "pcaId": "p_msofjck8lna9e",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:35:56.957Z"
+      "createdAt": "2026-08-11T09:35:56.957Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogu715hxqll",
@@ -439,7 +487,8 @@
       "notes": "",
       "pcaId": "p_msofj7o2n5j4r",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:36:26.393Z"
+      "createdAt": "2026-08-11T09:36:26.393Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogulyhc73vn",
@@ -448,7 +497,8 @@
       "notes": "",
       "pcaId": "p_msofjv9it0v6t",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:36:45.737Z"
+      "createdAt": "2026-08-11T09:36:45.737Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogv7vdeay77",
@@ -457,7 +507,8 @@
       "notes": "",
       "pcaId": "p_msofjibmahvr5",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:37:14.137Z"
+      "createdAt": "2026-08-11T09:37:14.137Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogx7xt3kg4g",
@@ -466,7 +517,8 @@
       "notes": "",
       "pcaId": "p_msofiu96bus70",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:38:47.537Z"
+      "createdAt": "2026-08-11T09:38:47.537Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogzicd8g6y5",
@@ -475,7 +527,8 @@
       "notes": "",
       "pcaId": "p_msofipckwo78i",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:40:34.333Z"
+      "createdAt": "2026-08-11T09:40:34.333Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msogzx9b1up6y",
@@ -484,7 +537,8 @@
       "notes": "",
       "pcaId": "p_msofik7igqgs9",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:40:53.663Z"
+      "createdAt": "2026-08-11T09:40:53.663Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msoh0bf75cg7v",
@@ -493,7 +547,8 @@
       "notes": "",
       "pcaId": "p_msofk5oybpbvt",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:41:12.019Z"
+      "createdAt": "2026-08-11T09:41:12.019Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msoh0u6ntlmat",
@@ -502,7 +557,8 @@
       "notes": "",
       "pcaId": "p_msofjibmahvr5",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:41:36.335Z"
+      "createdAt": "2026-08-11T09:41:36.335Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msoh270ihprdw",
@@ -511,7 +567,8 @@
       "notes": "",
       "pcaId": "p_msofhmbyoxbre",
       "exerciseType": "PT+OT",
-      "createdAt": "2026-08-11T09:42:39.618Z"
+      "createdAt": "2026-08-11T09:42:39.618Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msoh2qslud0b8",
@@ -520,7 +577,8 @@
       "notes": "",
       "pcaId": "p_msofk5oybpbvt",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:43:05.253Z"
+      "createdAt": "2026-08-11T09:43:05.253Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msoh31a1y68zs",
@@ -529,7 +587,8 @@
       "notes": "",
       "pcaId": "p_msofjibmahvr5",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:43:18.841Z"
+      "createdAt": "2026-08-11T09:43:18.841Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msoh3vtnx5rwg",
@@ -538,7 +597,8 @@
       "notes": "",
       "pcaId": "p_msofhmbyoxbre",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:43:58.427Z"
+      "createdAt": "2026-08-11T09:43:58.427Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msoh48rjh6ayu",
@@ -547,7 +607,8 @@
       "notes": "",
       "pcaId": "p_msofjibmahvr5",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:44:15.199Z"
+      "createdAt": "2026-08-11T09:44:15.199Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msoh4saf3g628",
@@ -556,7 +617,8 @@
       "notes": "",
       "pcaId": "p_msofjv9it0v6t",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:44:40.503Z"
+      "createdAt": "2026-08-11T09:44:40.503Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msoh5eajuurle",
@@ -565,7 +627,8 @@
       "notes": "",
       "pcaId": "p_msofhw4i2d5nk",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:45:09.019Z"
+      "createdAt": "2026-08-11T09:45:09.019Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msoh5rdvzgkfb",
@@ -574,7 +637,8 @@
       "notes": "",
       "pcaId": "p_msofk0bokgoto",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:45:25.987Z"
+      "createdAt": "2026-08-11T09:45:25.987Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msoh66r3dakf5",
@@ -583,7 +647,8 @@
       "notes": "",
       "pcaId": "p_msofjml86pfja",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:45:45.903Z"
+      "createdAt": "2026-08-11T09:45:45.903Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msoh786pgebiu",
@@ -592,7 +657,8 @@
       "notes": "",
       "pcaId": "p_msofi1mk6c8jc",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:46:34.417Z"
+      "createdAt": "2026-08-11T09:46:34.417Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msoh7ltd2ox49",
@@ -601,7 +667,8 @@
       "notes": "",
       "pcaId": "p_msofhw4i2d5nk",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:46:52.081Z"
+      "createdAt": "2026-08-11T09:46:52.081Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msoh7wxlvossd",
@@ -610,7 +677,8 @@
       "notes": "",
       "pcaId": "p_msofjml86pfja",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:47:06.489Z"
+      "createdAt": "2026-08-11T09:47:06.489Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msoh8bihva1y6",
@@ -619,7 +687,8 @@
       "notes": "",
       "pcaId": "p_msofk5oybpbvt",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:47:25.385Z"
+      "createdAt": "2026-08-11T09:47:25.385Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msoh8v4pauorw",
@@ -628,7 +697,8 @@
       "notes": "",
       "pcaId": "p_msofi1mk6c8jc",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:47:50.809Z"
+      "createdAt": "2026-08-11T09:47:50.809Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msoh9a05d12ie",
@@ -637,7 +707,8 @@
       "notes": "",
       "pcaId": "p_msofjck8lna9e",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:48:10.085Z"
+      "createdAt": "2026-08-11T09:48:10.085Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msoh9mht67nwd",
@@ -646,7 +717,8 @@
       "notes": "",
       "pcaId": "p_msofk0bokgoto",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:48:26.273Z"
+      "createdAt": "2026-08-11T09:48:26.273Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msoha1c78h2m7",
@@ -655,7 +727,8 @@
       "notes": "",
       "pcaId": "p_msofk0bokgoto",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:48:45.511Z"
+      "createdAt": "2026-08-11T09:48:45.511Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msohacgzbsrvw",
@@ -664,7 +737,8 @@
       "notes": "",
       "pcaId": "p_msofhmbyoxbre",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:48:59.939Z"
+      "createdAt": "2026-08-11T09:48:59.939Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msohat8tium94",
@@ -673,7 +747,8 @@
       "notes": "",
       "pcaId": "p_msofi1mk6c8jc",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:49:21.677Z"
+      "createdAt": "2026-08-11T09:49:21.677Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msohbaer9msau",
@@ -682,7 +757,8 @@
       "notes": "",
       "pcaId": "p_msofk5oybpbvt",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:49:43.923Z"
+      "createdAt": "2026-08-11T09:49:43.923Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msohbm7rys1ax",
@@ -691,7 +767,8 @@
       "notes": "",
       "pcaId": "p_msofi9xylkju2",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:49:59.223Z"
+      "createdAt": "2026-08-11T09:49:59.223Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msohc0ivaxk8k",
@@ -700,7 +777,8 @@
       "notes": "",
       "pcaId": "p_msofkb9cij1eu",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:50:17.767Z"
+      "createdAt": "2026-08-11T09:50:17.767Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msohcgr1bnvcf",
@@ -709,7 +787,8 @@
       "notes": "",
       "pcaId": "p_msofiu96bus70",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:50:38.797Z"
+      "createdAt": "2026-08-11T09:50:38.797Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msohcripy4oqa",
@@ -718,7 +797,8 @@
       "notes": "",
       "pcaId": "p_msofi1mk6c8jc",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:50:52.753Z"
+      "createdAt": "2026-08-11T09:50:52.753Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msohd7a53clhb",
@@ -727,7 +807,8 @@
       "notes": "",
       "pcaId": "p_msofipckwo78i",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:51:13.181Z"
+      "createdAt": "2026-08-11T09:51:13.181Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msohdpvxlovzf",
@@ -736,7 +817,8 @@
       "notes": "",
       "pcaId": "p_msofk0bokgoto",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:51:37.293Z"
+      "createdAt": "2026-08-11T09:51:37.293Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msohe23xmbo0i",
@@ -745,7 +827,8 @@
       "notes": "",
       "pcaId": "p_msofiyuulxl9i",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:51:53.133Z"
+      "createdAt": "2026-08-11T09:51:53.133Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msohedn5e4ew2",
@@ -754,7 +837,8 @@
       "notes": "",
       "pcaId": "p_msofjv9it0v6t",
       "exerciseType": "PT+OT",
-      "createdAt": "2026-08-11T09:52:08.081Z"
+      "createdAt": "2026-08-11T09:52:08.081Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msohepx5lqcex",
@@ -763,7 +847,8 @@
       "notes": "",
       "pcaId": "p_msofik7igqgs9",
       "exerciseType": "PT+OT",
-      "createdAt": "2026-08-11T09:52:23.993Z"
+      "createdAt": "2026-08-11T09:52:23.993Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msohg2dt9by0i",
@@ -772,7 +857,8 @@
       "notes": "",
       "pcaId": "p_msofiyuulxl9i",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:53:26.801Z"
+      "createdAt": "2026-08-11T09:53:26.801Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msohgqzx9jsi4",
@@ -781,7 +867,8 @@
       "notes": "",
       "pcaId": "p_msofiu96bus70",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:53:58.701Z"
+      "createdAt": "2026-08-11T09:53:58.701Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msohh41t90qc5",
@@ -790,7 +877,8 @@
       "notes": "",
       "pcaId": "p_msofifog0o7hh",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:54:15.617Z"
+      "createdAt": "2026-08-11T09:54:15.617Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msohhkcnjewor",
@@ -799,7 +887,8 @@
       "notes": "",
       "pcaId": "p_msofi1mk6c8jc",
       "exerciseType": "OT",
-      "createdAt": "2026-08-11T09:54:36.743Z"
+      "createdAt": "2026-08-11T09:54:36.743Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msohjasdqor8b",
@@ -808,7 +897,8 @@
       "notes": "",
       "pcaId": "p_msofipckwo78i",
       "exerciseType": "PT",
-      "createdAt": "2026-08-11T09:55:57.661Z"
+      "createdAt": "2026-08-11T09:55:57.661Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_msohjpotym9ve",
@@ -817,7 +907,8 @@
       "notes": "",
       "pcaId": "p_msofjv9it0v6t",
       "exerciseType": "PT+OT",
-      "createdAt": "2026-08-11T09:56:16.973Z"
+      "createdAt": "2026-08-11T09:56:16.973Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_mspqq78ilr7bz",
@@ -826,7 +917,8 @@
       "notes": "",
       "pcaId": "p_msofjml86pfja",
       "exerciseType": "PT",
-      "createdAt": "2026-08-12T07:01:02.370Z"
+      "createdAt": "2026-08-12T07:01:02.370Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_mspqqn92gos8v",
@@ -835,7 +927,8 @@
       "notes": "",
       "pcaId": "p_msofipckwo78i",
       "exerciseType": "OT",
-      "createdAt": "2026-08-12T07:01:23.126Z"
+      "createdAt": "2026-08-12T07:01:23.126Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_mspqr33u206p6",
@@ -844,7 +937,8 @@
       "notes": "",
       "pcaId": "p_msofkfwygb62v",
       "exerciseType": "PT",
-      "createdAt": "2026-08-12T07:01:43.674Z"
+      "createdAt": "2026-08-12T07:01:43.674Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_mspqriy8z8256",
@@ -853,7 +947,8 @@
       "notes": "",
       "pcaId": "p_msofjml86pfja",
       "exerciseType": "PT",
-      "createdAt": "2026-08-12T07:02:04.208Z"
+      "createdAt": "2026-08-12T07:02:04.208Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_mspqsxgzix7s9",
@@ -862,7 +957,8 @@
       "notes": "",
       "pcaId": "p_msofjv9it0v6t",
       "exerciseType": "PT",
-      "createdAt": "2026-08-12T07:03:09.683Z"
+      "createdAt": "2026-08-12T07:03:09.683Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_mspqtm1oowmmt",
@@ -871,7 +967,8 @@
       "notes": "",
       "pcaId": "p_msofipckwo78i",
       "exerciseType": "PT",
-      "createdAt": "2026-08-12T07:03:41.532Z"
+      "createdAt": "2026-08-12T07:03:41.532Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_mspqxktzgrqsq",
@@ -880,7 +977,8 @@
       "notes": "",
       "pcaId": "p_msofjv9it0v6t",
       "exerciseType": "OT",
-      "createdAt": "2026-08-12T07:06:46.583Z"
+      "createdAt": "2026-08-12T07:06:46.583Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_mspqynxwo5ka2",
@@ -889,7 +987,8 @@
       "notes": "",
       "pcaId": "p_msofik7igqgs9",
       "exerciseType": "PT+OT",
-      "createdAt": "2026-08-12T07:07:37.268Z"
+      "createdAt": "2026-08-12T07:07:37.268Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_mspqyyegl4ref",
@@ -898,7 +997,8 @@
       "notes": "",
       "pcaId": "p_msofkb9cij1eu",
       "exerciseType": "PT",
-      "createdAt": "2026-08-12T07:07:50.824Z"
+      "createdAt": "2026-08-12T07:07:50.824Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_mspr0lf1wug7p",
@@ -907,7 +1007,8 @@
       "notes": "",
       "pcaId": "p_msofipckwo78i",
       "exerciseType": "OT",
-      "createdAt": "2026-08-12T07:09:07.309Z"
+      "createdAt": "2026-08-12T07:09:07.309Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_mspr4hrak84ca",
@@ -916,7 +1017,8 @@
       "notes": "",
       "pcaId": "p_msofi9xylkju2",
       "exerciseType": "PT",
-      "createdAt": "2026-08-12T07:12:09.190Z"
+      "createdAt": "2026-08-12T07:12:09.190Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_mspr7v4wmmnhc",
@@ -925,7 +1027,8 @@
       "notes": "",
       "pcaId": "p_msofiu96bus70",
       "exerciseType": "PT",
-      "createdAt": "2026-08-12T07:14:46.496Z"
+      "createdAt": "2026-08-12T07:14:46.496Z",
+      "vulnerabilityTier": 1
     },
     {
       "id": "c_mssafk4vxxipe",
@@ -934,7 +1037,8 @@
       "notes": "",
       "pcaId": "p_msofipckwo78i",
       "exerciseType": "PT",
-      "createdAt": "2026-08-14T01:48:10.543Z"
+      "createdAt": "2026-08-14T01:48:10.543Z",
+      "vulnerabilityTier": 1
     }
   ],
   "pcas": [
@@ -1242,5 +1346,5 @@
       "c_mspqxktzgrqsq"
     ]
   },
-  "exportedAt": "2026-10-05T06:01:45.982Z"
+  "exportedAt": "2026-10-05T08:02:52.074Z"
 }
