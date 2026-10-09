@@ -855,7 +855,7 @@
       "name": "L美賢",
       "status": "Active",
       "notes": "",
-      "pcaId": "p_msofiyuulxl9i",
+      "pcaId": "p_msofkfwygb62v",
       "exerciseType": "PT",
       "createdAt": "2026-08-11T09:53:26.801Z",
       "vulnerabilityTier": 1
@@ -1315,9 +1315,6 @@
     "Saturday|14:30": [
       "c_msohepx5lqcex"
     ],
-    "Friday|15:30": [
-      "c_msohg2dt9by0i"
-    ],
     "Tuesday|16:15": [
       "c_msohgqzx9jsi4",
       "c_mspr4hrak84ca"
@@ -1336,5 +1333,5 @@
       "c_mspqxktzgrqsq"
     ]
   },
-  "exportedAt": "2026-10-09T08:57:04.877Z"
+  "exportedAt": "2026-10-09T08:57:40.720Z"
 }
