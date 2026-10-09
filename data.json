@@ -1031,14 +1031,24 @@
       "vulnerabilityTier": 1
     },
     {
-      "id": "c_mv0qn2fqumt2o",
+      "id": "c_mv0qd90jh1oy1",
       "name": "Y少霞",
       "status": "Active",
       "notes": "",
-      "pcaId": "p_msofk5oybpbvt",
-      "exerciseType": "OT",
-      "vulnerabilityTier": 3,
-      "createdAt": "2026-10-09T09:03:28.790Z"
+      "pcaId": "p_msofkb9cij1eu",
+      "exerciseType": "PT",
+      "vulnerabilityTier": 2,
+      "createdAt": "2026-10-09T08:55:50.755Z"
+    },
+    {
+      "id": "c_mv0qo4d202ypq",
+      "name": "T滿隱",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofi9xylkju2",
+      "exerciseType": "PT",
+      "vulnerabilityTier": 2,
+      "createdAt": "2026-10-09T09:04:17.942Z"
     }
   ],
   "pcas": [
@@ -1236,7 +1246,6 @@
     ],
     "Friday|11:00": [
       "c_msogsgwkbl1q0",
-      "c_msogt0lw86bqy",
       "c_msogtkbhu4z0s"
     ],
     "Friday|11:15": [
@@ -1304,7 +1313,8 @@
       "c_msohat8tium94"
     ],
     "Friday|14:00": [
-      "c_msohbm7rys1ax"
+      "c_msohbm7rys1ax",
+      "c_msogt0lw86bqy"
     ],
     "Friday|14:15": [
       "c_msohc0ivaxk8k",
@@ -1341,7 +1351,10 @@
     ],
     "Monday|10:30": [
       "c_mspqxktzgrqsq"
+    ],
+    "Friday|15:30": [
+      "c_msohg2dt9by0i"
     ]
   },
-  "exportedAt": "2026-10-09T09:03:31.866Z"
+  "exportedAt": "2026-10-09T09:04:20.818Z"
 }
