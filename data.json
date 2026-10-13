@@ -981,26 +981,6 @@
       "vulnerabilityTier": 3
     },
     {
-      "id": "c_mspqyyegl4ref",
-      "name": "M月明",
-      "status": "Active",
-      "notes": "",
-      "pcaId": "p_msofkb9cij1eu",
-      "exerciseType": "PT",
-      "createdAt": "2026-08-12T07:07:50.824Z",
-      "vulnerabilityTier": 2
-    },
-    {
-      "id": "c_mspr0lf1wug7p",
-      "name": "M月明",
-      "status": "Active",
-      "notes": "",
-      "pcaId": "p_msofipckwo78i",
-      "exerciseType": "OT",
-      "createdAt": "2026-08-12T07:09:07.309Z",
-      "vulnerabilityTier": 2
-    },
-    {
       "id": "c_mspr4hrak84ca",
       "name": "F蘭英",
       "status": "Active",
@@ -1356,8 +1336,7 @@
       "c_msohh41t90qc5"
     ],
     "Thursday|15:45": [
-      "c_msohjpotym9ve",
-      "c_mspr0lf1wug7p"
+      "c_msohjpotym9ve"
     ],
     "Monday|10:30": [
       "c_mspqxktzgrqsq"
@@ -1366,5 +1345,5 @@
       "c_msohg2dt9by0i"
     ]
   },
-  "exportedAt": "2026-10-13T06:25:27.770Z"
+  "exportedAt": "2026-10-13T06:25:58.255Z"
 }
