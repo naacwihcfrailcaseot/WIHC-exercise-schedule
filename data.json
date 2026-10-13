@@ -1049,6 +1049,16 @@
       "exerciseType": "PT",
       "vulnerabilityTier": 2,
       "createdAt": "2026-10-09T09:04:17.942Z"
+    },
+    {
+      "id": "c_mv6ar6vg1xx9b",
+      "name": "Y少霞",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofk5oybpbvt",
+      "exerciseType": "OT",
+      "vulnerabilityTier": 3,
+      "createdAt": "2026-10-13T06:25:24.364Z"
     }
   ],
   "pcas": [
@@ -1356,5 +1366,5 @@
       "c_msohg2dt9by0i"
     ]
   },
-  "exportedAt": "2026-10-09T09:04:20.818Z"
+  "exportedAt": "2026-10-13T06:25:27.770Z"
 }
