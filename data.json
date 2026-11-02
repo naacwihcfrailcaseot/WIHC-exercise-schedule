@@ -1203,8 +1203,7 @@
       "c_msoghstizi7ku"
     ],
     "Friday|10:30": [
-      "c_msogiknw9hyy5",
-      "c_mspqtm1oowmmt"
+      "c_msogiknw9hyy5"
     ],
     "Monday|11:00": [
       "c_msogjcjdizr08",
@@ -1343,7 +1342,10 @@
     "Tuesday|14:00": [
       "c_msog7yga1qxcp",
       "c_mspqsxgzix7s9"
+    ],
+    "Thursday|15:30": [
+      "c_mspqtm1oowmmt"
     ]
   },
-  "exportedAt": "2026-11-02T07:57:30.302Z"
+  "exportedAt": "2026-11-02T07:59:44.516Z"
 }
