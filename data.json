@@ -1249,8 +1249,7 @@
     ],
     "Tuesday|13:45": [
       "c_msogzx9b1up6y",
-      "c_msoh0bf75cg7v",
-      "c_msoh0u6ntlmat"
+      "c_msoh0bf75cg7v"
     ],
     "Wednesday|13:45": [
       "c_msoh270ihprdw"
@@ -1340,7 +1339,8 @@
     ],
     "Tuesday|14:00": [
       "c_msog7yga1qxcp",
-      "c_mspqsxgzix7s9"
+      "c_mspqsxgzix7s9",
+      "c_msoh0u6ntlmat"
     ],
     "Thursday|15:30": [
       "c_mspqtm1oowmmt"
@@ -1349,5 +1349,5 @@
       "c_mssafk4vxxipe"
     ]
   },
-  "exportedAt": "2026-11-02T08:00:31.376Z"
+  "exportedAt": "2026-11-02T08:01:13.728Z"
 }
