@@ -1168,8 +1168,7 @@
       "c_msog6fpe22jv4"
     ],
     "Monday|09:30": [
-      "c_msog7jezu6qpc",
-      "c_msog7yga1qxcp"
+      "c_msog7jezu6qpc"
     ],
     "Wednesday|09:30": [
       "c_msog9ytucz5p8",
@@ -1343,7 +1342,10 @@
     ],
     "Friday|15:30": [
       "c_msohg2dt9by0i"
+    ],
+    "Tuesday|14:00": [
+      "c_msog7yga1qxcp"
     ]
   },
-  "exportedAt": "2026-11-02T07:46:25.108Z"
+  "exportedAt": "2026-11-02T07:47:05.352Z"
 }
