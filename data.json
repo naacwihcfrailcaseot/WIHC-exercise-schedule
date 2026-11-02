@@ -1292,7 +1292,6 @@
     ],
     "Thursday|14:30": [
       "c_msoha1c78h2m7",
-      "c_mssafk4vxxipe",
       "c_mspqynxwo5ka2"
     ],
     "Thursday|14:45": [
@@ -1345,7 +1344,10 @@
     ],
     "Thursday|15:30": [
       "c_mspqtm1oowmmt"
+    ],
+    "Tuesday|14:30": [
+      "c_mssafk4vxxipe"
     ]
   },
-  "exportedAt": "2026-11-02T07:59:44.516Z"
+  "exportedAt": "2026-11-02T08:00:31.376Z"
 }
