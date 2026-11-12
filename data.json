@@ -1029,6 +1029,16 @@
       "exerciseType": "OT",
       "vulnerabilityTier": 3,
       "createdAt": "2026-10-13T06:25:24.364Z"
+    },
+    {
+      "id": "c_mwd60zkpuksyn",
+      "name": "C石",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofik7igqgs9",
+      "exerciseType": "OT",
+      "vulnerabilityTier": 2,
+      "createdAt": "2026-11-12T06:27:08.953Z"
     }
   ],
   "pcas": [
@@ -1255,7 +1265,8 @@
     "Monday|14:30": [
       "c_msoh48rjh6ayu",
       "c_msoh4saf3g628",
-      "c_msoh5rdvzgkfb"
+      "c_msoh5rdvzgkfb",
+      "c_mwd60zkpuksyn"
     ],
     "Monday|14:45": [
       "c_msoh5eajuurle"
@@ -1339,5 +1350,5 @@
       "c_mssafk4vxxipe"
     ]
   },
-  "exportedAt": "2026-11-12T06:23:10.887Z"
+  "exportedAt": "2026-11-12T06:27:12.047Z"
 }
