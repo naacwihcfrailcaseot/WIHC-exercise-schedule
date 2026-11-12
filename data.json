@@ -1021,16 +1021,6 @@
       "createdAt": "2026-10-09T08:55:50.755Z"
     },
     {
-      "id": "c_mv0qo4d202ypq",
-      "name": "T滿隱",
-      "status": "Active",
-      "notes": "",
-      "pcaId": "p_msofi9xylkju2",
-      "exerciseType": "PT",
-      "vulnerabilityTier": 2,
-      "createdAt": "2026-10-09T09:04:17.942Z"
-    },
-    {
       "id": "c_mv6ar6vg1xx9b",
       "name": "Y少霞",
       "status": "Active",
@@ -1349,5 +1339,5 @@
       "c_mssafk4vxxipe"
     ]
   },
-  "exportedAt": "2026-11-12T06:21:10.260Z"
+  "exportedAt": "2026-11-12T06:23:10.887Z"
 }
