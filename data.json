@@ -1039,6 +1039,16 @@
       "exerciseType": "OT",
       "vulnerabilityTier": 2,
       "createdAt": "2026-11-12T06:27:08.953Z"
+    },
+    {
+      "id": "c_mwx7hv1dkia9v",
+      "name": "L錫惠",
+      "status": "Active",
+      "notes": "",
+      "pcaId": "p_msofkb9cij1eu",
+      "exerciseType": "PT",
+      "vulnerabilityTier": 1,
+      "createdAt": "2026-11-26T07:03:39.361Z"
     }
   ],
   "pcas": [
@@ -1351,5 +1361,5 @@
       "c_mssafk4vxxipe"
     ]
   },
-  "exportedAt": "2026-11-26T07:01:12.798Z"
+  "exportedAt": "2026-11-26T07:03:42.690Z"
 }
